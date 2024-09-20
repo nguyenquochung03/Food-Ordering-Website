@@ -1,0 +1,36 @@
+.visit-statistics-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: fit-content;
+}
+
+.visit-statistics-bar {
+    width: 7px;
+    background-color: var(--color-main);
+    transition: all 1s ease-in-out;
+    border-radius: 2px;
+}
+
+.visit-statistics-bar:nth-child(even) {
+    background-color: rgb(223, 5, 5);
+}
+
+.visit-statistics-bar:hover {
+    background-color: var(--color-button);
+}
+
+.visit-statistics-bar:nth-child(even):hover {
+    background-color: rgb(249, 142, 142);
+}
+
+.visit-statistics-footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0 0 0;
+}
+
+.visit-statistics-footer p {
+    font-size: 12px;
+    color: rgb(156, 155, 155);
+}

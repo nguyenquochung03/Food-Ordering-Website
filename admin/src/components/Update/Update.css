@@ -1,0 +1,27 @@
+.update {
+    width: 100%;
+    font-size: 1rem;
+    display: flex;
+    gap: 50px;
+}
+
+.update form {
+    gap: 30px;
+    width: 100%;
+}
+
+.update-title img {
+    width: 40px;
+    height: 40px;
+}
+
+@media (max-width: 450px) {
+    .update {
+        flex-direction: column;
+        margin: 0 !important;
+    }
+
+    .add-product-description {
+        margin-bottom: 10px;
+    }
+}

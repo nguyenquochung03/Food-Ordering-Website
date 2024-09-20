@@ -1,0 +1,335 @@
+.food-display {
+  margin: 30px 0 0 0;
+}
+
+.food-display_tools-container {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  width: fit-content;
+}
+
+.food-display_tools-container h2 {
+  font-size: max(2vw, 24px);
+  font-weight: 600;
+  width: 270px;
+}
+
+.food-display_tools {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 25%;
+  background-color: #f4f3f3;
+  padding: 0 10px;
+  margin: 5px 0 0 -40px;
+  cursor: pointer;
+}
+
+.food-display_tools span {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+}
+
+.tooltip {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(75%, -160%);
+  background-color: #cac4c4;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  border-radius: 5px;
+  width: 160px;
+  font-size: 1rem;
+  font-weight: 500;
+  visibility: visible;
+  opacity: 1;
+  margin: 0 0 0 100px;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -25px;
+  left: 30px;
+  transform: translateX(-70%);
+  border-width: 15px;
+  border-style: solid;
+  border-color: #cac4c4 transparent transparent transparent;
+}
+
+.food-display_tools-control {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  width: 70%;
+  row-gap: 10px;
+  background-color: #f4f3f3;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.food-display_tools-control {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  width: 70%;
+  row-gap: 10px;
+  background-color: #f4f3f3;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.food-display_tools-control::after {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-right: 20px solid #f4f3f3;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+}
+
+.food-display_tools-price-slider,
+.food-display_tools-filter-rating,
+.food-display_tools-filter-with {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.food-display_tools-price-slider {
+  margin: 10px 0 0 0;
+}
+
+.food-display_tools-filter-rating {
+  margin: 5px 0 0 0;
+}
+
+.food-display_tools-control-filter-price-slider,
+.food-display_tools-control-filter-rating {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.food-display_tools-control-filter-rating {
+  margin: 0 3px 0 0;
+}
+
+.food-display_tools-filter-with-container {
+  display: flex;
+}
+
+.food-display_tools-control-filter-type {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-display-tools-close {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-icon {
+  cursor: pointer;
+}
+
+.food-display-list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  margin: 30px 0 0 0;
+  gap: 30px;
+  row-gap: 50px;
+  justify-content: space-between;
+}
+
+.food-display_title_search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.food-display_search-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin: 10px 0 0 0;
+}
+
+.food-display_search-suggest {
+  position: absolute;
+  z-index: 3;
+  background-color: white;
+  border: 1px solid rgb(179, 176, 176);
+  border-radius: 10px;
+  margin: 35px 0 0 0;
+  padding: 10px;
+  width: 210px;
+  height: fit-content;
+  box-sizing: content-box;
+}
+
+.food-display_search-suggest-container {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.food-display_search-suggest-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.food-display_search-suggest-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.food-display_search-suggest-container::-webkit-scrollbar-thumb {
+  background: #a5a4a4;
+  border-radius: 10px;
+}
+
+.food-display_search-suggest-container::-webkit-scrollbar-thumb:hover {
+  background: #797979;
+}
+
+.food-display_search-suggest_data {
+  font-size: 1rem;
+  color: #a4a3a3;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.food-display_search-suggest_data:hover,
+.food-display_search-suggest_data-selected {
+  background-color: #d5d2d2;
+  color: #797979;
+}
+
+.food-display_search {
+  display: flex;
+  align-items: center;
+}
+
+.food-display_search .search_img {
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  margin: 0 5px 0 0;
+  cursor: pointer;
+}
+
+.food-display_search input {
+  position: absolute;
+  right: 0;
+  width: fit-content;
+  height: 35px;
+  font-size: 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: rgb(6, 5, 94);
+  padding: 0 35px 3px 15px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(179, 176, 176);
+  border-radius: 15px;
+  outline: none;
+  z-index: 1;
+}
+
+.food-display_search input::placeholder {
+  color: rgb(204, 202, 202);
+}
+
+@media (max-width: 1240px) {
+  .food-display_title_search {
+    flex-direction: column;
+    gap: 30px;
+    align-items: flex-start;
+    margin: 0 0 50px 0;
+  }
+
+  .food-display_search {
+    width: fit-content;
+  }
+
+  .food-display_search .search_img {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    margin: 0 20px 0 10px;
+  }
+
+  .food-display_search-suggest {
+    margin: 30px 100px 0 0;
+    width: 190px;
+  }
+
+  .food-display_search input {
+    left: 0;
+    padding: 0 15px 0px 35px;
+    width: 210px;
+  }
+}
+
+@media (max-width: 950px) {
+  .tooltip {
+    transform: translate(20%, -190%);
+    width: 200px;
+  }
+
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -25px;
+    left: 150px;
+    transform: translateX(-80%);
+    border-width: 15px;
+    border-style: solid;
+    border-color: #cac4c4 transparent transparent transparent;
+  }
+
+  .food-display_tools-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .food-display_tools {
+    position: absolute;
+    right: 0;
+  }
+
+  .food-display_tools-control {
+    width: 100%;
+  }
+
+  .food-display_tools-control::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -15px;
+    width: 0;
+    height: 0;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #f4f3f3;
+    border-left: 20px solid transparent;
+  }
+}

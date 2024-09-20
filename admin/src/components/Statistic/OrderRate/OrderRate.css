@@ -1,0 +1,109 @@
+.order-rate-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.order-rate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px 0 0 0;
+}
+
+.order-rate-header-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.order-rate-header-left img {
+    width: 30px;
+    height: 30px;
+}
+
+.order-rate-header-left-order-total {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.order-rate-header-left-order-total p {
+    font-size: 14px;
+    color: rgb(156, 155, 155)
+}
+
+.order-rate-header-left-order-total p span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: black;
+}
+
+.order-rate-header-right {
+    display: flex;
+    gap: 20px;
+}
+
+.order-rate-header-right-year {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.order-rate-header-right-year p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: black;
+    margin: 0 0 0 18px;
+}
+
+.order-rate-header-right-year-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+}
+
+.order-rate-header-right-year-title p {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(156, 155, 155);
+    margin: 0;
+}
+
+.order-rate-header-right-this-year-title-circle,
+.order-rate-header-right-last-year-title-circle {
+    width: 10px;
+    height: 10px;
+    border: 3px solid;
+    border-radius: 50%;
+}
+
+.order-rate-header-right-last-year-title-circle {
+    border-color: red;
+}
+
+.order-rate-header-right-this-year-title-circle {
+    border-color: var(--color-main);
+}
+
+.apexcharts-area-xaxis-label,
+.apexcharts-area-yaxis-label {
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.apexcharts-area-xaxis-label {
+    margin: 10px 0 0 0;
+}
+
+@media (max-width: 950px) {
+    .order-rate-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}

@@ -1,0 +1,10 @@
+.price-slider {
+  width: 100%;
+}
+
+.slider-values {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}

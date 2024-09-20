@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Order Delivered Successfully</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .confirm-order-delivery {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .confirm-order-delivery p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 3rem;
+            font-weight: bold;
+            color: rgb(3, 8, 78);
+            letter-spacing: 0.5px;
+            text-shadow: 5px 5px 5px rgba(118, 118, 121, 0.5);
+            text-align: center;
+        }
+
+        .confirm-order-delivery-form {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+        }
+
+        .confirm-order-delivery-form-btn-deliver,
+        .confirm-order-delivery-form-btn-cancel {
+            width: fit-content;
+            height: 40px;
+            padding: 0 10px;
+            font-size: 1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 0.4rem;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-order-delivery-form-btn-deliver:hover,
+        .confirm-order-delivery-form-btn-cancel:hover {
+            transform: translateY(-5px);
+        }
+
+        .confirm-order-delivery-form-btn-deliver {
+            background-color: greenyellow;
+            color: white;
+        }
+
+        .confirm-order-delivery-form-btn-cancel {
+            background-color: rgb(201, 6, 13);
+            color: white;
+        }
+
+        .confirm-order-delivery-form-btn-deliver:hover {
+            box-shadow: 0 5px 15px greenyellow;
+        }
+
+        .confirm-order-delivery-form-btn-cancel:hover {
+            box-shadow: 0 5px 15px rgb(201, 6, 13);
+        }
+
+        @media (max-width: 450px) {
+            .confirm-order-delivery p {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <script>
+        var success = '<%- JSON.stringify(success) %>'
+        if (JSON.parse(success) === true) {
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelector('.confirm-order-delivery').classList.add('hidden');
+            });
+        }
+
+        function confirmAction(action) {
+            if (confirm("Are you sure you want to " + action + " the order?")) {
+                var confirmResult = action === 'deliver' ? 'true' : 'false';
+                document.querySelector('input[name="confirmResult"]').value = confirmResult;
+                document.querySelector(".confirm-order-delivery-form").submit();
+                document.querySelector(".confirm-order-delivery").classList.add("hidden");
+                return true
+            } else {
+                return false
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('.confirm-order-delivery-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="confirm-order-delivery">
+        <p>Confirm Order Delivered Successfully</p>
+        <form action="" method="post" class="confirm-order-delivery-form">
+            <input type="hidden" name="confirmResult" value="">
+            <button class="confirm-order-delivery-form-btn-deliver" type="button"
+                onclick="confirmAction('deliver')">Order Delivered</button>
+            <button class="confirm-order-delivery-form-btn-cancel" type="button" onclick="confirmAction('cancel')">Order
+                Cancel</button>
+        </form>
+    </div>
+</body>
+
+</html>

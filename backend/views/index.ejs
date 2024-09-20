@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset password</title>
+    <style>
+        .reset-password-container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgb(11, 12, 76);
+        }
+
+        .reset-password-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .reset-password-container p {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        #password {
+            width: 200px;
+            height: 35px;
+            padding: 0 10px;
+            outline: none;
+            border: 1px solid rgb(11, 12, 76);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: rgb(11, 12, 76);
+        }
+
+        #password::placeholder {
+            color: rgb(46, 46, 95);
+        }
+
+        #confirm-password {
+            width: 200px;
+            height: 35px;
+            padding: 0 10px;
+            outline: none;
+            border: 1px solid rgb(11, 12, 76);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: rgb(11, 12, 76);
+        }
+
+        #confirm-password::placeholder {
+            color: rgb(46, 46, 95);
+        }
+
+        .input-submit {
+            width: 200px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 10px;
+            background-color: rgb(11, 12, 76);
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-submit:hover {
+            background-color: rgb(67, 67, 105);
+        }
+
+        .input-submit:active {
+            background-color: rgb(11, 12, 76);
+        }
+    </style>
+    <script>
+        var success = '<%- JSON.stringify(success) %>'
+        if (JSON.parse(success) === true) {
+            if (confirm("Do you want to login?")) {
+                window.location.href = "http://localhost:5174/"
+            }
+        } 
+    </script>
+</head>
+
+<body>
+    <div class="reset-password-container">
+        <p>Reset Password</p>
+        <form action="" method="post" class="reset-password-form" onsubmit="return validateForm()">
+            <input type="password" name="password" id="password" placeholder="Password"><br>
+            <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm password"><br>
+            <input class="input-submit" type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password === '' || confirmPassword === '') {
+                alert('Password and confirm password cannot be empty');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+
+            const errors = [];
+
+            if (password.length < 8) {
+                errors.push("at least 8 characters long");
+            }
+            if (!/[a-z]/.test(password)) {
+                errors.push("contain at least one lowercase letter");
+            }
+            if (!/[A-Z]/.test(password)) {
+                errors.push("contain at least one uppercase letter");
+            }
+            if (!/\d/.test(password)) {
+                errors.push("contain at least one number");
+            }
+            if (!/[.#@$!%*?&]/.test(password)) {
+                errors.push("contain at least one special character (.#@$!%*?&)");
+            }
+
+            if (errors.length > 0) {
+                const message = `Password must ${errors.join(", ")}.`;
+                alert(message)
+                return false
+            }
+
+            return true;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+.update-admin-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+    padding: 2rem 2rem;
+    width: 100%;
+    height: 100vh;
+}
+
+.update-admin img {
+    margin: 0 0 0 24px;
+}
+
+.update-admin {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    color: #666666;
+    background-color: white;
+    border-radius: 15px;
+    padding: 2rem 2rem;
+}
+
+.update-admin_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.update-admin_title p {
+    color: #666666;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.update-admin_input {
+    margin: 60px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.update-admin_input input {
+    width: 250px;
+    height: 35px;
+    border-radius: 5px;
+    padding: 0 15px;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    outline: none;
+}
+
+.update-admin_input button {
+    width: 100px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    padding: 0 15px;
+    margin: 20px 0 0 0;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #666666;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.update-admin_input button:hover {
+    background-color: rgb(128, 126, 126);
+}
+
+.update-admin_input button:active {
+    background-color: rgb(170, 166, 166);
+}
+
+@media (max-width: 450px) {
+    .update-admin-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px 10px;
+    }
+}

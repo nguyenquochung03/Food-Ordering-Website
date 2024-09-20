@@ -1,0 +1,12 @@
+.rating-food {
+  user-select: none;
+  display: flex;
+}
+
+.rating-food-star {
+  font-size: 22px;
+  color: var(--color-main);
+  background-color: unset;
+  border: none;
+  cursor: pointer;
+}

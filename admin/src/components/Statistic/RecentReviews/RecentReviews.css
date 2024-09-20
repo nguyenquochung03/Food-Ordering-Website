@@ -1,0 +1,155 @@
+.recent-reviews-food-item-rating {
+    user-select: none;
+    display: flex;
+    gap: 4px;
+}
+
+.recent-reviews-food-item-rating-star {
+    font-size: 1rem;
+    color: var(--color-main);
+    background-color: unset;
+    border: none;
+    margin-top: -5px;
+}
+
+.recent-reviews-food-item-rating-half-star {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+.recent-reviews-food-item-rating-half-star .full-star {
+    position: absolute;
+    width: 45%;
+    overflow: hidden;
+    color: var(--color-main);
+}
+
+.recent-reviews-food-item-rating-half-star .empty-star {
+    position: absolute;
+    color: var(--color-main);
+}
+
+.recent-reviews-container-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.recent-reviews-container {
+    margin: 24px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.recent-reviews-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgb(103, 102, 102);
+    margin: 0 0 24px 0;
+}
+
+.recent-reviews-pagination {
+    display: flex;
+    flex-direction: column;
+}
+
+.recent-reviews {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+}
+
+.recent-reviews-list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.recent-reviews-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: white;
+    padding: 25px 25px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.recent-reviews-item-top {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.recent-reviews-item-top img {
+    width: 40px;
+    height: 40px;
+    border-radius: 30%;
+}
+
+.recent-reviews-item-top-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.recent-reviews-item-top-right p {
+    font-size: 17px;
+    font-weight: 600;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.recent-reviews-item-top-right p span {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgb(161, 161, 161);
+}
+
+.recent-reviews-item hr {
+    margin: 15px 0 20px 0;
+    background-color: rgb(222, 220, 220);
+    height: 1px;
+    width: 100%;
+    border: none;
+    height: 1.1px;
+}
+
+.recent-reviews-item-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.recent-reviews-item-bottom-top {
+    display: flex;
+    gap: 10px;
+    margin: 0 0 5px 0;
+}
+
+.recent-reviews-item-bottom-top img {
+    width: 40px;
+    height: 40px;
+    border-radius: 30%;
+}
+
+.recent-reviews-item-bottom-top-right {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.recent-reviews-item-bottom-descripe {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgb(168, 167, 167);
+    text-align: justify;
+}

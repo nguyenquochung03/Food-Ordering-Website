@@ -1,0 +1,199 @@
+.order {
+    padding: 2rem 2rem;
+    width: 100%;
+}
+
+.order-item {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+    align-items: start;
+    gap: 30px;
+    border: 1px solid var(--color-button);
+    padding: 20px;
+    margin: 30px 0px;
+    font-size: 14px;
+    color: #505050;
+}
+
+.order-item-receive-deny-order {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-fetch-data {
+    display: flex;
+    align-items: center;
+    margin: 0 0 20px 0;
+}
+
+.order-fetch-data button {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    height: 30px;
+    font-size: 1rem;
+    gap: 7px;
+    cursor: pointer;
+    background-color: var(--color-background-color);
+}
+
+.order-fetch-data button img {
+    width: 30px;
+    height: 30px;
+}
+
+.order-status {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.order-status button {
+    height: 40px;
+    background: white;
+    border: none;
+    border-left: 1px solid var(--color-main);
+    background-color: var(--color-background-color);
+    font-size: 1rem;
+    font-weight: 300;
+    color: black;
+    cursor: pointer;
+    position: relative;
+    flex: 1;
+    margin: 10px 0 0 0;
+}
+
+.order-status button:last-child {
+    border-right: 1px solid var(--color-main);
+}
+
+.order-status .active {
+    border: none;
+    background-color: var(--color-button);
+    color: white;
+    font-weight: 600;
+}
+
+.order-item select {
+    height: 40px;
+    background: white;
+    border: 1px solid var(--color-button);
+    font-size: 1rem;
+    font-weight: 300;
+    color: black;
+    cursor: pointer;
+    position: relative;
+    flex: 1;
+    padding: 0 5px;
+    outline: none;
+}
+
+.order-item_first-col img {
+    width: 60px;
+    height: 60px;
+}
+
+.order-item_first-col p {
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: var(--color-main);
+}
+
+.order-item-food,
+.order-item-name {
+    font-weight: 600;
+}
+
+.order-item-name {
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.order-item-address {
+    margin-bottom: 10px;
+}
+
+.order-item button {
+    letter-spacing: 0.3px;
+    background-color: var(--color-slide-bar);
+    border: 1px solid var(--color-button);
+    border-radius: 5px;
+    width: max(10vw, 120px);
+    padding: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+.order-item button:hover {
+    background-color: var(--color-slide-bar);
+    border: none;
+}
+
+.order-item button:active {
+    background-color: var(--color-slide-bar);
+    border: 1px solid var(--color-button);
+}
+
+.order-item_successful p,
+.order-item_cancelled p {
+    color: var(--color-main);
+}
+
+.food-order_wait-confirmation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.order-item_name-delivery-staff {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-item_name-delivery-staff p {
+    color: var(--color-button);
+}
+
+@media (max-width:950px) {
+    .order-item {
+        font-size: 12px;
+        grid-template-columns: 0.5fr 2fr 1fr;
+        padding: 15px 8px;
+    }
+
+    .order-item select {
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .order-item img {
+        width: 40px;
+    }
+
+    .order-status {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .order-status button {
+        border: 1px solid var(--color-button);
+    }
+
+    .order-item_first-col img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width:450px) {
+    .order-item {
+        grid-template-columns: 1fr 1fr;
+    }
+}

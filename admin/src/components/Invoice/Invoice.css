@@ -1,0 +1,165 @@
+.order-invoice {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-invoice-header {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    padding: 40px 50px;
+    background-color: var(--color-invoice);
+    justify-items: flex-start;
+    align-items: center;
+}
+
+.order-invoice-container {
+    margin: 0 50px;
+}
+
+.order-invoice-header p {
+    font-size: 3rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+}
+
+.order-invoice-header-right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.order-invoice-header-right p {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 25px 0 0 0;
+}
+
+.order-invoice-information {
+    margin: 50px 0 80px 0;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1.3fr 1fr;
+}
+
+.order-invoice-information p {
+    font-weight: 300;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    line-height: 24px;
+}
+
+.order-invoice-information-payment-method {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 35px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--color-invoice);
+}
+
+.order-invoice-information-payment-method p {
+    margin: 0.2px 3px 0 3px;
+    font-weight: 500;
+    padding: 0 3px;
+}
+
+.order-invoice-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 10px 0;
+}
+
+.order-invoice-list table {
+    width: 100%;
+}
+
+.order-invoice-list table thead {
+    background-color: var(--color-invoice);
+    height: 40px;
+}
+
+.order-invoice-list table th {
+    font-weight: 500;
+}
+
+.order-invoice-list table td {
+    border-bottom: 0.1px solid gainsboro;
+}
+
+.order-invoice-list table th,
+.order-invoice-list table td {
+    padding: 10px 8px;
+}
+
+.order-invoice-list table th:nth-child(1),
+.order-invoice-list table td:nth-child(1) {
+    text-align: start;
+}
+
+.order-invoice-list table th:nth-child(2),
+.order-invoice-list table th:nth-child(3),
+.order-invoice-list table td:nth-child(2),
+.order-invoice-list table td:nth-child(3) {
+    text-align: end;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-quantity,
+.item-price,
+.item-amount {
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.order-invoice-total-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0 0 0;
+}
+
+.order-invoice-total {
+    border-top: 0.1px solid gainsboro;
+    width: 350px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-invoice-total-left {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.order-invoice-total-right {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.order-invoice-total-left p {
+    margin: 10px 0 0 0;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.order-invoice-total-right p {
+    margin: 10px 0 0 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.order-invoice-footer {
+    margin: 150px 0 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-invoice-footer p {
+    font-size: 15px;
+    font-weight: 300;
+}
