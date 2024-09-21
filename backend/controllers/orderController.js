@@ -2,6 +2,9 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from "stripe";
 import moment from "moment";
+import nodemailer from "nodemailer";
+import deliveryStaffOrderModel from "../models/deliveryStaffOrderModel.js";
+import deliveryStaffModel from "../models/deliveryStaffModel.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -66,6 +69,9 @@ const order = async (req, res) => {
     });
     await newOrder.save();
     await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+
+    await handleOrderMail("Wait for Confirmation", newOrder);
+
     return res.json({ success: true, data: newOrder });
   } catch (error) {
     console.log(error);
@@ -77,8 +83,15 @@ const verifyOrder = async (req, res) => {
   const { success, orderId } = req.body;
   try {
     if (success === "true") {
-      await orderModel.findByIdAndUpdate(orderId, { payment: true });
+      const updatedOrder = await orderModel.findByIdAndUpdate(
+        orderId,
+        { payment: true },
+        { new: true }
+      );
       await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+
+      await handleOrderMail("Wait for Confirmation", updatedOrder);
+
       res.json({ success: true, message: "Paid" });
     } else {
       await orderModel.findByIdAndDelete(orderId);
@@ -163,6 +176,8 @@ const updateStatus = async (req, res) => {
     }
 
     await orderModel.findByIdAndUpdate(orderId, updateData);
+
+    await handleOrderMail(status, order);
 
     res.status(200).json({ success: true, message: "Status Updated" });
   } catch (error) {
@@ -588,6 +603,138 @@ export const hasOrderedFood = async (req, res) => {
     res.json({ success: false, message: `Error checking order: ${error}` });
   }
 };
+
+export async function handleOrderMail(typeOrder, order) {
+  try {
+    const userId = order.userId;
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      console.log("User not found");
+      return;
+    }
+
+    const userEmail = user.email;
+    let deliveryStaffInfo = "";
+
+    if (typeOrder === "Out for delivery" || typeOrder === "Delivered") {
+      const deliveryStaffOrder = await deliveryStaffOrderModel.findOne({
+        orderId: order._id,
+      });
+
+      if (deliveryStaffOrder) {
+        const deliveryStaff = await deliveryStaffModel.findById(
+          deliveryStaffOrder.deliveryStaffId
+        );
+
+        if (deliveryStaff) {
+          deliveryStaffInfo = `
+            Thông tin nhân viên giao hàng:
+            Tên: ${deliveryStaff.name}
+            Số điện thoại: ${deliveryStaff.phone}
+            Email: ${deliveryStaff.email}
+          `;
+        }
+      }
+    }
+
+    await sendMailByOrder(typeOrder, userEmail, order, deliveryStaffInfo);
+  } catch (error) {
+    console.error("Lỗi gửi email:", error);
+  }
+}
+
+async function sendMailByOrder(typeOrder, mail, order, deliveryStaffInfo = "") {
+  let subject;
+
+  switch (typeOrder) {
+    case "Wait for Confirmation":
+      subject = "Bạn đã đặt hàng thành công";
+      break;
+    case "Food Processing":
+      subject = "Đơn hàng của bạn đang được xử lý";
+      break;
+    case "Out for delivery":
+      subject = "Đơn hàng của bạn đang được giao";
+      break;
+    case "Delivered":
+      subject = "Đơn hàng của bạn đã được giao thành công";
+      break;
+    case "Successful":
+      subject = "Đơn hàng đã hoàn thành";
+      break;
+    case "Cancelled":
+      subject = "Đơn hàng của bạn đã bị hủy";
+      break;
+    default:
+      subject = "Thông báo đơn hàng";
+      break;
+  }
+
+  const orderDetails = order.items
+    .map(
+      (item) =>
+        `<li>${item.name}: ${item.quantity} x ${item.price}$ = ${
+          item.quantity * item.price
+        }$</li>`
+    )
+    .join("");
+
+  const addressDetails = `
+    <strong>Địa chỉ giao hàng:</strong><br>
+    Họ tên: ${order.address.firstName} ${order.address.lastName}<br>
+    Địa chỉ: ${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zipcode}, ${order.address.country}<br>
+    Số điện thoại: ${order.address.phone}<br>
+    Email: ${order.address.email}
+  `;
+
+  const currentDate = new Date().toLocaleString();
+  const cancellationDate =
+    typeOrder === "Cancelled" ? `<p>Ngày hủy: ${currentDate}</p>` : "";
+  const deliveryDate =
+    typeOrder === "Delivered"
+      ? `<p>Ngày giao thành công: ${currentDate}</p>`
+      : "";
+
+  const text = `
+    <h2>Thông tin đơn hàng:</h2>
+    <p>Ngày đặt: ${new Date(order.date).toLocaleString()}</p>
+    ${cancellationDate}
+    ${deliveryDate}
+    <p><strong>Sản phẩm:</strong></p>
+    <ul>${orderDetails}</ul>
+    <p>Phí giao: 2$</p>
+    <p>Tổng tiền: ${order.amount}$</p>
+    ${deliveryStaffInfo}
+    </br>
+    <div>${addressDetails}</div>
+  `;
+
+  var transporter = nodemailer.createTransport({
+    host: process.env.HOST,
+    service: process.env.SERVICE,
+    port: 587,
+    auth: {
+      user: process.env.USER,
+      pass: process.env.PASS,
+    },
+  });
+
+  var mailOptions = {
+    from: process.env.USER,
+    to: mail,
+    subject: subject,
+    html: text,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email đã được gửi: " + info.response);
+    }
+  });
+}
 
 export {
   placeOrder,
