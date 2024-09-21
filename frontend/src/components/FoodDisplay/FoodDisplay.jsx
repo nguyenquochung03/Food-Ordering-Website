@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./FoodDisplay.css";
@@ -43,6 +49,13 @@ const FoodDisplay = ({ setIsShowPagination, category, setIsLoading }) => {
   const [isUseTool, setIsUseTool] = useState(false);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1);
+  const [values, setValues] = useState([minPrice, maxPrice]);
+  const [currentStarLevel, setCurrentStarLevel] = useState(0);
+  const [priceAndRatingData, setPriceAndRatingData] = useState([]);
+
+  useEffect(() => {
+    setValues([minPrice, maxPrice]);
+  }, [minPrice, maxPrice]);
 
   useEffect(() => {
     let currentText = "";
@@ -184,6 +197,59 @@ const FoodDisplay = ({ setIsShowPagination, category, setIsLoading }) => {
       setIsShowPagination(true);
     }
   }, [searchValue, isSuccess]);
+
+  const onFilterFoodByPriceAndRating = useCallback(async () => {
+    if (selectedFilter === "both") {
+      try {
+        setIsLoading(true);
+        const foodListParam = categoryData.length
+          ? categoryData.map((item) => item._id)
+          : [];
+
+        const response = await axios.get(
+          `${url}/api/food/filterFoodByPriceAndRating`,
+          {
+            params: {
+              minPrice: values[0],
+              maxPrice: values[1],
+              values: values,
+              rating: currentStarLevel,
+              foodList: foodListParam,
+            },
+          }
+        );
+
+        if (response.data.success) {
+          setPriceAndRatingData(response.data.data);
+        } else {
+          setPriceAndRatingData([]);
+        }
+      } catch (error) {
+        console.error("Error fetching food by price and rating:", error);
+        setPriceAndRatingData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }, [values, currentStarLevel, categoryData, selectedFilter]);
+
+  useEffect(() => {
+    if (selectedFilter === "both") {
+      onFilterFoodByPriceAndRating();
+    }
+  }, [values, currentStarLevel, categoryData, onFilterFoodByPriceAndRating]);
+
+  useEffect(() => {
+    if (selectedFilter === "both") {
+      updatePagination(
+        "both",
+        priceAndRatingData,
+        1,
+        priceAndRatingData.slice(0, postPerPage)
+      );
+      setIndexPagination("both");
+    }
+  }, [priceAndRatingData]);
 
   const getMinMaxPrice = async () => {
     if (food_list.length > 0) {
@@ -366,6 +432,8 @@ const FoodDisplay = ({ setIsShowPagination, category, setIsLoading }) => {
                   maxPrice={maxPrice}
                   url={url}
                   categoryData={categoryData}
+                  values={values}
+                  setValues={setValues}
                 />
               </div>
               <p className="food-display_tools-filter-rating">Rating</p>
@@ -374,6 +442,8 @@ const FoodDisplay = ({ setIsShowPagination, category, setIsLoading }) => {
                   setIsLoading={setIsLoading}
                   url={url}
                   categoryData={categoryData}
+                  currentStarLevel={currentStarLevel}
+                  setCurrentStarLevel={setCurrentStarLevel}
                 />
               </div>
             </div>

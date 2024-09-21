@@ -10,15 +10,12 @@ const PriceSlider = ({
   maxPrice,
   url,
   categoryData,
+  values,
+  setValues,
 }) => {
   const [priceData, setPriceData] = useState([]);
-  const [values, setValues] = useState([minPrice, maxPrice]);
   const { updatePagination, setIndexPagination, postPerPage, selectedFilter } =
     useContext(StoreContext);
-
-  useEffect(() => {
-    setValues([minPrice, maxPrice]);
-  }, [minPrice, maxPrice]);
 
   const onFilterFoodByPrice = useCallback(async () => {
     if (selectedFilter === "price") {

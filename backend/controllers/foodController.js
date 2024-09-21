@@ -287,6 +287,79 @@ export const filterFoodByRating = async (req, res) => {
   }
 };
 
+export const filterFoodByPriceAndRating = async (req, res) => {
+  const { minPrice, maxPrice, rating, foodList } = req.query;
+
+  try {
+    let priceFilter = {};
+    let match = {};
+
+    if (foodList && foodList.length > 0) {
+      const foodIds = foodList.map((id) => new mongoose.Types.ObjectId(id));
+      match = { _id: { $in: foodIds } };
+    }
+
+    if (minPrice && maxPrice) {
+      priceFilter = {
+        price: {
+          $gte: parseFloat(minPrice),
+          $lte: parseFloat(maxPrice),
+        },
+      };
+    }
+
+    match = { ...match, ...priceFilter };
+
+    const filteredFoods = await foodModel.aggregate([
+      { $match: match },
+      {
+        $lookup: {
+          from: "comments",
+          localField: "_id",
+          foreignField: "food",
+          as: "comments",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          price: 1,
+          image: 1,
+          category: 1,
+          comments: 1,
+          averageRating: {
+            $cond: {
+              if: { $eq: [{ $size: "$comments" }, 0] },
+              then: null,
+              else: { $avg: "$comments.rating" },
+            },
+          },
+        },
+      },
+      {
+        $match: rating
+          ? {
+              $or: [
+                { averageRating: { $gte: parseFloat(rating) } },
+                { averageRating: null },
+              ],
+            }
+          : {},
+      },
+    ]);
+
+    res.json({ success: true, data: filteredFoods });
+  } catch (error) {
+    console.error("Error filtering foods by price and rating:", error);
+    res.json({
+      success: false,
+      message: "Error filtering foods by price and rating",
+    });
+  }
+};
+
 export {
   addFood,
   listFood,

@@ -2,6 +2,7 @@ import express from "express";
 import {
   addFood,
   filterFoodByPrice,
+  filterFoodByPriceAndRating,
   filterFoodByRating,
   getCategoryCounts,
   getFoodById,
@@ -39,5 +40,6 @@ foodRouter.get("/getFoodByNameForUser", getFoodByNameForUser);
 foodRouter.get("/getFoodByNameForUserCanNull", getFoodByNameForUserCanNull);
 foodRouter.get("/filterFoodByPrice", filterFoodByPrice);
 foodRouter.get("/filterFoodByRating", filterFoodByRating);
+foodRouter.get("/filterFoodByPriceAndRating", filterFoodByPriceAndRating);
 
 export default foodRouter;

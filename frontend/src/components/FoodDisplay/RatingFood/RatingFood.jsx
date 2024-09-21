@@ -3,9 +3,14 @@ import "./RatingFood.css";
 import { StoreContext } from "../../../context/StoreContext";
 import axios from "axios";
 
-const RatingFood = ({ setIsLoading, url, categoryData }) => {
+const RatingFood = ({
+  setIsLoading,
+  url,
+  categoryData,
+  currentStarLevel,
+  setCurrentStarLevel,
+}) => {
   const [ratingData, setRatingData] = useState([]);
-  const [currentStarLevel, setCurrentStarLevel] = useState(0);
   const { updatePagination, setIndexPagination, postPerPage, selectedFilter } =
     useContext(StoreContext);
 

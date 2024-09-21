@@ -277,8 +277,10 @@
   }
 
   .food-display_search-suggest {
-    margin: 30px 100px 0 0;
-    width: 190px;
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    width: 188px;
   }
 
   .food-display_search input {
