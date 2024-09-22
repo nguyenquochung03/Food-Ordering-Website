@@ -30,7 +30,7 @@ export const getCommentsSorted = async (req, res) => {
       .find({
         createdAt: { $gte: startDate, $lte: endDate },
       })
-      .populate("user", "name image date")
+      .populate("user", "name image date role")
       .populate("food", "name image")
       .sort({
         likes: -1,
@@ -51,7 +51,7 @@ const getComment = async (req, res) => {
   try {
     const comments = await commentModel
       .find({ food: foodId })
-      .populate("user", "name image")
+      .populate("user", "name image role")
       .populate("food");
 
     if (comments.length === 0) {

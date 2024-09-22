@@ -289,6 +289,7 @@ const DetailCategory = ({ setIsLoading, setShowLogin }) => {
             parentId: comment.parentId,
             isLike: comment._id in isLike ? isLike[comment._id] : false,
             isUser: comment._id in isUser ? isUser[comment._id] : false,
+            isAdmin: comment.user.role === "Admin",
           }));
 
           setCommentData(formattedComments);
