@@ -498,6 +498,43 @@ const deleteAdmin = async (req, res) => {
   }
 };
 
+const lockOrUnlockAdmin = async (req, res) => {
+  const { id, locked } = req.body;
+  try {
+    const adminCount = await userModel.countDocuments({
+      role: "Admin",
+      locked: false,
+    });
+
+    if (locked === true && adminCount <= 1) {
+      return res.json({
+        success: true,
+        status: "404",
+        message: "Cannot lock the last admin account",
+      });
+    }
+
+    const user = await userModel.findByIdAndUpdate(
+      id,
+      { locked },
+      { new: true }
+    );
+
+    if (user) {
+      if (locked === false) {
+        res.json({ success: true, message: "Unlock account successfully" });
+      } else {
+        res.json({ success: true, message: "Lock account successfully" });
+      }
+    } else {
+      res.json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error updating lock status" });
+  }
+};
+
 export {
   loginUser,
   registerUser,
@@ -514,4 +551,5 @@ export {
   addNewAdmin,
   updateAdmin,
   deleteAdmin,
+  lockOrUnlockAdmin,
 };

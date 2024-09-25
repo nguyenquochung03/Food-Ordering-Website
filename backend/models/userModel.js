@@ -1,6 +1,7 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
@@ -8,9 +9,12 @@ const userSchema = new mongoose.Schema({
     image: { type: String, required: true },
     cartData: { type: Object, default: {} },
     date: { type: Date, default: Date.now },
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
-}, { minimize: false });
+    locked: { type: Boolean, default: false },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  },
+  { minimize: false }
+);
 
-const userModel = mongoose.models.user || mongoose.model('user', userSchema);
+const userModel = mongoose.models.user || mongoose.model("user", userSchema);
 
 export default userModel;

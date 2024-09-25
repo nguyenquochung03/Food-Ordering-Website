@@ -67,11 +67,23 @@ const LoginPopup = ({ setShowLogin, setShowResetPassword, setIsLoading }) => {
                 response.data.user.role === "User" ||
                 response.data.user.role === "Admin"
               ) {
-                setToken(response.data.token);
-                localStorage.setItem("token", response.data.token);
-                setUserName(response.data.user.name);
-                setUserImage(response.data.user.image);
-                setShowLogin(false);
+                if (response.data.user.role === "Admin") {
+                  if (!response.data.user.locked) {
+                    setToken(response.data.token);
+                    localStorage.setItem("token", response.data.token);
+                    setUserName(response.data.user.name);
+                    setUserImage(response.data.user.image);
+                    setShowLogin(false);
+                  } else {
+                    setError("Your account has been locked!");
+                  }
+                } else {
+                  setToken(response.data.token);
+                  localStorage.setItem("token", response.data.token);
+                  setUserName(response.data.user.name);
+                  setUserImage(response.data.user.image);
+                  setShowLogin(false);
+                }
               } else {
                 setError(
                   "Your username or password appears to be incorrect. Please try again."

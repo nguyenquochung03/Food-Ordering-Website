@@ -31,7 +31,6 @@ const MyOrders = ({ setIsLoading }) => {
 
   useEffect(() => {
     loadOrderStatus();
-    console.log(data);
   }, [data, currentStatus]);
 
   useEffect(() => {

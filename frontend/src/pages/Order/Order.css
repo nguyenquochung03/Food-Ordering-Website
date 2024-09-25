@@ -1,58 +1,65 @@
 .order {
-    display: flex;
-    align-items: start;
-    justify-content: space-between;
-    gap: 50px;
-    margin-top: 100px;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 50px;
+  margin-top: 100px;
 }
 
 .order-left {
-    width: 100%;
-    max-width: max(30%, 500px);
+  width: 100%;
+  max-width: max(30%, 500px);
 }
 
 .order-left .title {
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 50px;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 16px;
 }
 
 .order-left input {
-    margin-bottom: 15px;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #c5c5c5;
-    border-radius: 4px;
-    outline-color: var(--color-main);
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  outline-color: var(--color-main);
 }
 
 .order-left .multi-fields {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .order-right {
-    width: 100%;
-    max-width: max(40%, 500px);
+  width: 100%;
+  max-width: max(40%, 500px);
 }
 
 .order-payment-type {
-    margin: 20px 0 10px 0;
+  margin: 20px 0 10px 0;
 }
 
 .order-payment-type select {
-    width: fit-content;
-    height: 35px;
-    padding: 0 10px;
-    margin: 20px 0 0 0;
-    border: 1px solid rgb(201, 201, 211);
-    font-size: 1rem;
-    font-weight: 500;
-    outline: none;
-    border-radius: 5px;
-    cursor: pointer;
+  width: fit-content;
+  height: 35px;
+  padding: 0 10px;
+  margin: 20px 0 0 0;
+  border: 1px solid rgb(201, 201, 211);
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .order-payment-type select option {
-    height: 35px;
+  height: 35px;
+}
+
+@media (max-width: 650px) {
+  .order {
+    display: flex;
+    flex-direction: column;
+  }
 }

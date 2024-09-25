@@ -24,10 +24,19 @@ const addFood = async (req, res) => {
   }
 };
 
-// all food list
 const listFood = async (req, res) => {
   try {
-    const foods = await foodModel.find({});
+    const userRole = req.query.userRole;
+    let foods;
+
+    if (userRole === "admin") {
+      foods = await foodModel.find({});
+    } else {
+      foods = await foodModel.find({
+        $or: [{ status: "serving" }, { status: { $exists: false } }],
+      });
+    }
+
     res.json({ success: true, data: foods });
   } catch (error) {
     console.log(error);
@@ -35,7 +44,6 @@ const listFood = async (req, res) => {
   }
 };
 
-// get food by name
 const getFoodByName = async (req, res) => {
   try {
     const { name } = req.query;
@@ -43,7 +51,7 @@ const getFoodByName = async (req, res) => {
       name: { $regex: new RegExp(name, "i") },
     });
 
-    if (food) {
+    if (food.length > 0) {
       res.json({ success: true, count: food.length, data: food });
     } else {
       res.json({ success: false, message: "Food not found" });
@@ -63,6 +71,7 @@ export const getFoodByNameForUser = async (req, res) => {
 
     const food = await foodModel.find({
       name: { $regex: new RegExp(`^${name}$`, "i") },
+      $or: [{ status: "serving" }, { status: { $exists: false } }],
     });
 
     if (food.length > 0) {
@@ -85,6 +94,7 @@ export const getFoodByNameForUserCanNull = async (req, res) => {
 
     const food = await foodModel.find({
       name: { $regex: new RegExp(`^${name}$`, "i") },
+      $or: [{ status: "serving" }, { status: { $exists: false } }],
     });
 
     if (food.length > 0) {
@@ -202,26 +212,29 @@ const getCategoryCounts = async (req, res) => {
 };
 
 export const filterFoodByPrice = async (req, res) => {
-  const { minPrice, maxPrice, foodList } = req.query;
+  const { minPrice, maxPrice, foodList, sortBy } = req.query;
 
   try {
     let foods;
+    const sortOrder = sortBy === "asc" ? 1 : -1;
+
+    const filterConditions = {
+      price: {
+        $gte: minPrice,
+        $lte: maxPrice,
+      },
+      $or: [{ status: "serving" }, { status: { $exists: false } }],
+    };
 
     if (foodList && foodList.length > 0) {
-      foods = await foodModel.find({
-        _id: { $in: foodList },
-        price: {
-          $gte: minPrice,
-          $lte: maxPrice,
-        },
-      });
+      foods = await foodModel
+        .find({
+          ...filterConditions,
+          _id: { $in: foodList },
+        })
+        .sort({ price: sortOrder });
     } else {
-      foods = await foodModel.find({
-        price: {
-          $gte: minPrice,
-          $lte: maxPrice,
-        },
-      });
+      foods = await foodModel.find(filterConditions).sort({ price: sortOrder });
     }
 
     res.json({ success: true, data: foods });
@@ -232,7 +245,7 @@ export const filterFoodByPrice = async (req, res) => {
 };
 
 export const filterFoodByRating = async (req, res) => {
-  const { rating, foodList } = req.query;
+  const { rating, foodList, sortBy } = req.query;
 
   try {
     let match = {};
@@ -243,7 +256,12 @@ export const filterFoodByRating = async (req, res) => {
     }
 
     const filteredFoods = await foodModel.aggregate([
-      { $match: match },
+      {
+        $match: {
+          $or: [{ status: "serving" }, { status: { $exists: false } }],
+          ...match,
+        },
+      },
       {
         $lookup: {
           from: "comments",
@@ -264,18 +282,34 @@ export const filterFoodByRating = async (req, res) => {
           averageRating: {
             $cond: {
               if: { $eq: [{ $size: "$comments" }, 0] },
-              then: null,
-              else: { $avg: "$comments.rating" },
+              then: 5,
+              else: {
+                $avg: {
+                  $map: {
+                    input: {
+                      $filter: {
+                        input: "$comments",
+                        as: "comment",
+                        cond: { $eq: ["$$comment.parentId", "none"] },
+                      },
+                    },
+                    as: "filteredComment",
+                    in: "$$filteredComment.rating",
+                  },
+                },
+              },
             },
           },
         },
       },
       {
         $match: {
-          $or: [
-            { averageRating: { $gte: parseFloat(rating) } },
-            { averageRating: null },
-          ],
+          averageRating: { $gte: parseFloat(rating) },
+        },
+      },
+      {
+        $sort: {
+          averageRating: sortBy === "asc" ? 1 : -1,
         },
       },
     ]);
@@ -288,7 +322,8 @@ export const filterFoodByRating = async (req, res) => {
 };
 
 export const filterFoodByPriceAndRating = async (req, res) => {
-  const { minPrice, maxPrice, rating, foodList } = req.query;
+  const { minPrice, maxPrice, rating, foodList, sortByPrice, sortByRating } =
+    req.query;
 
   try {
     let priceFilter = {};
@@ -311,7 +346,12 @@ export const filterFoodByPriceAndRating = async (req, res) => {
     match = { ...match, ...priceFilter };
 
     const filteredFoods = await foodModel.aggregate([
-      { $match: match },
+      {
+        $match: {
+          $or: [{ status: "serving" }, { status: { $exists: false } }],
+          ...match,
+        },
+      },
       {
         $lookup: {
           from: "comments",
@@ -332,21 +372,36 @@ export const filterFoodByPriceAndRating = async (req, res) => {
           averageRating: {
             $cond: {
               if: { $eq: [{ $size: "$comments" }, 0] },
-              then: null,
-              else: { $avg: "$comments.rating" },
+              then: 5,
+              else: {
+                $avg: {
+                  $map: {
+                    input: {
+                      $filter: {
+                        input: "$comments",
+                        as: "comment",
+                        cond: { $eq: ["$$comment.parentId", "none"] },
+                      },
+                    },
+                    as: "filteredComment",
+                    in: "$$filteredComment.rating",
+                  },
+                },
+              },
             },
           },
         },
       },
       {
-        $match: rating
-          ? {
-              $or: [
-                { averageRating: { $gte: parseFloat(rating) } },
-                { averageRating: null },
-              ],
-            }
-          : {},
+        $match: {
+          averageRating: { $gte: parseFloat(rating) },
+        },
+      },
+      {
+        $sort: {
+          price: 1,
+          averageRating: -1,
+        },
       },
     ]);
 
@@ -360,6 +415,33 @@ export const filterFoodByPriceAndRating = async (req, res) => {
   }
 };
 
+const updateStatus = async (req, res) => {
+  const { id, status } = req.body;
+  console.log(id, status);
+  try {
+    const updatedFood = await foodModel.findByIdAndUpdate(
+      id,
+      { status: status },
+      { new: true }
+    );
+
+    if (!updatedFood) {
+      return res.json({ success: false, message: "Food not found" });
+    }
+    return res.json({
+      success: true,
+      message: "Status updated successfully",
+      data: updatedFood,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      success: false,
+      message: "An error occurred while updating status",
+    });
+  }
+};
+
 export {
   addFood,
   listFood,
@@ -368,4 +450,5 @@ export {
   getFoodByName,
   getFoodById,
   getCategoryCounts,
+  updateStatus,
 };

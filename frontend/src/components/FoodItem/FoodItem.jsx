@@ -63,7 +63,7 @@ const FoodItem = ({ id, name, price, description, image, setIsLoading }) => {
           src={url + "/images/" + image}
           alt="food item image"
         />
-        {!cartItems[id] ? (
+        {!cartItems || !cartItems[id] ? (
           <img
             className="add"
             src={images.add_icon_white}
