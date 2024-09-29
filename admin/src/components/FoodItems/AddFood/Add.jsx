@@ -54,8 +54,8 @@ const Add = ({ url, setIsLoading, setIsAdd, fetchList }) => {
 
   return (
     <div className="add">
-      <div className="add-cancle">
-        <img src={images.back_arrow} alt="" onClick={() => setIsAdd(false)} />
+      <div className="add-cancle" onClick={() => setIsAdd(false)}>
+        <i className="fas fa-arrow-left back-icon"></i>
       </div>
       <form className="flex-col" onSubmit={onSubmitHandler}>
         <div className="add-img-upload flex-col">
@@ -70,6 +70,7 @@ const Add = ({ url, setIsLoading, setIsAdd, fetchList }) => {
             onChange={(e) => setImage(e.target.files[0])}
             type="file"
             id="image"
+            className="hidden-input"
             required
           />
         </div>

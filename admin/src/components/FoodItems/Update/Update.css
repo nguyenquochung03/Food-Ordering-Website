@@ -1,28 +1,107 @@
 .update {
-  width: 100%;
-  font-size: 1rem;
+  margin: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.update-title {
   display: flex;
-  gap: 50px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.update form {
-  gap: 30px;
-  width: 100%;
-}
-
-.update-title img {
-  width: 40px;
-  height: 40px;
+.back-icon {
+  font-size: 25px;
+  color: #ff7e5f;
   cursor: pointer;
+  transition: transform 0.3s;
 }
 
-@media (max-width: 450px) {
-  .update {
-    flex-direction: column;
-    margin: 0 !important;
-  }
+.back-icon:hover {
+  transform: scale(1.1);
+}
 
-  .add-product-description {
-    margin-bottom: 10px;
+.add-img-upload {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-img-upload p {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-img-upload label img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  border: 2px dashed #ff7e5f;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.add-product-name,
+.add-product-description,
+.add-category-price {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-product-name p,
+.add-product-description p,
+.add-category-price p {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-product-name input,
+.add-product-description textarea,
+.add-category-price select,
+.add-price input {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.add-product-name input:focus,
+.add-product-description textarea:focus,
+.add-category-price select:focus,
+.add-price input:focus {
+  border-color: #ff7e5f;
+}
+
+.add-category-price {
+  display: flex;
+  justify-content: space-between;
+}
+
+.update-btn {
+  padding: 10px 20px;
+  background-color: #ff7e5f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.update-btn:hover {
+  background-color: #feb47b;
+}
+
+@media (max-width: 600px) {
+  .add-category-price {
+    flex-direction: column;
   }
 }

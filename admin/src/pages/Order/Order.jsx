@@ -355,7 +355,7 @@ const Order = ({ url, setIsLoading }) => {
     <div className="order">
       <div onClick={() => onFetchDataHandler()} className="order-fetch-data">
         <button>
-          <img src={images.rotate_arrow} alt="" />
+          <i className="fas fa-sync-alt"></i> {/* Biểu tượng "rotate arrow" */}
           Fetch Data
         </button>
       </div>
@@ -378,7 +378,7 @@ const Order = ({ url, setIsLoading }) => {
                 currentStatus !== "Cancelled" && (
                   <p>{deliveryStaffNames[order._id]}</p>
                 )}
-              <img src={images.parcel_icon} alt="" />
+              <i className="fas fa-box"></i> {/* Biểu tượng "parcel" */}
             </div>
             <div>
               <p className="order-item-food">
@@ -472,7 +472,11 @@ const Order = ({ url, setIsLoading }) => {
                     </button>
                   )}
                   <ReactToPrint
-                    trigger={() => <button>Print Invoice</button>}
+                    trigger={() => (
+                      <button>
+                        <i className="fas fa-print"></i> Print Invoice
+                      </button>
+                    )}
                     content={() => printRefs.current[order._id]}
                   />
                 </div>

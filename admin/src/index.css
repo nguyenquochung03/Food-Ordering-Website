@@ -1,14 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 :root {
-  --color-main: #ff9800;
-  --color-button: #f57c00;
-  --color-button-hover: #ffb74d;
-  --color-slide-bar: #fff3e0;
-  --color-invoice: #90caf9;
-  --color-background-color: #f1f1f1;
+  --color-main: #ff7e5f;
+  --color-button: #ff6f47;
+  --color-button-hover: #feb47b;
+  --color-slide-bar: #ffefdc;
+  --color-invoice: #ffccbc;
+  --color-background-color: #fff4e6;
   --color-card-shadow: rgba(0, 0, 0, 0.1);
-  --color-app-bg: #f9f9f9;
+  --color-app-bg: #fffaf5;
   --color-app-content-bg: #ffffff;
 }
 
@@ -65,6 +65,4 @@ a {
 
 .app-content-pages {
   width: 100%;
-  display: flex;
-  justify-content: center;
 }

@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./Account.css";
 import { toast } from "react-toastify";
 import axios from "axios";
-
 import AddAdmin from "../../components/AdminAccount/AddAdmin/AddAdmin";
 import UpdateAdmin from "../../components/AdminAccount/UpdateAdmin/UpdateAdmin";
 import { images } from "../../constants/data";
 import SkeletonLoadingListAdd from "../../components/SkeletonLoading/SkeletonLoadingListAdd/SkeletonLoadingListAdd";
 import NormalPagination from "../../components/Pagination/NormalPagination/NormalPagination";
-
 import { FaLock, FaUnlock } from "react-icons/fa";
 
 const Account = ({ url, setIsLoading }) => {
@@ -16,11 +14,7 @@ const Account = ({ url, setIsLoading }) => {
   const [filterListUser, setFilterListUser] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const [dataUpdate, setDataUpdate] = useState({
-    id: "",
-    name: "",
-    email: "",
-  });
+  const [dataUpdate, setDataUpdate] = useState({ id: "", name: "", email: "" });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,7 +27,7 @@ const Account = ({ url, setIsLoading }) => {
       const response = await axios.get(`${url}/api/user/admin`);
       if (response.data.success) {
         setListUser(response.data.data);
-        setLoading(false);
+        setFilterListUser(response.data.data);
       } else {
         toast.error("Error fetching user list");
       }
@@ -42,6 +36,7 @@ const Account = ({ url, setIsLoading }) => {
       toast.error("An error occurred while fetching the list.");
     } finally {
       setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -69,11 +64,7 @@ const Account = ({ url, setIsLoading }) => {
   };
 
   const updateAccount = (item) => {
-    setDataUpdate({
-      id: item._id,
-      name: item.name,
-      email: item.email,
-    });
+    setDataUpdate({ id: item._id, name: item.name, email: item.email });
     setIsUpdate(true);
   };
 
@@ -85,7 +76,7 @@ const Account = ({ url, setIsLoading }) => {
         locked: !locked,
       });
       if (response.data.success) {
-        if (response.data.status && response.data.status === "404") {
+        if (response.data.status === "404") {
           toast.error(response.data.message);
           return;
         }
@@ -103,7 +94,7 @@ const Account = ({ url, setIsLoading }) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       {loading ? (
         <SkeletonLoadingListAdd />
       ) : isAdd ? (
@@ -124,8 +115,13 @@ const Account = ({ url, setIsLoading }) => {
       ) : (
         <div className="list-account">
           <div className="list-account_add" title="Add new Account">
-            <button onClick={() => setIsAdd(true)} type="button">
-              <img src={images.add_icon} alt="Add" /> Add
+            <button
+              onClick={() => setIsAdd(true)}
+              type="button"
+              title="Add your account"
+            >
+              <i className="fas fa-plus"></i>
+              Add
             </button>
           </div>
           <div className="flex-col">
@@ -140,18 +136,20 @@ const Account = ({ url, setIsLoading }) => {
                 <div key={index} className="list-table-format">
                   <p>{item.name}</p>
                   <p>{item.email}</p>
-                  <div className="list-table-format-action">
+                  <div className="list-account-action">
                     <button
                       onClick={() => updateAccount(item)}
                       className="edit"
                       type="button"
                     >
+                      <i className="fas fa-edit"></i>
                       Edit
                     </button>
                     <button
                       onClick={() => removeAccount(item._id)}
                       className="remove"
                     >
+                      <i className="fas fa-trash-alt"></i>
                       Remove
                     </button>
                   </div>
@@ -189,7 +187,7 @@ const Account = ({ url, setIsLoading }) => {
           />
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

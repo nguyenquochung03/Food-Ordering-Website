@@ -5,10 +5,10 @@ import { PaginationContext } from "../../context/PaginationContext.jsx";
 import Pagination from "../../components/Pagination/Pagination.jsx";
 import Update from "../../components/FoodItems/Update/Update.jsx";
 import "./List.css";
-import { images } from "../../constants/data";
 import FindFoodByName from "../../components/FindFoodByName/FindFoodByName.jsx";
 import SkeletonLoadingList from "../../components/SkeletonLoading/SkeletonLoadingList/SkeletonLoadingList.jsx";
 import Add from "../../components/FoodItems/AddFood/Add.jsx";
+import { size } from "lodash";
 
 const List = ({ url, setIsLoading }) => {
   const {
@@ -260,25 +260,15 @@ const List = ({ url, setIsLoading }) => {
               setIsLoading={setIsLoading}
             />
           ) : (
-            <div className="flex-col">
+            <div className="list-food">
               <div className="list-food-type">
-                <div className="list-food-add">
-                  <button
-                    onClick={() => setIsAdd(true)}
-                    type="button"
-                    title="Add your food"
-                  >
-                    <img src={images.add_icon} alt="add icon" />
-                    Add
-                  </button>
-                </div>
                 <div className="list-food-type-search">
                   <div className="img-container" title="Search your food">
-                    <img
+                    <i
                       onClick={onSearchHandler}
-                      src={images.search_1}
-                      alt="search icon"
-                    />
+                      className="fas fa-search"
+                      aria-hidden="true"
+                    ></i>
                   </div>
                   <select
                     onChange={onChangeHandler}
@@ -296,8 +286,19 @@ const List = ({ url, setIsLoading }) => {
                     <option value="Pasta">Pasta</option>
                     <option value="Noodles">Noodles</option>
                   </select>
+                  <div className="list-food-add">
+                    <button
+                      onClick={() => setIsAdd(true)}
+                      type="button"
+                      title="Add your food"
+                    >
+                      <i className="fas fa-plus"></i>
+                      Add
+                    </button>
+                  </div>
                 </div>
               </div>
+
               <div className="list-table">
                 <div className="list-table-format title">
                   <b>Image</b>
@@ -319,12 +320,14 @@ const List = ({ url, setIsLoading }) => {
                         className="edit"
                         type="button"
                       >
+                        <i className="fas fa-edit"></i>
                         Edit
                       </button>
                       <button
                         onClick={() => removeFood(item._id)}
                         className="remove"
                       >
+                        <i className="fas fa-trash-alt"></i>
                         Remove
                       </button>
                     </div>
@@ -341,6 +344,7 @@ const List = ({ url, setIsLoading }) => {
                   </div>
                 ))}
               </div>
+
               <Pagination
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}

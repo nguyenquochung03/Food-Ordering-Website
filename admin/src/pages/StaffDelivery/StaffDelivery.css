@@ -1,117 +1,167 @@
-.delivery-staff {
-  width: 100%;
-}
-
-.delivery-staff .list-table-format {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
-  border: 1px solid #cacaca;
-  font-size: 13px;
-}
-
-.delivery-staff .list-table-format .title {
-  background-color: #f9f9f9;
-}
-
-.delivery-staff .list-table-format img {
-  width: 50px;
-}
-
-.delivery-staff .list-table-format-action {
-  display: flex;
+.list-delivery-staff {
   box-sizing: border-box;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.delivery-staff .list-table-format-action .edit,
-.delivery-staff .list-table-format-action .remove {
-  width: 60px;
-  height: 25px;
-  border: none;
-  margin-right: 5px;
-  cursor: pointer;
-  display: inline-block;
-  text-align: center;
-  line-height: 25px;
-  border-radius: 3px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+.list-delivery-staff_add {
+  margin: 20px 0;
 }
 
-.delivery-staff .list-table-format-action .edit {
-  background-color: black;
-  color: white;
-}
-
-.delivery-staff .list-table-format-action .remove {
-  background-color: var(--color-button);
-  color: white;
-}
-
-.delivery-staff .list-table-format-action .edit:active {
-  background-color: white;
-  color: black;
-}
-
-.delivery-staff .list-table-format-action .remove:active {
-  background-color: white;
-  color: var(--color-button);
-}
-
-.delivery-staff_add {
-  margin: 0 0 1rem 0;
-}
-
-.delivery-staff_add button img {
-  width: 30px;
-  height: 30px;
-}
-
-.delivery-staff_add button {
+.list-delivery-staff_add button {
   width: fit-content;
   height: 40px;
   font-size: 1rem;
   font-weight: 600;
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 0 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 0 15px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  letter-spacing: 0.5px;
-  transition: all 0.5s ease;
-  background-color: rgb(250, 249, 247);
+  background: linear-gradient(45deg, #ff7e5f, #feb47b);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.delivery-staff_add button:hover {
-  background-color: var(--color-background-color);
-  box-shadow: 0 0 5px rgb(103, 101, 101);
+.list-delivery-staff_add button:hover {
+  background: linear-gradient(45deg, #feb47b, #ff7e5f);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
 }
 
-@media (max-width: 950px) {
-  .delivery-staff .list-table-format .title {
-    display: none;
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.list-table-format {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.list-table-format:hover {
+  background-color: #f1f1f1;
+}
+
+.list-table-format .title {
+  font-weight: bold;
+  color: #333;
+  background-color: #f0f0f0;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 8px;
+}
+
+.list-delivery-staff-action {
+  display: flex;
+  gap: 10px;
+}
+
+.list-delivery-staff-action button {
+  width: 80px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 5px;
+}
+
+.list-delivery-staff-action .edit {
+  background-color: #ff7e5f;
+  color: white;
+}
+
+.list-delivery-staff-action .edit:hover {
+  background-color: #ff8a65;
+  transform: translateY(-2px);
+}
+
+.list-delivery-staff-action .remove {
+  background-color: #e53935;
+  color: white;
+}
+
+.list-delivery-staff-action .remove:hover {
+  background-color: #ef5350;
+  transform: translateY(-2px);
+}
+
+.list-delivery-staff-action .edit,
+.list-delivery-staff-action .remove {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.list-delivery-staff-action .edit:hover,
+.list-delivery-staff-action .remove:hover {
+  border: 1px solid #ffffff;
+}
+
+.list-delivery-staff-action .edit:active,
+.list-delivery-staff-action .remove:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .list-table-format {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    gap: 10px;
   }
 
-  .delivery-staff .list-table-format {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .list-delivery-staff_add button {
+    width: 100%;
+  }
+
+  .list-delivery-staff-action button {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .list-table-format .title {
+    font-size: 16px;
   }
 }
 
-@media (max-width: 650px) {
-  .delivery-staff {
-    padding: 1rem 1rem;
+@media (max-width: 480px) {
+  .list-delivery-staff {
+    padding: 15px;
   }
-}
 
-@media (max-width: 450px) {
-  .delivery-staff .list-table-format {
-    grid-template-columns: 1fr 1fr;
+  .list-delivery-staff_add button {
+    padding: 5px;
+  }
+
+  .list-table-format {
+    padding: 8px;
+    font-size: 12px;
   }
 }

@@ -94,10 +94,17 @@ const StaffDelivery = ({ url, setIsLoading }) => {
           fetchList={fetchList}
         />
       ) : (
-        <div className="delivery-staff">
-          <div className="delivery-staff_add" title="Add new Delivery Staff">
-            <button onClick={() => setIsAdd(true)} type="button">
-              <img src={images.add_icon} alt="" />
+        <div className="list-delivery-staff">
+          <div
+            className="list-delivery-staff_add"
+            title="Add new Delivery Staff"
+          >
+            <button
+              onClick={() => setIsAdd(true)}
+              type="button"
+              title="Add your delivery staff"
+            >
+              <i className="fas fa-plus"></i>
               Add
             </button>
           </div>
@@ -114,18 +121,20 @@ const StaffDelivery = ({ url, setIsLoading }) => {
                   <p>{item.name}</p>
                   <p>{item.phone}</p>
                   <p>{item.email}</p>
-                  <div className="list-table-format-action">
+                  <div className="list-delivery-staff-action">
                     <button
                       onClick={() => updateDeliveryStaff(item)}
                       className="edit"
                       type="button"
                     >
+                      <i className="fas fa-edit"></i>
                       Edit
                     </button>
                     <button
                       onClick={() => removeDeliveryStaff(item._id)}
                       className="remove"
                     >
+                      <i className="fas fa-trash-alt"></i>
                       Remove
                     </button>
                   </div>

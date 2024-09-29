@@ -5,36 +5,39 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   width: 100%;
 }
 
-.operating-store-open {
-  margin-bottom: 20px;
+.operating-input-time,
+.operating-select {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #feb47b;
+  border-radius: 25px;
+  width: 100%;
+  outline: none;
+  background: white;
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  background: linear-gradient(to right, #fff, #f9f9f9);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin: 5px 0;
+}
+
+.operating-input-time:hover,
+.operating-select:hover,
+.operating-input-time:focus,
+.operating-select:focus {
+  border-color: #ff7e5f;
+  box-shadow: 0 6px 12px rgba(255, 126, 95, 0.2);
+  background: linear-gradient(to right, #fff, #f0f0f0);
 }
 
 .operating-store-open p {
   font-size: 1.4rem;
   font-weight: bold;
-  color: var(--color-main);
+  color: #ff7e5f;
   margin-bottom: 10px;
-}
-
-.operating-select {
-  padding: 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  outline: none;
-  background-color: white;
-}
-
-.operating-select:hover,
-.operating-select:focus {
-  border-color: var(--color-main);
-  box-shadow: 0 0 5px rgba(0, 122, 255, 0.5);
 }
 
 .operating-store-time-operate {
@@ -63,25 +66,7 @@
   display: block;
   margin: 10px 0 5px;
   font-weight: bold;
-  color: #333;
-}
-
-.operating-input-time {
-  padding: 12px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: calc(100% - 10px);
-  outline: none;
-  background-color: white;
-  font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.operating-input-time:hover,
-.operating-input-time:focus {
-  border-color: var(--color-main);
-  box-shadow: 0 0 5px rgba(0, 122, 255, 0.5);
+  color: #ff7e5f;
 }
 
 .operating-error {
@@ -91,37 +76,42 @@
 }
 
 .operating-save-button {
-  background-color: #ff7e5f;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
   color: white;
   padding: 12px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
   margin-top: 10px;
   width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .operating-save-button:hover {
-  background-color: #feb47b;
+  background: linear-gradient(to right, #feb47b, #ff7e5f);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 .operating-reset-button,
 .reset-custom-times {
-  background-color: #28a745;
+  background: linear-gradient(to right, #ff8a65, #ff6f52);
   color: white;
   padding: 12px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
   margin-top: 10px;
   width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px 0 0 0;
 }
 
 .reset-custom-times:hover,
 .operating-reset-button:hover {
-  background-color: #218838;
+  background: linear-gradient(to right, #ff6f52, #ff8a65);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 .checkbox-label {
@@ -151,12 +141,12 @@
 }
 
 .checkbox-input:checked {
-  background-color: var(--color-main);
-  border-color: var(--color-main);
+  background-color: #ff7e5f;
+  border-color: #ff7e5f; /* Màu chọn cùng với sidebar */
 }
 
 .checkbox-input:hover {
-  border-color: var(--color-main);
+  border-color: #ff7e5f;
 }
 
 @media (max-width: 768px) {

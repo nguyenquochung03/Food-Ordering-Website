@@ -1,57 +1,86 @@
 .pagination-container {
-    margin: 50px 0 0 0;
-    display: flex;
-    justify-content: space-between;
+  margin: 50px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .pagination {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 
 .pagination button {
-    width: 40px;
-    height: 40px;
-    font-weight: 500;
-    color: var(--color-main);
-    font-size: 18px;
-    border: 2px solid #cacaca;
-    color: black;
-    border-radius: 7px;
-    cursor: pointer;
+  width: 50px;
+  height: 50px;
+  font-weight: 600;
+  color: white;
+  font-size: 20px;
+  border: 2px solid #ff7e5f;
+  background-color: #feb47b;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pagination button:hover {
+  background-color: #ff7e5f;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .pagination .active {
-    background-color: white;
+  background-color: #ff7e5f;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .pagination-arrow-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.pagination-arrow-left,
-.pagination-arrow-right {
-    width: 8px;
-    height: 15px;
-    cursor: pointer;
+.pagination-arrow-icon {
+  font-size: 24px;
+  color: #f1c40f;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.pagination-arrow-right {
-    transform: scaleX(-1);
+.pagination-arrow-icon:hover {
+  color: #feb47b;
+  transform: scale(1.1);
 }
 
 .pagination-show-page span {
-    color: rgb(174, 174, 174);
+  color: #ff7e5f;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.pagination-show-page span:hover {
+  color: #feb47b;
 }
 
 @media (max-width: 450px) {
-    .pagination-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-    }
+  .pagination-container {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .pagination button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .pagination-arrow-icon {
+    font-size: 20px;
+  }
 }

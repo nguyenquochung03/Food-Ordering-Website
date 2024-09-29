@@ -88,12 +88,8 @@ const Update = ({
 
   return (
     <div className="update">
-      <div className="update-title">
-        <img
-          src={images.back_arrow}
-          alt=""
-          onClick={() => onBackToListHandler()}
-        />
+      <div className="update-title" onClick={() => setIsUpdate(false)}>
+        <i className="fas fa-arrow-left back-icon"></i>
       </div>
       <form className="flex-col" onSubmit={onSubmitHandler}>
         <div className="add-img-upload flex-col">
@@ -169,7 +165,7 @@ const Update = ({
             />
           </div>
         </div>
-        <button type="submit" className="add-btn">
+        <button type="submit" className="update-btn">
           UPDATE
         </button>
       </form>

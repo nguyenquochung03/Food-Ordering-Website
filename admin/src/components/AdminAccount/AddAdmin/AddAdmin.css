@@ -1,113 +1,106 @@
 .add-admin-container {
   display: flex;
-  justify-content: flex-start;
-  align-items: start;
-  width: 100%;
-}
-
-.add-admin img {
-  margin: 0 0 0 40px;
-}
-
-.add-admin-container-img {
-  width: 45px;
-  height: 45px;
-  cursor: pointer;
-  position: absolute;
-  left: 0;
-  transform: translateX(300px);
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f8f9fa;
 }
 
 .add-admin {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  color: #666666;
-  background-color: white;
-  border-radius: 15px;
-  padding: 2rem 2rem;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
 }
 
-.add-admin_title {
+.add-admin-container-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #ff7e5f;
+  transition: color 0.3s ease;
+  margin-bottom: 20px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: flex-start;
+}
+
+.add-admin-container-icon:hover {
+  color: #feb47b;
 }
 
 .add-admin_title p {
-  color: #666666;
-  font-size: 3rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
 .add-admin_input {
-  margin: 60px 0 0 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
-.add-admin_input input {
-  width: 250px;
-  height: 35px;
+.add-admin-input {
+  padding: 10px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 0 15px;
-  font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.add-admin-input:focus {
+  border-color: #ff7e5f;
   outline: none;
 }
 
-.add-admin_input button {
-  width: 100px;
-  height: 35px;
+.add-admin-submit {
+  padding: 10px;
+  background-color: #ff7e5f;
+  color: white;
   border: none;
   border-radius: 5px;
-  padding: 0 15px;
-  margin: 20px 0 0 0;
   font-size: 1rem;
-  font-weight: 600;
-  background-color: #666666;
-  color: white;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.add-admin_input button:hover {
-  background-color: rgb(128, 126, 126);
+.add-admin-submit:hover {
+  background-color: #feb47b;
+  transform: scale(1.05);
 }
 
-.add-admin_input button:active {
-  background-color: rgb(170, 166, 166);
-}
-
-@media (max-width: 950px) {
-  .add-admin-container {
-    flex-direction: column;
-    gap: 20px;
-    padding: 10px 10px;
+@media (max-width: 768px) {
+  .add-admin {
+    padding: 15px;
   }
 
-  .add-admin-container-img {
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    position: absolute;
-    left: 0;
-    transform: translateX(300px);
+  .add-admin-title p {
+    font-size: 1.25rem;
   }
 
-  .add-admin-container-img {
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    transform: translateX(0);
-    margin: 0 0 24px 0;
+  .add-admin-input {
+    gap: 10px;
+  }
+
+  .add-admin-input,
+  .add-admin-submit {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-admin {
+    width: 95%;
+  }
+
+  .add-admin-title p {
+    font-size: 1rem;
+  }
+
+  .add-admin-input,
+  .add-admin-submit {
+    font-size: 0.85rem;
   }
 }

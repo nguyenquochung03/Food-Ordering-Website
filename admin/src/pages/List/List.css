@@ -1,46 +1,99 @@
 .list-food {
-  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.list-table {
-  border-radius: 10px;
-  border: 1px solid #cacaca;
-  overflow: hidden;
+.list-food-add {
+  margin: 10px 0 20px 0;
 }
 
 .list-food-add button img {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
 }
 
 .list-food-add button {
   width: fit-content;
-  height: 35px;
+  height: 40px;
   font-size: 1rem;
   font-weight: 600;
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 0 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 0 15px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  letter-spacing: 0.5px;
-  transition: all 0.5s ease;
-  background-color: rgb(250, 249, 247);
+  background: linear-gradient(45deg, #ff7e5f, #feb47b);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .list-food-add button:hover {
-  background-color: var(--color-background-color);
-  box-shadow: 0 0 5px rgb(103, 101, 101);
+  background: linear-gradient(45deg, #feb47b, #ff7e5f);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
 }
 
 .list-food-type-search {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
+}
+
+.list-food-type-search img {
+  width: 40px;
+  height: 40px;
+}
+
+.list-food-type select {
+  width: fit-content;
+  height: 40px;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 0 10px;
+  background-color: white;
+  border: 1px solid #cacaca;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.list-food-type select:hover,
+.list-food-type select:focus {
+  border-color: #ff7e5f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list-food-type-search .fas.fa-search {
+  font-size: 24px;
+  color: #ff7e5f;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.list-food-type-search .fas.fa-search:hover {
+  transform: scale(1.1);
+}
+
+.img-container:hover {
+  background-color: rgba(255, 126, 95, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .list-food .list-table-format {
@@ -49,108 +102,134 @@
   align-items: center;
   gap: 10px;
   padding: 12px 15px;
-  border: 1px solid #cacaca;
-  font-size: 13px;
+  border: 1px solid #e0e0e0;
+  background-color: #f4f6f8;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.list-food .list-table-format:hover {
+  background-color: #e9ecef;
 }
 
 .list-food .list-table-format .title {
-  background-color: #f9f9f9;
+  background-color: #ffebee;
+  font-weight: bold;
+  color: #c62828;
+  padding: 8px;
+  border-radius: 8px;
 }
 
 .list-food .list-table-format img {
-  width: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .list-food .list-table-format-action {
   display: flex;
-  box-sizing: border-box;
+  gap: 10px;
+}
+
+.list-food .list-table-format-action button {
+  width: 80px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 5px;
+}
+
+.list-food .list-table-format-action .edit {
+  background-color: #ff7e5f;
+  color: white;
+}
+
+.list-food .list-table-format-action .edit:hover {
+  background-color: #ff8a65;
+  transform: translateY(-2px);
+}
+
+.list-food .list-table-format-action .remove {
+  background-color: #e53935;
+  color: white;
+}
+
+.list-food .list-table-format-action .remove:hover {
+  background-color: #ef5350;
+  transform: translateY(-2px);
 }
 
 .list-food .list-table-format-action .edit,
 .list-food .list-table-format-action .remove {
-  width: 60px;
-  height: 25px;
-  border: none;
-  margin-right: 5px;
-  cursor: pointer;
-  display: inline-block;
-  text-align: center;
-  line-height: 25px;
-  border-radius: 3px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.list-food .list-table-format-action .edit {
-  background-color: black;
-  color: white;
+.list-food .list-table-format-action .edit:hover,
+.list-food .list-table-format-action .remove:hover {
+  border: 1px solid #ffffff;
 }
 
-.list-food .list-table-format-action .remove {
-  background-color: var(--color-button);
-  color: white;
-}
-
-.list-food .list-table-format-action .edit:active {
-  background-color: white;
-  color: black;
-}
-
+.list-food .list-table-format-action .edit:active,
 .list-food .list-table-format-action .remove:active {
-  background-color: white;
-  color: var(--color-button);
+  transform: scale(0.95);
 }
 
 .list-table-status {
-  width: fit-content;
-  height: 25px;
-  font-size: 15px;
-  padding: 0 10px;
-  background-color: var(--color-background-color);
-  cursor: pointer;
-}
-
-.list-food-type {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  position: relative;
-}
-
-.list-food-type select {
-  width: fit-content;
-  height: 35px;
-  font-size: 1rem;
-  border: 1px solid rgb(138, 136, 136);
-  border-radius: 3px;
-  cursor: pointer;
-  padding: 5px;
-  outline: none;
-  background-color: var(--color-background-color);
-}
-
-.img-container {
-  position: relative;
-  display: inline-block;
-}
-
-.list-food-type .img-container img {
-  width: 30px;
   height: 30px;
-  cursor: pointer;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 0 10px;
+  border: 1px solid #cacaca;
+  background-color: #ffffff;
   transition: all 0.3s ease;
 }
 
-.list-food-type .img-container img:hover {
-  background-color: var(--color-background-color);
-  box-shadow: 0 0 5px rgb(103, 101, 101);
-  border-radius: 10px;
+.list-table-status:hover,
+.list-table-status:focus {
+  border-color: #ff7e5f;
+  box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
 }
 
-@media (max-width: 600px) {
+.list-table-status {
+  appearance: none;
+  background-color: #f4f6f8;
+  padding: 5px 10px;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  font-size: 14px;
+  border-radius: 8px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path fill="%23333" d="M0 3h10L5 8z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+}
+
+.list-table-status:hover,
+.list-table-status:focus {
+  border-color: #ff7e5f;
+  box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
+}
+
+@media (max-width: 900px) {
+  .list-food {
+    width: 100%;
+    margin-left: 0;
+  }
+
   .list-food .list-table-format {
     grid-template-columns: 1fr 3fr 1fr;
     gap: 15px;
@@ -158,12 +237,5 @@
 
   .list-food .list-table-format .title {
     display: none;
-  }
-}
-
-@media (max-width: 450px) {
-  .list-food {
-    width: 100%;
-    padding: 1rem 1rem;
   }
 }
