@@ -29,7 +29,10 @@ const Header = () => {
       style={{ backgroundImage: `url(${imgs[currentImgIndex]})` }}
     >
       <div className="header-contents">
-        <h2>Order your favourite food here</h2>
+        <h3>Order Tasty &</h3>
+        <h3>
+          Fresh Food <span>anytime!</span>
+        </h3>
         <p>
           Choose from a diverse menu featuring a delectable array of dishes
           crafted with the finest ingredients and culinary expertise. Our

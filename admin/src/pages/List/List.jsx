@@ -3,11 +3,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { PaginationContext } from "../../context/PaginationContext.jsx";
 import Pagination from "../../components/Pagination/Pagination.jsx";
-import Update from "../../components/Update/Update";
+import Update from "../../components/FoodItems/Update/Update.jsx";
 import "./List.css";
 import { images } from "../../constants/data";
 import FindFoodByName from "../../components/FindFoodByName/FindFoodByName.jsx";
 import SkeletonLoadingList from "../../components/SkeletonLoading/SkeletonLoadingList/SkeletonLoadingList.jsx";
+import Add from "../../components/FoodItems/AddFood/Add.jsx";
 
 const List = ({ url, setIsLoading }) => {
   const {
@@ -32,6 +33,7 @@ const List = ({ url, setIsLoading }) => {
   const [loading, setLoading] = useState(true);
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAdd, setIsAdd] = useState(false);
 
   useEffect(() => {
     fetchList();
@@ -216,7 +218,6 @@ const List = ({ url, setIsLoading }) => {
         id: foodId,
         status,
       });
-      console.log(response);
       if (response.data.success) {
         toast.success(response.data.message);
         await fetchList();
@@ -231,34 +232,59 @@ const List = ({ url, setIsLoading }) => {
     }
   };
 
-  return (
+  return isAdd ? (
+    <Add
+      fetchList={fetchList}
+      setIsAdd={setIsAdd}
+      url={url}
+      setIsLoading={setIsLoading}
+    />
+  ) : (
     <div className="list-food">
-      <React.Fragment>
-        {loading ? (
-          <SkeletonLoadingList />
-        ) : isSearch ? (
-          <FindFoodByName
-            url={url}
-            setIsSearch={setIsSearch}
-            setIsLoading={setIsLoading}
-          />
-        ) : (
-          <div>
-            {isUpdate ? (
-              <Update
-                url={url}
-                dataUp={dataUpdate}
-                setIsUpdate={setIsUpdate}
-                fetchList={fetchList}
-                setIsLoading={setIsLoading}
-              />
-            ) : (
-              <div className="flex-col">
-                <div className="list-food-type">
+      {loading ? (
+        <SkeletonLoadingList />
+      ) : isSearch ? (
+        <FindFoodByName
+          url={url}
+          setIsSearch={setIsSearch}
+          setIsLoading={setIsLoading}
+        />
+      ) : (
+        <div>
+          {isUpdate ? (
+            <Update
+              url={url}
+              dataUp={dataUpdate}
+              setIsUpdate={setIsUpdate}
+              fetchList={fetchList}
+              setIsLoading={setIsLoading}
+            />
+          ) : (
+            <div className="flex-col">
+              <div className="list-food-type">
+                <div className="list-food-add">
+                  <button
+                    onClick={() => setIsAdd(true)}
+                    type="button"
+                    title="Add your food"
+                  >
+                    <img src={images.add_icon} alt="add icon" />
+                    Add
+                  </button>
+                </div>
+                <div className="list-food-type-search">
+                  <div className="img-container" title="Search your food">
+                    <img
+                      onClick={onSearchHandler}
+                      src={images.search_1}
+                      alt="search icon"
+                    />
+                  </div>
                   <select
                     onChange={onChangeHandler}
                     value={indexPagination}
                     name="category"
+                    title="Filter your food"
                   >
                     <option value="All food list">All food list</option>
                     <option value="Salad">Salad</option>
@@ -270,72 +296,62 @@ const List = ({ url, setIsLoading }) => {
                     <option value="Pasta">Pasta</option>
                     <option value="Noodles">Noodles</option>
                   </select>
-                  <div className="img-container">
-                    <img
-                      onClick={onSearchHandler}
-                      src={images.search_1}
-                      alt="search icon"
-                    />
-                  </div>
-                  <div className="list-food-type-hover-text">
-                    "Click" to Search Your Foods
-                  </div>
                 </div>
-                <div className="list-table">
-                  <div className="list-table-format title">
-                    <b>Image</b>
-                    <b>Name</b>
-                    <b>Category</b>
-                    <b>Price</b>
-                    <b>Action</b>
-                    <b>Status</b>
-                  </div>
-                  {filterList.map((item, index) => (
-                    <div key={index} className="list-table-format">
-                      <img src={`${url}/images/` + item.image} alt="" />
-                      <p>{item.name}</p>
-                      <p>{item.category}</p>
-                      <p>{item.price}</p>
-                      <div className="list-table-format-action">
-                        <button
-                          onClick={() => updateFood(item)}
-                          className="edit"
-                          type="button"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => removeFood(item._id)}
-                          className="remove"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                      <select
-                        value={item.status}
-                        onChange={(e) =>
-                          handleStatusChange(item._id, e.target.value)
-                        }
-                        className="list-table-status"
-                      >
-                        <option value="serving">Serving</option>
-                        <option value="paused">Paused</option>
-                      </select>
-                    </div>
-                  ))}
-                </div>
-                <Pagination
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  currentChunkIndex={currentChunkIndex}
-                  setCurrentChunkIndex={setCurrentChunkIndex}
-                  setIsLoading={setIsLoading}
-                />
               </div>
-            )}
-          </div>
-        )}
-      </React.Fragment>
+              <div className="list-table">
+                <div className="list-table-format title">
+                  <b>Image</b>
+                  <b>Name</b>
+                  <b>Category</b>
+                  <b>Price</b>
+                  <b>Action</b>
+                  <b>Status</b>
+                </div>
+                {filterList.map((item, index) => (
+                  <div key={index} className="list-table-format">
+                    <img src={`${url}/images/` + item.image} alt="" />
+                    <p>{item.name}</p>
+                    <p>{item.category}</p>
+                    <p>{item.price}</p>
+                    <div className="list-table-format-action">
+                      <button
+                        onClick={() => updateFood(item)}
+                        className="edit"
+                        type="button"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => removeFood(item._id)}
+                        className="remove"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <select
+                      value={item.status}
+                      onChange={(e) =>
+                        handleStatusChange(item._id, e.target.value)
+                      }
+                      className="list-table-status"
+                    >
+                      <option value="serving">Serving</option>
+                      <option value="paused">Paused</option>
+                    </select>
+                  </div>
+                ))}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                currentChunkIndex={currentChunkIndex}
+                setCurrentChunkIndex={setCurrentChunkIndex}
+                setIsLoading={setIsLoading}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

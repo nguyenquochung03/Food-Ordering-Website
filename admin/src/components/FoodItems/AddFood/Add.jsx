@@ -1,120 +1,76 @@
-import React, { useEffect, useState } from "react";
-import "../AddFood/Add.css";
-import "./Update.css";
+import React, { useState } from "react";
+import "./Add.css";
+import { images } from "../../../constants/data";
+
 import axios from "axios";
 import { toast } from "react-toastify";
-import { images } from "../../../constants/data.js";
 
-const Update = ({
-  url,
-  dataUp,
-  setIsUpdate,
-  fetchList,
-  isUpdateInSearch,
-  setIsUpdateInSearch,
-  setIsLoading,
-}) => {
-  const [image, setImage] = useState("");
-  const [isChangeImage, setIsChangeImage] = useState("false");
+const Add = ({ url, setIsLoading, setIsAdd, fetchList }) => {
+  const [image, setImage] = useState(false);
   const [data, setData] = useState({
-    id: "",
     name: "",
     description: "",
     price: "",
     category: "Salad",
   });
 
-  useEffect(() => {
-    setData({
-      id: dataUp.id,
-      name: dataUp.name,
-      description: dataUp.description,
-      price: dataUp.price,
-      category: dataUp.category,
-      image: dataUp.image,
-    });
-    setImage(dataUp.image);
-  }, [dataUp]);
-
-  const onBackToListHandler = () => {
-    if (isUpdateInSearch) {
-      setIsUpdateInSearch(false);
-    } else {
-      setIsUpdate(false);
-    }
-  };
-
-  const onChangeImageHandler = (img) => {
-    setImage(img);
-    setIsChangeImage("true");
-  };
-
   const onChangeHandler = (event) => {
-    const { name, value } = event.target;
+    const name = event.target.name;
+    const value = event.target.value;
     setData((data) => ({ ...data, [name]: value }));
   };
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", Number(data.price));
+    formData.append("category", data.category);
+    formData.append("image", image);
+
     try {
       setIsLoading(true);
-      const formData = new FormData();
-      formData.append("id", data.id);
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      formData.append("price", Number(data.price));
-      formData.append("category", data.category);
-      formData.append("image", image);
-      formData.append("isChangeImage", isChangeImage);
-
-      const response = await axios.post(`${url}/api/food/update`, formData);
+      const response = await axios.post(`${url}/api/food/add`, formData);
       if (response.data.success) {
-        if (isUpdateInSearch) {
-          setIsUpdateInSearch(false);
-        } else {
-          setIsUpdate(false);
-        }
-        await fetchList();
+        setData({
+          name: "",
+          description: "",
+          price: "",
+          category: "Salad",
+        });
+        setImage(null);
         toast.success(response.data.message);
+        fetchList();
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error("An error occurred while updating the product.");
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="update">
-      <div className="update-title">
-        <img
-          src={images.back_arrow}
-          alt=""
-          onClick={() => onBackToListHandler()}
-        />
+    <div className="add">
+      <div className="add-cancle">
+        <img src={images.back_arrow} alt="" onClick={() => setIsAdd(false)} />
       </div>
       <form className="flex-col" onSubmit={onSubmitHandler}>
         <div className="add-img-upload flex-col">
           <p>Upload Image</p>
           <label htmlFor="image">
-            {
-              <img
-                src={
-                  isChangeImage === "true"
-                    ? URL.createObjectURL(image)
-                    : `${url}/images/${image}`
-                }
-                alt=""
-              />
-            }
+            <img
+              src={image ? URL.createObjectURL(image) : images.upload_area}
+              alt=""
+            />
           </label>
           <input
-            onChange={(e) => onChangeImageHandler(e.target.files[0])}
+            onChange={(e) => setImage(e.target.files[0])}
             type="file"
             id="image"
-            hidden
+            required
           />
         </div>
         <div className="add-product-name flex-col">
@@ -142,11 +98,7 @@ const Update = ({
         <div className="add-category-price">
           <div className="add-category flex-col">
             <p>Product category</p>
-            <select
-              onChange={onChangeHandler}
-              value={data.category}
-              name="category"
-            >
+            <select onChange={onChangeHandler} name="category">
               <option value="Salad">Salad</option>
               <option value="Rolls">Rolls</option>
               <option value="Deserts">Deserts</option>
@@ -162,7 +114,7 @@ const Update = ({
             <input
               onChange={onChangeHandler}
               value={data.price}
-              type="number"
+              type="Number"
               name="price"
               placeholder="$20"
               required
@@ -170,11 +122,11 @@ const Update = ({
           </div>
         </div>
         <button type="submit" className="add-btn">
-          UPDATE
+          ADD
         </button>
       </form>
     </div>
   );
 };
 
-export default Update;
+export default Add;

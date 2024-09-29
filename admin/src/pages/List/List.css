@@ -1,13 +1,46 @@
 .list-food {
   width: 100%;
-  padding: 2rem 2rem;
-  transition: all 5s ease forward;
 }
 
 .list-table {
   border-radius: 10px;
   border: 1px solid #cacaca;
   overflow: hidden;
+}
+
+.list-food-add button img {
+  width: 25px;
+  height: 25px;
+}
+
+.list-food-add button {
+  width: fit-content;
+  height: 35px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 0 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+  transition: all 0.5s ease;
+  background-color: rgb(250, 249, 247);
+}
+
+.list-food-add button:hover {
+  background-color: var(--color-background-color);
+  box-shadow: 0 0 5px rgb(103, 101, 101);
+}
+
+.list-food-type-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .list-food .list-table-format {
@@ -112,24 +145,9 @@
 }
 
 .list-food-type .img-container img:hover {
-  width: 35px;
-  height: 35px;
-}
-
-.list-food-type .img-container:hover + .list-food-type-hover-text {
-  display: block;
-}
-
-.list-food-type-hover-text {
-  display: none;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 0 40px 0 0;
-  background-color: rgb(245, 223, 184);
-  color: white;
-  padding: 5px;
-  border-radius: 5px;
+  background-color: var(--color-background-color);
+  box-shadow: 0 0 5px rgb(103, 101, 101);
+  border-radius: 10px;
 }
 
 @media (max-width: 600px) {

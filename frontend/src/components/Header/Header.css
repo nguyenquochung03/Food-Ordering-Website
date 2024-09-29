@@ -29,10 +29,15 @@
   animation: fadeIn 1s;
 }
 
-.header-contents h2 {
+.header-contents h3 {
   font-weight: 500;
   color: var(--color-white);
-  font-size: max(4.5vw, 22px);
+  font-size: 3.5rem;
+}
+
+.header-contents h3 span {
+  font-size: 4rem;
+  font-weight: bold;
 }
 
 .header-contents p {
@@ -86,7 +91,7 @@
     max-width: 80%;
   }
 
-  .header-contents h2 {
+  .header-contents h3 {
     font-weight: 400;
     color: var(--color-white);
     font-size: 22px;

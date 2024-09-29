@@ -1,89 +1,87 @@
 .add-delivery-staff-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: start;
-    padding: 2rem 2rem;
-    width: 100%;
-    height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: start;
+  width: 100%;
 }
 
 .add-delivery-staff-container img {
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    margin: 0 0 0 24px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  margin: 0 0 0 24px;
 }
 
 .add-delivery-staff {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    background-color: white;
-    padding: 2rem 2rem;
-    border-radius: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  padding: 2rem 2rem;
+  border-radius: 15px;
 }
 
 .add-delivery-staff_title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .add-delivery-staff_title p {
-    color: #666666;
-    font-size: 3rem;
-    font-weight: 600;
+  color: #666666;
+  font-size: 3rem;
+  font-weight: 600;
 }
 
 .add-delivery-staff_input {
-    margin: 60px 0 0 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  margin: 60px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .add-delivery-staff_input input {
-    width: 250px;
-    height: 35px;
-    border-radius: 5px;
-    padding: 0 15px;
-    font-size: 15px;
-    font-family: Arial, Helvetica, sans-serif;
-    outline: none;
+  width: 250px;
+  height: 35px;
+  border-radius: 5px;
+  padding: 0 15px;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  outline: none;
 }
 
 .add-delivery-staff_input button {
-    width: 100px;
-    height: 35px;
-    border: none;
-    border-radius: 5px;
-    padding: 0 15px;
-    margin: 20px 0 0 0;
-    font-size: 1rem;
-    font-weight: 600;
-    background-color: #666666;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+  width: 100px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  padding: 0 15px;
+  margin: 20px 0 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #666666;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
 
 .add-delivery-staff_input button:hover {
-    background-color: rgb(128, 126, 126);
+  background-color: rgb(128, 126, 126);
 }
 
 .add-delivery-staff_input button:active {
-    background-color: #666666;
+  background-color: #666666;
 }
 
 @media (max-width: 450px) {
-    .add-delivery-staff-container {
-        flex-direction: column;
-        gap: 20px;
-        padding: 10px 10px;
-    }
+  .add-delivery-staff-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 10px;
+  }
 }

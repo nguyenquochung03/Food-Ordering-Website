@@ -123,7 +123,7 @@ const Account = ({ url, setIsLoading }) => {
         />
       ) : (
         <div className="list-account">
-          <div className="list-account_add">
+          <div className="list-account_add" title="Add new Account">
             <button onClick={() => setIsAdd(true)} type="button">
               <img src={images.add_icon} alt="Add" /> Add
             </button>
@@ -164,6 +164,7 @@ const Account = ({ url, setIsLoading }) => {
                           color: "black",
                           fontSize: "15px",
                         }}
+                        title="Unlock this account"
                       />
                     ) : (
                       <FaUnlock
@@ -173,6 +174,7 @@ const Account = ({ url, setIsLoading }) => {
                           color: "var(--color-main)",
                           fontSize: "15px",
                         }}
+                        title="Lock this account"
                       />
                     )}
                   </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "./FindFoodByName.css";
 import { images } from "../../constants/data";
-import Update from "../Update/Update";
+import Update from "../FoodItems/Update/Update";
 
 const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
   const [value, setValue] = useState("");

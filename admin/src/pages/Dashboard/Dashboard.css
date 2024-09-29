@@ -1,8 +1,5 @@
 .dashboard {
-  padding: 2rem 2rem;
   width: 100%;
-  transition: all 5s ease forward;
-  overflow: hidden;
 }
 
 .dashboard-header {

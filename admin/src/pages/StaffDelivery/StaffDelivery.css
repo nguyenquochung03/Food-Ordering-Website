@@ -1,118 +1,117 @@
 .delivery-staff {
-    padding: 2rem 2rem;
-    width: 100%;
+  width: 100%;
 }
 
 .delivery-staff .list-table-format {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 15px;
-    border: 1px solid #cacaca;
-    font-size: 13px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border: 1px solid #cacaca;
+  font-size: 13px;
 }
 
 .delivery-staff .list-table-format .title {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 .delivery-staff .list-table-format img {
-    width: 50px;
+  width: 50px;
 }
 
 .delivery-staff .list-table-format-action {
-    display: flex;
-    box-sizing: border-box;
+  display: flex;
+  box-sizing: border-box;
 }
 
 .delivery-staff .list-table-format-action .edit,
 .delivery-staff .list-table-format-action .remove {
-    width: 60px;
-    height: 25px;
-    border: none;
-    margin-right: 5px;
-    cursor: pointer;
-    display: inline-block;
-    text-align: center;
-    line-height: 25px;
-    border-radius: 3px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  width: 60px;
+  height: 25px;
+  border: none;
+  margin-right: 5px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  line-height: 25px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .delivery-staff .list-table-format-action .edit {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 
 .delivery-staff .list-table-format-action .remove {
-    background-color: var(--color-button);
-    color: white;
+  background-color: var(--color-button);
+  color: white;
 }
 
 .delivery-staff .list-table-format-action .edit:active {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 .delivery-staff .list-table-format-action .remove:active {
-    background-color: white;
-    color: var(--color-button);
+  background-color: white;
+  color: var(--color-button);
 }
 
 .delivery-staff_add {
-    margin: 0 0 1rem 0;
+  margin: 0 0 1rem 0;
 }
 
 .delivery-staff_add button img {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 }
 
 .delivery-staff_add button {
-    width: fit-content;
-    height: 40px;
-    font-size: 1rem;
-    font-weight: 600;
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 0 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    letter-spacing: 0.5px;
-    transition: all 0.5s ease;
-    background-color: rgb(250, 249, 247);
+  width: fit-content;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 0 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+  transition: all 0.5s ease;
+  background-color: rgb(250, 249, 247);
 }
 
 .delivery-staff_add button:hover {
-    background-color: var(--color-background-color);
-    box-shadow: 0 0 5px rgb(103, 101, 101);
+  background-color: var(--color-background-color);
+  box-shadow: 0 0 5px rgb(103, 101, 101);
 }
 
 @media (max-width: 950px) {
-    .delivery-staff .list-table-format .title {
-        display: none;
-    }
+  .delivery-staff .list-table-format .title {
+    display: none;
+  }
 
-    .delivery-staff .list-table-format {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
+  .delivery-staff .list-table-format {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 650px) {
-    .delivery-staff {
-        padding: 1rem 1rem;
-    }
+  .delivery-staff {
+    padding: 1rem 1rem;
+  }
 }
 
 @media (max-width: 450px) {
-    .delivery-staff .list-table-format {
-        grid-template-columns: 1fr 1fr;
-    }
+  .delivery-staff .list-table-format {
+    grid-template-columns: 1fr 1fr;
+  }
 }

@@ -141,12 +141,12 @@ const DetailCategory = ({ setIsLoading, setShowLogin }) => {
   }, [commentsData]);
 
   useEffect(() => {
-    if (cartItems[id]) {
+    if (cartItems && cartItems[id]) {
       setNumberInCart(cartItems[id]);
     } else {
       setNumberInCart(1);
     }
-  }, [cartItems[id]]);
+  }, [cartItems, id]);
 
   const hasOrderedFood = async (value) => {
     try {
