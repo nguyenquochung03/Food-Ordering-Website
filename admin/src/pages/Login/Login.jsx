@@ -89,11 +89,6 @@ const Login = ({
       <form onSubmit={onLogin} className="login-popup-container">
         <div className="login-popup-title">
           <h2>Login</h2>
-          <img
-            onClick={() => setShowLogin(false)}
-            src={images.cross_icon}
-            alt="cross icon"
-          />
         </div>
         <div className="login-popup-inputs">
           <input

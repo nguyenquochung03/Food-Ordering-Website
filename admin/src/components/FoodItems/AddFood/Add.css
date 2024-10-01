@@ -3,9 +3,8 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin-left: 16%;
   margin-top: 20px;
-  width: 70%;
+  width: 100%;
 }
 
 .hidden-input {
@@ -113,19 +112,19 @@ form {
 }
 
 .back-icon {
-  font-size: 24px; /* Kích thước biểu tượng */
-  color: black; /* Màu mặc định */
-  cursor: pointer; /* Con trỏ khi hover */
-  transition: color 0.3s ease; /* Hiệu ứng chuyển màu */
+  font-size: 24px;
+  color: black;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .back-icon:hover {
-  color: #ff7e5f; /* Màu sắc khi hover */
+  color: #ff7e5f;
 }
 
 @media (max-width: 900px) {
   .add {
-    width: 90%;
+    width: 100%;
   }
 
   .add-category-price {

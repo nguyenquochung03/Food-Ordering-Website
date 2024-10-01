@@ -411,8 +411,8 @@ const Order = ({ url, setIsLoading }) => {
               <div className="order-item-address">
                 <p>{order.address.street}, </p>
                 <p>
-                  {order.address.city}, {order.address.state},{" "}
-                  {order.address.country}, {order.address.zipcode}
+                  {order.address.ward}, {order.address.district},{" "}
+                  {order.address.province}, {order.address.country}
                 </p>
               </div>
               <p className="order-item-phone">

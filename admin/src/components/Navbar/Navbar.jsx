@@ -64,15 +64,19 @@ const Navbar = ({
           <li className="navbar-profile-dropdown-username">{userName}</li>
           <hr />
           <li className="navbar-profile-dropdown-li" onClick={logout}>
-            <img src={images.logout_icon} alt="logout icon" />
-            <p>Logout</p>
+            <i className="fas fa-sign-out-alt"></i>
+            <span className="navbar-profile-dropdown-title">
+              <p>Logout</p>
+            </span>
           </li>
           <li
             className="navbar-profile-dropdown-li"
             onClick={() => setIsUpdateProfileImage((prev) => !prev)}
           >
-            <img src={images.person} alt="profile icon" />
-            <p>Image</p>
+            <i className="fas fa-user"></i>
+            <span className="navbar-profile-dropdown-title">
+              <p>Image</p>
+            </span>
           </li>
         </ul>
       </div>
