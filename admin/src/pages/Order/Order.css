@@ -12,38 +12,42 @@
 
 .order-fetch-data {
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .order-fetch-data button {
-  padding: 10px 15px;
+  padding: 12px 20px;
   background-color: #ff7e5f;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
-  align-items: center; /* Căn giữa icon và text */
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.3s, transform 0.3s;
 }
 
 .order-fetch-data button:hover {
   background-color: #feb47b;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-.order-fetch-data button img {
-  margin-right: 8px; /* Thêm khoảng cách giữa icon và text */
-  width: 20px; /* Đặt kích thước cho icon */
+.order-fetch-data button i {
+  margin-right: 10px;
+  font-size: 18px;
 }
 
 .order-status {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
 .order-status button {
   padding: 10px 15px;
-  margin-right: 10px;
   border: none;
   border-radius: 5px;
   background-color: #e9ecef;
@@ -68,19 +72,19 @@
 
 .order-item {
   display: grid;
-  grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
-  justify-content: space-between;
+  grid-template-columns: 1fr 2fr 1fr 1fr 0.8fr;
   align-items: flex-start;
-  padding: 15px;
+  padding: 20px;
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
-  border-radius: 5px;
-  margin-bottom: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
   transition: box-shadow 0.3s;
+  gap: 10px;
 }
 
 .order-item:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .order-item .flex-col {
@@ -90,28 +94,35 @@
 
 .order-item-food {
   font-weight: bold;
+  font-size: 15px;
   color: #343a40;
 }
 
 .order-item-name {
   color: #555;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
-.order-item-address p {
-  margin: 0;
+.order-item-address p,
+.order-item p {
+  margin: 5px 0;
+  color: #666;
 }
 
-.order-item-phone {
-  color: #007bff;
+.order-item-phone span {
+  color: #17a2b8;
+  margin: 5px 0;
 }
 
 .order-item-receive-deny-order {
   display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
 .order-item-receive-deny-order button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -120,28 +131,31 @@
 }
 
 .order-item-receive-deny-order button.receive {
-  background-color: #28a745;
+  background-color: #ff7e5f;
 }
 
 .order-item-receive-deny-order button.deny {
-  background-color: #dc3545;
+  background-color: #e53935;
 }
 
 .order-item-receive-deny-order button:hover.receive {
-  background-color: #218838;
+  background-color: #ff8a65;
+  transform: translateY(-2px);
 }
 
 .order-item-receive-deny-order button:hover.deny {
-  background-color: #c82333;
+  background-color: #ef5350;
+  transform: translateY(-2px);
 }
 
 .order-item_name-delivery-staff {
   display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
 .order-item_name-delivery-staff button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   background-color: #17a2b8;
   color: #fff;
   border: none;
@@ -154,16 +168,12 @@
   background-color: #138496;
 }
 
-.order-item_cancelled {
+.order-item_cancelled p {
   color: #dc3545;
 }
 
-.order-item_cancelled p {
-  margin: 0;
-}
-
 .select-class {
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ced4da;
   border-radius: 5px;
   margin-right: 10px;
@@ -175,25 +185,66 @@
   border-color: #ff7e5f;
 }
 
-.order-item p {
-  margin: 5px 0;
+.delivery-staff-select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #495057;
+  transition: border-color 0.3s ease;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delivery-staff-select:focus {
+  border-color: #ff7e5f;
+  outline: none;
+}
+
+.delivery-staff-select option {
+  padding: 5px;
+}
+
+.complete-processing-button {
+  padding: 8px 15px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.complete-processing-button:hover {
+  background-color: #dc3545;
+  transform: translateY(-2px);
+}
+
+.complete-processing-button:active {
+  background-color: #1e7e34;
 }
 
 @media (max-width: 768px) {
   .order-item {
     grid-template-columns: 1fr;
-    flex-direction: column;
-  }
-
-  .order-item-name,
-  .order-item-phone,
-  .order-item-food {
     text-align: left;
+    gap: 15px;
   }
 
   .order-item-receive-deny-order,
   .order-item_name-delivery-staff {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .order-status {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .delivery-staff-select,
+  .complete-processing-button {
+    width: 100%;
   }
 }

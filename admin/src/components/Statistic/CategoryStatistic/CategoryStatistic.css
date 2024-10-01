@@ -1,6 +1,37 @@
 .category-statistic {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-statistic .apexcharts-datalabels {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.apexcharts-legend {
+  margin-top: 20px;
+}
+
+.apexcharts-legend-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.apexcharts-tooltip {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.apexcharts-tooltip span {
+  color: #ffeb3b;
+}
+
+.apexcharts-donut-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }

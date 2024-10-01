@@ -355,7 +355,7 @@ const Order = ({ url, setIsLoading }) => {
     <div className="order">
       <div onClick={() => onFetchDataHandler()} className="order-fetch-data">
         <button>
-          <i className="fas fa-sync-alt"></i> {/* Biểu tượng "rotate arrow" */}
+          <i className="fas fa-sync-alt"></i>
           Fetch Data
         </button>
       </div>
@@ -366,6 +366,22 @@ const Order = ({ url, setIsLoading }) => {
             key={index}
             className={currentStatus === status ? "active" : ""}
           >
+            <i
+              className={
+                status === "Wait for Confirmation"
+                  ? "fas fa-hourglass-start"
+                  : status === "Food Processing"
+                  ? "fas fa-utensils"
+                  : status === "Out for delivery"
+                  ? "fas fa-truck"
+                  : status === "Delivered"
+                  ? "fas fa-box-open"
+                  : status === "Successful"
+                  ? "fas fa-check-circle"
+                  : "fas fa-times-circle"
+              }
+              style={{ marginRight: "8px" }}
+            ></i>
             {status}
           </button>
         ))}
@@ -378,7 +394,7 @@ const Order = ({ url, setIsLoading }) => {
                 currentStatus !== "Cancelled" && (
                   <p>{deliveryStaffNames[order._id]}</p>
                 )}
-              <i className="fas fa-box"></i> {/* Biểu tượng "parcel" */}
+              <i className="fas fa-box"></i>
             </div>
             <div>
               <p className="order-item-food">
@@ -399,7 +415,9 @@ const Order = ({ url, setIsLoading }) => {
                   {order.address.country}, {order.address.zipcode}
                 </p>
               </div>
-              <p className="order-item-phone">{order.address.phone}</p>
+              <p className="order-item-phone">
+                <span>{order.address.phone}</span>
+              </p>
             </div>
             <p>Items: {order.items.length}</p>
             <p>${order.amount}</p>
@@ -408,12 +426,14 @@ const Order = ({ url, setIsLoading }) => {
               <div className="order-item-receive-deny-order">
                 <button
                   onClick={async () => onHandleOrder(order, "Food Processing")}
+                  className="receive"
                 >
                   Receive Order
                 </button>
                 {order.paymentType === "Cash" && (
                   <button
                     onClick={async () => onHandleOrder(order, "Cancelled")}
+                    className="deny"
                   >
                     Deny Order
                   </button>
@@ -424,6 +444,7 @@ const Order = ({ url, setIsLoading }) => {
             {currentStatus === "Food Processing" && (
               <>
                 <select
+                  className="delivery-staff-select"
                   value={
                     selectedInfo[order._id]
                       ? selectedInfo[order._id].selectedDeliveryStaff._id
@@ -449,6 +470,7 @@ const Order = ({ url, setIsLoading }) => {
                 </select>
                 {selectedInfo[order._id] && (
                   <button
+                    className="complete-processing-button"
                     onClick={() =>
                       onCompleteProcessingOrder(selectedInfo[order._id])
                     }

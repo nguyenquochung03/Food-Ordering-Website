@@ -208,9 +208,43 @@
   margin-top: 5px;
 }
 
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  animation: fadeIn 0.5s ease;
+  margin: 0 0 0 20px;
+  animation: slideInFromLeft 0.5s ease;
+}
+
+.input-container .triangle {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #ffffff;
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  transform: translateY(-50%);
+}
+
+.input-container input[type="month"] {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-container input[type="month"]:focus {
+  border-color: #ff7e5f;
+  box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
+}
+
 @media (max-width: 900px) {
   .navbar-sub-title {
-    display: none; /* Ẩn tiêu đề phụ trên màn hình nhỏ */
+    display: none;
   }
 }
 

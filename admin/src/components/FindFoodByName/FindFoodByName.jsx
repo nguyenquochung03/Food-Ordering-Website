@@ -137,14 +137,13 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
           setIsLoading={setIsLoading}
         />
       ) : (
-        <div>
+        <div className="search-food-by-name-container">
           <div className="search">
-            <img
-              className="search-food-by-name-img"
+            <i
+              className="fas fa-arrow-left search-food-by-name-img"
               onClick={() => setIsSearch(false)}
-              src={images.back_arrow}
-              alt="Back"
-            />
+              aria-label="Back"
+            ></i>
             <div className="search-food-by-name">
               <div className="search-food-by-name-input">
                 <input
@@ -154,7 +153,7 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
                   ref={searchInputRef}
                   placeholder="Food name"
                 />
-                <img src={images.search_icon} alt="Search" />
+                <i className="fas fa-search"></i>
               </div>
             </div>
           </div>
@@ -214,16 +213,18 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
                     <p>{data.price}</p>
                     <div className="list-table-format-action">
                       <button
-                        onClick={() => updateFood(data)}
+                        onClick={() => updateFood(item)}
                         className="edit"
                         type="button"
                       >
+                        <i className="fas fa-edit"></i>
                         Edit
                       </button>
                       <button
-                        onClick={() => removeFood(data._id)}
+                        onClick={() => removeFood(item._id)}
                         className="remove"
                       >
+                        <i className="fas fa-trash-alt"></i>
                         Remove
                       </button>
                     </div>

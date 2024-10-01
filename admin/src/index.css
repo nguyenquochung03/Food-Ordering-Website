@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
-
 :root {
   --color-main: #ff7e5f;
   --color-button: #ff6f47;
@@ -16,7 +14,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: Outfit;
+  font-family: "Poppins", sans-serif;
   transition: all 0.3s ease;
   animation: fadeIn 0.3s ease-out;
 }

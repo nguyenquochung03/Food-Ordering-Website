@@ -5,11 +5,20 @@
 }
 
 .recent-reviews-food-item-rating-star {
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: var(--color-main);
   background-color: unset;
   border: none;
   margin-top: -5px;
+  transition: color 0.3s;
+}
+
+.recent-reviews-food-item-rating-star:hover {
+  color: var(--color-main-dark);
+}
+
+.recent-reviews-item-bottom-describe {
+  margin-top: 10px;
 }
 
 .recent-reviews-food-item-rating-half-star {
@@ -42,13 +51,25 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recent-reviews-container-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  border-bottom: 2px solid var(--color-main);
+  padding-bottom: 10px;
 }
 
 .recent-reviews-title {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  color: rgb(103, 102, 102);
-  margin: 0 0 24px 0;
+  color: #555;
+  margin-bottom: 16px;
 }
 
 .recent-reviews-pagination {
@@ -69,6 +90,8 @@
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   justify-content: space-between;
   gap: 15px;
+  justify-content: center;
+  gap: 20px;
 }
 
 .recent-reviews-item {
@@ -80,6 +103,33 @@
   padding: 25px 25px;
   border-radius: 10px;
   width: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.3s ease;
+}
+
+.recent-reviews-item:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.recent-reviews-item-top img,
+.recent-reviews-item-bottom-top img {
+  transition: transform 0.3s ease;
+}
+
+.recent-reviews-item-top img:hover,
+.recent-reviews-item-bottom-top img:hover {
+  transform: scale(1.1);
+}
+
+.recent-reviews-item-bottom-describe {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(105, 105, 105);
+  line-height: 1.6;
+  text-align: justify;
 }
 
 .recent-reviews-item-top {
