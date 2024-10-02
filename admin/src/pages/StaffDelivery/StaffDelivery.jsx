@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./StaffDelivery.css";
 import { toast } from "react-toastify";
-
 import axios from "axios";
 import AddDeliveryStaff from "../../components/DeliveryStaff/AddDeliveryStaff/AddDeliveryStaff";
 import UpdateDeliveryStaff from "../../components/DeliveryStaff/UpdateDeliveryStaff/UpdateDeliveryStaff";
-import { images } from "../../constants/data";
 import SkeletonLoadingListAdd from "../../components/SkeletonLoading/SkeletonLoadingListAdd/SkeletonLoadingListAdd";
 import NormalPagination from "../../components/Pagination/NormalPagination/NormalPagination";
 
@@ -19,6 +17,8 @@ const StaffDelivery = ({ url, setIsLoading }) => {
     name: "",
     phone: "",
     email: "",
+    vehicleType: "",
+    workingAreas: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +31,7 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       const response = await axios.get(`${url}/api/deliveryStaff/getAll`);
       if (response.data.success) {
         setListDeliveryStaff(response.data.data);
+        setFilterListDeliveryStaff(response.data.data); // Ensure the filter list is populated
         setLoading(false);
       } else {
         toast.error(response.data.message);
@@ -39,6 +40,7 @@ const StaffDelivery = ({ url, setIsLoading }) => {
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while fetching the list.");
+      setLoading(false);
     }
   };
 
@@ -47,10 +49,9 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       try {
         setIsLoading(true);
         const response = await axios.post(`${url}/api/deliveryStaff/delete/`, {
-          id: id,
+          id,
         });
         await fetchList();
-
         if (response.data.success) {
           toast.success(response.data.message);
         } else {
@@ -71,6 +72,10 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       name: item.name,
       phone: item.phone,
       email: item.email,
+      vehicleType: item.vehicleType,
+      workingAreas: item.workingAreas || [
+        { province: "", district: "", ward: "" },
+      ],
     });
     setIsUpdate(true);
   };
@@ -89,10 +94,10 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       ) : isUpdate ? (
         <UpdateDeliveryStaff
           url={url}
-          dataUpdate={dataUpdate}
           setIsUpdate={setIsUpdate}
           setIsLoading={setIsLoading}
           fetchList={fetchList}
+          staffData={dataUpdate}
         />
       ) : (
         <div className="list-delivery-staff">
@@ -114,14 +119,14 @@ const StaffDelivery = ({ url, setIsLoading }) => {
               <div className="list-table-format title">
                 <b>Name</b>
                 <b>Phone</b>
-                <b>Email</b>
+                <b>Vehicle</b>
                 <b>Action</b>
               </div>
               {filterListDeliveryStaff.map((item, index) => (
                 <div key={index} className="list-table-format">
                   <p>{item.name}</p>
                   <p>{item.phone}</p>
-                  <p>{item.email}</p>
+                  <p>{item.vehicleType}</p> {/* Use vehicleType here */}
                   <div className="list-delivery-staff-action">
                     <button
                       onClick={() => updateDeliveryStaff(item)}

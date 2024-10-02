@@ -188,8 +188,6 @@ const Order = ({ setIsLoading }) => {
       amount: getTotalCartAmount() + 2,
     };
 
-    console.log(orderData);
-
     let orderUrl = "";
     if (paymentMethod && paymentMethod === "Transfer") {
       orderUrl = "/api/order/place";

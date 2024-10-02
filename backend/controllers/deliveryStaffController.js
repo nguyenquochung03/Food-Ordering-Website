@@ -2,7 +2,7 @@ import deliveryStaffModel from "../models/deliveryStaffModel.js";
 
 const addDeliveryStaff = async (req, res) => {
   const { name, phone, email, vehicleType, workingAreas } = req.body;
-
+  console.log(req.body);
   if (
     !name ||
     !phone ||
@@ -56,7 +56,7 @@ const addDeliveryStaff = async (req, res) => {
 };
 
 const updateDeliveryStaff = async (req, res) => {
-  const { id, name, phone, email } = req.body;
+  const { id, name, phone, email, vehicleType, workingAreas } = req.body;
 
   const deliveryStaff = await deliveryStaffModel.findOne({ email: email });
 
@@ -70,7 +70,7 @@ const updateDeliveryStaff = async (req, res) => {
   try {
     const updatedStaff = await deliveryStaffModel.findByIdAndUpdate(
       id,
-      { name, phone, email },
+      { name, phone, email, vehicleType, workingAreas },
       { new: true }
     );
 

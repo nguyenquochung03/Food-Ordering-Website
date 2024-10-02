@@ -1,84 +1,167 @@
-.update-delivery-staff-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: start;
-  width: 100%;
-}
-
-.update-delivery-staff img {
-  margin: 0 0 0 24px;
-}
-
-.update-delivery-staff {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  background-color: white;
-  padding: 2rem 2rem;
-  border-radius: 15px;
-}
-
-.update-delivery-staff_title {
+.centered-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 10px;
+  padding: 20px;
 }
 
-.update-delivery-staff_title p {
-  color: #666666;
-  font-size: 3rem;
+.update-delivery-staff-container {
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease;
+  max-width: 800px;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.update-delivery-staff-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.update-delivery-staff-container h2 {
+  font-size: 2.5rem;
+  color: #ff7e5f;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.update-delivery-staff-container-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #ff7e5f;
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+.update-delivery-staff-container-icon:hover {
+  color: #feb47b;
+}
+
+.update-delivery-staff-title {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 2rem 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-main);
+}
+
+.update-delivery-staff-message {
+  color: #ff7e5f;
+  margin-bottom: 20px;
+  text-align: center;
   font-weight: 600;
 }
 
-.update-delivery-staff_input {
-  margin: 60px 0 0 0;
+.update-delivery-staff-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
-.update-delivery-staff_input input {
-  width: 250px;
-  height: 35px;
+.update-delivery-staff-group {
+  margin-bottom: 15px;
+}
+
+.update-delivery-staff-group input,
+.update-delivery-staff-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 0 15px;
-  font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
+  transition: border 0.3s ease;
   outline: none;
 }
 
-.update-delivery-staff_input button {
-  width: 100px;
-  height: 35px;
-  border: none;
-  border-radius: 5px;
-  padding: 0 15px;
-  margin: 20px 0 0 0;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #666666;
+.update-delivery-staff-group input:focus,
+.update-delivery-staff-group select:focus {
+  border-color: #ff7e5f;
+}
+
+.update-delivery-staff-working-areas {
+  margin-top: 20px;
+}
+
+.update-delivery-staff-working-areas h3 {
+  margin: 0 0 10px 0;
+}
+
+.update-delivery-staff-working-area {
+  background: rgba(255, 126, 95, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.update-delivery-staff-working-area:hover {
+  transform: translateY(-2px);
+}
+
+.update-delivery-staff-remove-area-button,
+.update-delivery-staff-add-area-button,
+.update-delivery-staff-submit-button {
   color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 15px;
+  font-size: 1rem;
 }
 
-.update-delivery-staff_input button:hover {
-  background-color: rgb(128, 126, 126);
+.update-delivery-staff-submit-button {
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
 }
 
-.update-delivery-staff_input button:active {
-  background-color: #666666;
+.update-delivery-staff-remove-area-button {
+  background-color: #e53935;
 }
 
-@media (max-width: 450px) {
-  .update-delivery-staff-container {
-    flex-direction: column;
-    gap: 20px;
-    padding: 10px 10px;
+.update-delivery-staff-add-area-button {
+  background-color: #feb47b;
+}
+
+.update-delivery-staff-add-area-button:hover {
+  background-color: #feb47b;
+  transform: scale(1.05);
+}
+
+.update-delivery-staff-remove-area-button:hover {
+  background-color: #d32f2f;
+}
+
+.update-delivery-staff-submit-button:hover {
+  background: linear-gradient(to left, #ff7e5f, #feb47b);
+}
+
+@media (max-width: 600px) {
+  .update-delivery-staff-container h2 {
+    font-size: 2rem;
+  }
+
+  .update-delivery-staff-container-icon {
+    font-size: 1.5rem;
+  }
+
+  .update-delivery-staff-group label {
+    font-size: 1rem;
+  }
+
+  .update-delivery-staff-remove-area-button,
+  .update-delivery-staff-add-area-button,
+  .update-delivery-staff-submit-button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
   }
 }

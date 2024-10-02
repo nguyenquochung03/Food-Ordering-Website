@@ -64,28 +64,23 @@
 }
 
 .add-delivery-staff-group {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 15px;
 }
 
-.add-delivery-staff-group label {
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8px;
-  font-size: 1.1rem;
-}
-
-.add-delivery-staff-group input {
-  padding: 12px;
-  border: 1px solid #7e7b7b;
-  border-radius: 8px;
-  transition: border-color 0.3s ease;
+.add-delivery-staff-group input,
+.add-delivery-staff-group select {
+  width: 100%;
+  padding: 10px;
   font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: border 0.3s ease;
+  outline: none;
 }
 
-.add-delivery-staff-group input:focus {
+.add-delivery-staff-group input:focus,
+.add-delivery-staff-group select:focus {
   border-color: #ff7e5f;
-  outline: none;
 }
 
 .add-delivery-staff-working-areas {
@@ -151,11 +146,6 @@
 }
 
 @media (max-width: 600px) {
-  .add-delivery-staff-container {
-    margin: 30px 5%;
-    padding: 20px;
-  }
-
   .add-delivery-staff-container h2 {
     font-size: 2rem;
   }
