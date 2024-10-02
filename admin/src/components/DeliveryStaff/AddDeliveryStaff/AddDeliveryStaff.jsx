@@ -1,121 +1,191 @@
-import React, { useEffect, useRef, useState } from 'react'
-import './AddDeliveryStaff.css'
-import { toast } from 'react-toastify';
-
-import axios from 'axios';
-import { images } from '../../../constants/data';
+import React, { useEffect, useRef, useState } from "react";
+import "./AddDeliveryStaff.css";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
+  const inputRef = useRef(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    vehicleType: "",
+    workingAreas: [{ district: "", ward: "", province: "" }],
+  });
 
-    const inputRef = useRef(null)
-    const [data, setData] = useState({
-        name: '',
-        phone: '',
-        email: '',
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
+  };
 
-    useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.focus()
-        }
-    }, [])
+  const handleWorkingAreaChange = (index, e) => {
+    const newWorkingAreas = [...formData.workingAreas];
+    newWorkingAreas[index][e.target.name] = e.target.value;
+    setFormData({ ...formData, workingAreas: newWorkingAreas });
+  };
 
-    const onChangeHandler = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setData((prevData) => ({ ...prevData, [name]: value }));
-    };
+  const addWorkingArea = () => {
+    setFormData({
+      ...formData,
+      workingAreas: [
+        ...formData.workingAreas,
+        { district: "", ward: "", province: "" },
+      ],
+    });
+  };
 
-    const isValidPhoneNumber = (phoneNumber) => {
-        const phonePattern = /^\d{7,15}$/;
+  const removeWorkingArea = (index) => {
+    const newWorkingAreas = formData.workingAreas.filter((_, i) => i !== index);
+    setFormData({ ...formData, workingAreas: newWorkingAreas });
+  };
 
-        if (!phonePattern.test(phoneNumber)) {
-            return false;
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${url}/api/deliverystaff/add`,
+        formData
+      );
+      if (response.data.success) {
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          vehicleType: "",
+          workingAreas: [{ district: "", ward: "", province: "" }],
+        });
+        fetchList();
+        toast.success("Add new delivery staff successfully");
+      }
+    } catch (error) {
+      console.error("Error adding delivery staff", error);
+      setMessage("An error occurred while adding delivery staff");
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        for (let i = 0; i < phoneNumber.length; i++) {
-            if (isNaN(parseInt(phoneNumber[i]))) {
-                return false;
-            }
-        }
-
-        return true;
-    };
-
-    const onSubmitHandler = async (event) => {
-        event.preventDefault();
-
-        if (!isValidPhoneNumber(data.phone)) {
-            toast.error('Please enter a valid phone number');
-            return;
-        }
-
-        try {
-            setIsLoading(true);
-
-            const response = await axios.post(`${url}/api/deliveryStaff/add`, {
-                name: data.name,
-                phone: data.phone,
-                email: data.email
-            });
-
-            if (response.data.success) {
-                setData({
-                    name: '',
-                    phone: '',
-                    email: '',
-                });
-                toast.success(response.data.message);
-                fetchList();
-            } else {
-                toast.error(response.data.message);
-            }
-        } catch (error) {
-            console.error('An error occurred: ', error);
-            toast.error('An error occurred while adding delivery staff.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return (
-        <div className="add-delivery-staff-container">
-            <div className='add-delivery-staff'>
-                <img onClick={() => setIsAdd(false)} className='add-admin-container-img' src={images.back_arrow} alt="" />
-                <div className='add-delivery-staff_title'>
-                    <p>Add Delivery Staff</p>
-                </div>
-                <form className='add-delivery-staff_input' onSubmit={onSubmitHandler}>
-                    <input
-                        onChange={onChangeHandler}
-                        value={data.name}
-                        type='text'
-                        name='name'
-                        required
-                        placeholder='name'
-                        ref={inputRef}
-                    />
-                    <input
-                        onChange={onChangeHandler}
-                        value={data.phone}
-                        type='text'
-                        name='phone'
-                        required
-                        placeholder='(888) 555-4800'
-                    />
-                    <input
-                        onChange={onChangeHandler}
-                        value={data.email}
-                        type='email'
-                        name='email'
-                        required
-                        placeholder='email@example.com'
-                    />
-                    <button type='submit'>Submit</button>
-                </form>
-            </div>
+  return (
+    <div className="centered-container">
+      <div className="add-delivery-staff-container">
+        <div
+          className="add-delivery-staff-container-icon"
+          onClick={() => setIsAdd(false)}
+        >
+          <i className="fas fa-arrow-left"></i>
         </div>
-    )
-}
+        <p className="add-delivery-staff-title">Add Delivery Staff</p>
+        <form onSubmit={handleSubmit} className="add-delivery-staff-form">
+          <div className="add-delivery-staff-group">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="add-delivery-staff-group">
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="add-delivery-staff-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="add-delivery-staff-group">
+            <input
+              type="text"
+              name="vehicleType"
+              placeholder="Vehicle Type"
+              value={formData.vehicleType}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="add-delivery-staff-working-areas">
+            <h3>Working Areas</h3>
+            {formData.workingAreas.map((area, index) => (
+              <div key={index} className="add-delivery-staff-working-area">
+                <div className="add-delivery-staff-group">
+                  <input
+                    type="text"
+                    name="district"
+                    placeholder="District"
+                    value={area.district}
+                    onChange={(e) => handleWorkingAreaChange(index, e)}
+                    required
+                  />
+                </div>
+                <div className="add-delivery-staff-group">
+                  <input
+                    type="text"
+                    name="ward"
+                    placeholder="Ward"
+                    value={area.ward}
+                    onChange={(e) => handleWorkingAreaChange(index, e)}
+                    required
+                  />
+                </div>
+                <div className="add-delivery-staff-group">
+                  <input
+                    type="text"
+                    name="province"
+                    placeholder="Province"
+                    value={area.province}
+                    onChange={(e) => handleWorkingAreaChange(index, e)}
+                    required
+                  />
+                </div>
+                {formData.workingAreas.length > 1 && (
+                  <button
+                    type="button"
+                    className="add-delivery-staff-remove-area-button"
+                    onClick={() => removeWorkingArea(index)}
+                  >
+                    Remove Area
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              className="add-delivery-staff-add-area-button"
+              onClick={addWorkingArea}
+            >
+              Add Another Area
+            </button>
+          </div>
+          <button type="submit" className="add-delivery-staff-submit-button">
+            Add Delivery Staff
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
-export default AddDeliveryStaff
+export default AddDeliveryStaff;

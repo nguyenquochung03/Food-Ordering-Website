@@ -34,6 +34,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin: 10px 0;
+  color: var(--color-main);
 }
 
 .add-admin_input {

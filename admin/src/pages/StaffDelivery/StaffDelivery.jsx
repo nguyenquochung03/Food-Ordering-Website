@@ -34,6 +34,7 @@ const StaffDelivery = ({ url, setIsLoading }) => {
         setLoading(false);
       } else {
         toast.error(response.data.message);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);

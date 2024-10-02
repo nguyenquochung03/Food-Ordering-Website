@@ -1,87 +1,177 @@
-.add-delivery-staff-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: start;
-  width: 100%;
-}
-
-.add-delivery-staff-container img {
-  width: 45px;
-  height: 45px;
-  cursor: pointer;
-  margin: 0 0 0 24px;
-}
-
-.add-delivery-staff {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  background-color: white;
-  padding: 2rem 2rem;
-  border-radius: 15px;
-}
-
-.add-delivery-staff_title {
+.centered-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 10px;
+  padding: 20px;
 }
 
-.add-delivery-staff_title p {
-  color: #666666;
-  font-size: 3rem;
+.add-delivery-staff-container {
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease;
+  max-width: 800px;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-delivery-staff-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.add-delivery-staff-container h2 {
+  font-size: 2.5rem;
+  color: #ff7e5f;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.add-delivery-staff-container-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #ff7e5f;
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+.add-delivery-staff-container-icon:hover {
+  color: #feb47b;
+}
+
+.add-delivery-staff-title {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 2rem 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-main);
+}
+
+.add-delivery-staff-message {
+  color: #ff7e5f;
+  margin-bottom: 20px;
+  text-align: center;
   font-weight: 600;
 }
 
-.add-delivery-staff_input {
-  margin: 60px 0 0 0;
+.add-delivery-staff-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
-.add-delivery-staff_input input {
-  width: 250px;
-  height: 35px;
-  border-radius: 5px;
-  padding: 0 15px;
-  font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
+.add-delivery-staff-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-delivery-staff-group label {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.add-delivery-staff-group input {
+  padding: 12px;
+  border: 1px solid #7e7b7b;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.add-delivery-staff-group input:focus {
+  border-color: #ff7e5f;
   outline: none;
 }
 
-.add-delivery-staff_input button {
-  width: 100px;
-  height: 35px;
-  border: none;
-  border-radius: 5px;
-  padding: 0 15px;
-  margin: 20px 0 0 0;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #666666;
+.add-delivery-staff-working-areas {
+  margin-top: 20px;
+}
+
+.add-delivery-staff-working-areas h3 {
+  margin: 0 0 10px 0;
+}
+
+.add-delivery-staff-working-area {
+  background: rgba(255, 126, 95, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.add-delivery-staff-working-area:hover {
+  transform: translateY(-2px);
+}
+
+.add-delivery-staff-remove-area-button,
+.add-delivery-staff-add-area-button,
+.add-delivery-staff-submit-button {
   color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 15px;
+  font-size: 1rem;
 }
 
-.add-delivery-staff_input button:hover {
-  background-color: rgb(128, 126, 126);
+.add-delivery-staff-submit-button {
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
 }
 
-.add-delivery-staff_input button:active {
-  background-color: #666666;
+.add-delivery-staff-remove-area-button {
+  background-color: #e53935;
 }
 
-@media (max-width: 450px) {
+.add-delivery-staff-add-area-button {
+  background-color: #feb47b;
+}
+
+.add-delivery-staff-add-area-button:hover {
+  background-color: #feb47b;
+  transform: scale(1.05);
+}
+
+.add-delivery-staff-remove-area-button:hover {
+  background-color: #d32f2f;
+}
+
+.add-delivery-staff-submit-button:hover {
+  background: linear-gradient(to left, #ff7e5f, #feb47b);
+}
+
+@media (max-width: 600px) {
   .add-delivery-staff-container {
-    flex-direction: column;
-    gap: 20px;
-    padding: 10px 10px;
+    margin: 30px 5%;
+    padding: 20px;
+  }
+
+  .add-delivery-staff-container h2 {
+    font-size: 2rem;
+  }
+
+  .add-delivery-staff-container-icon {
+    font-size: 1.5rem;
+  }
+
+  .add-delivery-staff-group label {
+    font-size: 1rem;
+  }
+
+  .add-delivery-staff-remove-area-button,
+  .add-delivery-staff-add-area-button,
+  .add-delivery-staff-submit-button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
   }
 }
