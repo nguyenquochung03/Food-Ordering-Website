@@ -12,123 +12,58 @@ const UpdateDeliveryStaff = ({
 }) => {
   const inputRef = useRef(null);
   const [formData, setFormData] = useState({
-    id: staffData.id || "",
-    name: staffData.name || "",
-    phone: staffData.phone || "",
-    email: staffData.email || "",
-    vehicleType: staffData.vehicleType || "",
-    workingAreas: staffData.workingAreas || [
-      { province: "", district: "", ward: "" },
+    name: "",
+    phone: "",
+    email: "",
+    vehicleType: "",
+    workingAreas: [
+      {
+        province: "",
+        district: "",
+        ward: "",
+        provinces: [],
+        districts: [],
+        wards: [],
+        provinceValue: "",
+        districtValue: "",
+        wardValue: "",
+      },
     ],
   });
-  const [provinces, setProvinces] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [wards, setWards] = useState([]);
 
-  const [selectedProvince, setSelectedProvince] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedWard, setSelectedWard] = useState("");
+  const [isNewWorkingAreaAdded, setIsNewWorkingAreaAdded] = useState(false);
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
+    if (staffData) {
+      setFormData(staffData);
+    }
+  }, [staffData]);
 
   useEffect(() => {
-    const fetchProvinces = async () => {
-      try {
-        const response = await axios.get(
-          "https://provinces.open-api.vn/api/p/"
-        );
-        setProvinces(response.data);
-      } catch (error) {
-        console.error("Error fetching provinces:", error);
+    if (isFirstLoading) {
+      if (formData.workingAreas.length > 0) {
+        formData.workingAreas.map((_, index) => {
+          fetchProvinces(index);
+        });
+        if (formData.name.length > 0) {
+          setIsFirstLoading(false);
+        }
       }
-    };
-    fetchProvinces();
-  }, []);
+    }
+    console.log(formData);
+  }, [formData]);
 
   useEffect(() => {
-    const fetchDistricts = async () => {
-      if (!selectedProvince) return;
-      try {
-        const response = await axios.get(
-          `https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`
-        );
-        setDistricts(response.data.districts);
-      } catch (error) {
-        console.error("Error fetching districts:", error);
-      }
-    };
-    fetchDistricts();
-  }, [selectedProvince]);
-
-  useEffect(() => {
-    const fetchWards = async () => {
-      if (!selectedDistrict) return;
-      try {
-        const response = await axios.get(
-          `https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`
-        );
-        setWards(response.data.wards);
-      } catch (error) {
-        console.error("Error fetching wards:", error);
-      }
-    };
-    fetchWards();
-  }, [selectedDistrict]);
-
-  const handleProvincesChange = (provinceCode, index) => {
-    if (provinces) {
-      const selectedProvince = provinces.find(
-        (province) => province.code.toString() === provinceCode
-      );
-
-      if (selectedProvince) {
-        const updatedWorkingAreas = [...formData.workingAreas];
-        updatedWorkingAreas[index] = {
-          ...updatedWorkingAreas[index],
-          province: selectedProvince.name,
-        };
-        setFormData({ ...formData, workingAreas: updatedWorkingAreas });
-      }
+    if (isNewWorkingAreaAdded) {
+      const lastIndex = formData.workingAreas.length - 1;
+      fetchProvinces(lastIndex);
+      setIsNewWorkingAreaAdded(false);
     }
-  };
-
-  const handleDistrictChange = (districtCode, index) => {
-    if (districts) {
-      const selectedDistrict = districts.find(
-        (district) => district.code.toString() === districtCode
-      );
-
-      if (selectedDistrict) {
-        const updatedWorkingAreas = [...formData.workingAreas];
-        updatedWorkingAreas[index] = {
-          ...updatedWorkingAreas[index],
-          district: selectedDistrict.name,
-        };
-        setFormData({ ...formData, workingAreas: updatedWorkingAreas });
-      }
-    }
-  };
-
-  const handleWardChange = (wardCode, index) => {
-    if (wards) {
-      const selectedWard = wards.find(
-        (ward) => ward.code.toString() === wardCode
-      );
-
-      if (selectedWard) {
-        const updatedWorkingAreas = [...formData.workingAreas];
-        updatedWorkingAreas[index] = {
-          ...updatedWorkingAreas[index],
-          ward: selectedWard.name,
-        };
-        setFormData({ ...formData, workingAreas: updatedWorkingAreas });
-      }
-    }
-  };
+  }, [isNewWorkingAreaAdded, formData.workingAreas]);
 
   const handleChange = (e) => {
     setFormData({
@@ -137,14 +72,68 @@ const UpdateDeliveryStaff = ({
     });
   };
 
+  const handleWorkingAreaChange = (index, e) => {
+    const newWorkingAreas = [...formData.workingAreas];
+    newWorkingAreas[index][e.target.name] = e.target.value;
+    setFormData({ ...formData, workingAreas: newWorkingAreas });
+    updateWorkingAreasValueWithIndex(index, e);
+  };
+
+  const updateWorkingAreasValueWithIndex = (index, e) => {
+    const newWorkingAreas = [...formData.workingAreas];
+    if (e.target.name === "province") {
+      const provinces = newWorkingAreas[index].provinces;
+      if (provinces) {
+        const selectedProvince = provinces.find(
+          (province) => province.code.toString() === e.target.value
+        );
+        if (selectedProvince) {
+          newWorkingAreas[index].provinceValue = selectedProvince.name;
+        }
+      }
+    } else if (e.target.name === "district") {
+      const districts = newWorkingAreas[index].districts;
+      if (districts) {
+        const selectedDistrict = districts.find(
+          (district) => district.code.toString() === e.target.value
+        );
+        if (selectedDistrict) {
+          newWorkingAreas[index].districtValue = selectedDistrict.name;
+        }
+      }
+    } else if (e.target.name === "ward") {
+      const wards = newWorkingAreas[index].wards;
+      if (wards) {
+        const selectedWard = wards.find(
+          (ward) => ward.code.toString() === e.target.value
+        );
+        if (selectedWard) {
+          newWorkingAreas[index].wardValue = selectedWard.name;
+        }
+      }
+    }
+    setFormData({ ...formData, workingAreas: newWorkingAreas });
+  };
+
   const addWorkingArea = () => {
-    setFormData({
-      ...formData,
-      workingAreas: [
-        ...formData.workingAreas,
-        { province: "", district: "", ward: "" },
-      ],
+    setFormData((prev) => {
+      const newWorkingArea = {
+        province: "",
+        district: "",
+        ward: "",
+        provinces: [],
+        districts: [],
+        wards: [],
+        provinceValue: "",
+        districtValue: "",
+        wardValue: "",
+      };
+      return {
+        ...prev,
+        workingAreas: [...prev.workingAreas, newWorkingArea],
+      };
     });
+    setIsNewWorkingAreaAdded(true);
   };
 
   const removeWorkingArea = (index) => {
@@ -152,24 +141,106 @@ const UpdateDeliveryStaff = ({
     setFormData({ ...formData, workingAreas: newWorkingAreas });
   };
 
+  const fetchProvinces = async (index) => {
+    try {
+      const response = await axios.get("https://provinces.open-api.vn/api/p");
+      setFormData((prevFormData) => {
+        const newWorkingAreas = [...prevFormData.workingAreas];
+        newWorkingAreas[index].provinces = response.data;
+        return {
+          ...prevFormData,
+          workingAreas: newWorkingAreas,
+        };
+      });
+    } catch (error) {
+      console.error("Error fetching provinces:", error);
+    }
+  };
+
+  const fetchDistricts = async (index) => {
+    const selectedProvince = formData.workingAreas[index].province;
+    if (!selectedProvince) return;
+
+    try {
+      const response = await axios.get(
+        `https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`
+      );
+      const newWorkingAreas = [...formData.workingAreas];
+      newWorkingAreas[index].districts = response.data.districts;
+      newWorkingAreas[index].district = "";
+      newWorkingAreas[index].ward = "";
+      setFormData({ ...formData, workingAreas: newWorkingAreas });
+    } catch (error) {
+      console.error("Error fetching districts:", error);
+    }
+  };
+
+  const fetchWards = async (index) => {
+    const selectedDistrict = formData.workingAreas[index].district;
+    if (!selectedDistrict) return;
+
+    try {
+      const response = await axios.get(
+        `https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`
+      );
+      const newWorkingAreas = [...formData.workingAreas];
+      newWorkingAreas[index].wards = response.data.wards;
+      newWorkingAreas[index].ward = "";
+      setFormData({ ...formData, workingAreas: newWorkingAreas });
+    } catch (error) {
+      console.error("Error fetching wards:", error);
+    }
+  };
+
+  const handleProvinceChange = (index, provinceCode) => {
+    handleWorkingAreaChange(index, {
+      target: { name: "province", value: provinceCode },
+    });
+    fetchDistricts(index);
+  };
+
+  const handleDistrictChange = (index, districtCode) => {
+    handleWorkingAreaChange(index, {
+      target: { name: "district", value: districtCode },
+    });
+    fetchWards(index);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const response = await axios.put(
-        `${url}/api/deliverystaff/update/${formData.id}`,
-        formData
+
+      const { workingAreas, ...data } = formData;
+      const workingAreasWithValues = workingAreas.map(
+        ({
+          provinceValue: province,
+          districtValue: district,
+          wardValue: ward,
+        }) => ({
+          province,
+          district,
+          ward,
+        })
+      );
+
+      const finalDataToSend = {
+        ...data,
+        workingAreas: workingAreasWithValues,
+      };
+
+      const response = await axios.pôst(
+        `${url}/api/deliverystaff/update`,
+        finalDataToSend
       );
       if (response.data.success) {
         fetchList();
-        toast.success("Update delivery staff successfully");
+        toast.success("Delivery staff updated successfully");
         setIsUpdate(false);
-      } else {
-        toast.error(response.data.message);
       }
     } catch (error) {
       console.error("Error updating delivery staff", error);
-      setIsLoading(false);
+      toast.error("An error occurred while updating delivery staff");
     } finally {
       setIsLoading(false);
     }
@@ -232,81 +303,80 @@ const UpdateDeliveryStaff = ({
               <div key={index} className="update-delivery-staff-working-area">
                 <div className="update-delivery-staff-group">
                   <select
-                    value={selectedProvince}
-                    onChange={(e) => {
-                      setSelectedProvince(e.target.value);
-                      setSelectedDistrict("");
-                      setSelectedWard("");
-                      handleProvincesChange(e.target.value, index);
-                    }}
+                    value={area.province}
+                    onChange={(e) =>
+                      handleProvinceChange(index, e.target.value)
+                    }
                     required
                   >
                     <option value="">Select Province/City</option>
-                    {provinces.map((province) => (
-                      <option key={province.code} value={province.code}>
-                        {province.name}
-                      </option>
-                    ))}
+                    {Array.isArray(area.provinces) &&
+                      area.provinces.map((province) => (
+                        <option key={province.code} value={province.code}>
+                          {province.name}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 <div className="update-delivery-staff-group">
                   <select
-                    value={selectedDistrict}
-                    onChange={(e) => {
-                      setSelectedDistrict(e.target.value);
-                      setSelectedWard("");
-                      handleDistrictChange(e.target.value, index);
-                    }}
-                    disabled={!selectedProvince}
+                    value={area.district}
+                    onChange={(e) =>
+                      handleDistrictChange(index, e.target.value)
+                    }
                     required
+                    disabled={!area.province}
                   >
                     <option value="">Select District</option>
-                    {districts.map((district) => (
-                      <option key={district.code} value={district.code}>
-                        {district.name}
-                      </option>
-                    ))}
+                    {Array.isArray(area.districts) &&
+                      area.districts.map((district) => (
+                        <option key={district.code} value={district.code}>
+                          {district.name}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 <div className="update-delivery-staff-group">
                   <select
-                    value={selectedWard}
-                    onChange={(e) => {
-                      setSelectedWard(e.target.value);
-                      handleWardChange(e.target.value, index);
-                    }}
-                    disabled={!selectedDistrict}
+                    value={area.ward}
+                    onChange={(e) =>
+                      handleWorkingAreaChange(index, {
+                        target: { name: "ward", value: e.target.value },
+                      })
+                    }
                     required
+                    disabled={!area.district}
                   >
                     <option value="">Select Ward</option>
-                    {wards.map((ward) => (
-                      <option key={ward.code} value={ward.code}>
-                        {ward.name}
-                      </option>
-                    ))}
+                    {Array.isArray(area.wards) &&
+                      area.wards.map((ward) => (
+                        <option key={ward.code} value={ward.code}>
+                          {ward.name}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 {formData.workingAreas.length > 1 && (
                   <button
                     type="button"
-                    onClick={() => removeWorkingArea(index)}
                     className="update-delivery-staff-remove-area-button"
+                    onClick={() => removeWorkingArea(index)}
                   >
-                    Remove
+                    Remove Area
                   </button>
                 )}
               </div>
             ))}
             <button
               type="button"
-              onClick={addWorkingArea}
               className="update-delivery-staff-add-area-button"
+              onClick={addWorkingArea}
             >
-              Add Working Area
+              Add Another Area
             </button>
           </div>
           <button type="submit" className="update-delivery-staff-submit-button">
-            Update Staff
+            Submit
           </button>
         </form>
       </div>

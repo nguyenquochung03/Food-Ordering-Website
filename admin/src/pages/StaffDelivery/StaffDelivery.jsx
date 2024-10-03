@@ -74,7 +74,17 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       email: item.email,
       vehicleType: item.vehicleType,
       workingAreas: item.workingAreas || [
-        { province: "", district: "", ward: "" },
+        {
+          province: "",
+          district: "",
+          ward: "",
+          provinces: [],
+          districts: [],
+          wards: [],
+          provinceValue: "",
+          districtValue: "",
+          wardValue: "",
+        },
       ],
     });
     setIsUpdate(true);

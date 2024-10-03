@@ -2,7 +2,7 @@ import deliveryStaffModel from "../models/deliveryStaffModel.js";
 
 const addDeliveryStaff = async (req, res) => {
   const { name, phone, email, vehicleType, workingAreas } = req.body;
-  console.log(req.body);
+
   if (
     !name ||
     !phone ||
