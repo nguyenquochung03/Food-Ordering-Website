@@ -35,6 +35,12 @@
   transform: translateY(-2px);
 }
 
+.list-delivery-staff-note {
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  color: #939090;
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -43,6 +49,7 @@
 .list-table {
   width: 100%;
   border-collapse: collapse;
+  margin: 10px 0 0 0;
 }
 
 .list-table-format {
@@ -69,6 +76,15 @@
   background-color: #f0f0f0;
   border-bottom: 2px solid #e0e0e0;
   padding: 8px;
+}
+
+.list-table-format p span {
+  color: var(--color-main);
+  cursor: pointer;
+}
+
+.list-table-format p span:hover {
+  text-decoration: underline;
 }
 
 .list-delivery-staff-action {

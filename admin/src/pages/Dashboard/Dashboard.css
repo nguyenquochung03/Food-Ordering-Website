@@ -201,7 +201,7 @@
 
 @media (max-width: 1120px) {
   .dashboard {
-    width: 90%;
+    width: 100%;
     padding: 1rem 1rem;
   }
 

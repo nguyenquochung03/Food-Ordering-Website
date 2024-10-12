@@ -231,9 +231,46 @@ const getNameDeliveryStaffFromOrderId = async (req, res) => {
   }
 };
 
+const getOrdersByStaff = async (req, res) => {
+  const { deliveryStaffId } = req.query;
+  try {
+    const staffOrders = await deliveryStaffOrderModel
+      .find({
+        deliveryStaffId,
+      })
+      .lean();
+
+    const orderIds = staffOrders.map((order) => order.orderId);
+
+    const orders = await orderModel.find({ _id: { $in: orderIds } }).lean();
+
+    const categorizedOrders = {
+      "In processing": [],
+      Delivered: [],
+      Cancelled: [],
+    };
+
+    orders.forEach((order) => {
+      if (order.status === "Out for delivery") {
+        categorizedOrders["In processing"].push(order);
+      } else if (order.status === "Delivered") {
+        categorizedOrders["Delivered"].push(order);
+      } else if (order.status === "Cancelled") {
+        categorizedOrders["Cancelled"].push(order);
+      }
+    });
+
+    res.json({ success: true, data: categorizedOrders });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.json({ success: false, message: "Error fetching orders" });
+  }
+};
+
 export {
   setDeliveryStaffOrder,
   confirmOrderDeliveredSuccessfully,
   confirmOrderDelivered,
   getNameDeliveryStaffFromOrderId,
+  getOrdersByStaff,
 };

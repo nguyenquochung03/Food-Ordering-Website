@@ -8,7 +8,6 @@ const deliveryStaffSchema = new mongoose.Schema({
   workingAreas: [
     {
       district: { type: String, required: true },
-      ward: { type: String, required: true },
       province: { type: String, required: true },
     },
   ],
@@ -18,17 +17,6 @@ const deliveryStaffSchema = new mongoose.Schema({
     enum: ["active", "inactive", "on-leave"],
     default: "active",
   },
-
-  deliveredOrders: [
-    {
-      orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
-      deliveryStatus: {
-        type: String,
-        enum: ["success", "failed", "in-progress"],
-        required: true,
-      },
-    },
-  ],
 });
 
 const deliveryStaffModel =

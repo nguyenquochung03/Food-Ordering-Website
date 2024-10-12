@@ -18,7 +18,6 @@ const RecentReviews = ({ setIsLoading, selectedMonth, url }) => {
   }, [selectedMonth]);
 
   useEffect(() => {
-    console.log(recentReviews);
     const posReviews = recentReviews.filter((data) => data.rating > 3);
     const negReviews = recentReviews.filter(
       (data) => data.rating <= 3 && data.parentId === "none"

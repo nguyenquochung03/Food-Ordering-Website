@@ -6,13 +6,23 @@ import AddDeliveryStaff from "../../components/DeliveryStaff/AddDeliveryStaff/Ad
 import UpdateDeliveryStaff from "../../components/DeliveryStaff/UpdateDeliveryStaff/UpdateDeliveryStaff";
 import SkeletonLoadingListAdd from "../../components/SkeletonLoading/SkeletonLoadingListAdd/SkeletonLoadingListAdd";
 import NormalPagination from "../../components/Pagination/NormalPagination/NormalPagination";
+import ViewDetailDeliveryStaff from "../../components/DeliveryStaff/ViewDetailDeliveryStaff/ViewDetailDeliveryStaff";
 
 const StaffDelivery = ({ url, setIsLoading }) => {
   const [listDeliveryStaff, setListDeliveryStaff] = useState([]);
   const [filterListDeliveryStaff, setFilterListDeliveryStaff] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const [isViewDetail, setIsViewDetail] = useState(false);
   const [dataUpdate, setDataUpdate] = useState({
+    id: "",
+    name: "",
+    phone: "",
+    email: "",
+    vehicleType: "",
+    workingAreas: [],
+  });
+  const [dataDetail, setDataDetail] = useState({
     id: "",
     name: "",
     phone: "",
@@ -31,7 +41,7 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       const response = await axios.get(`${url}/api/deliveryStaff/getAll`);
       if (response.data.success) {
         setListDeliveryStaff(response.data.data);
-        setFilterListDeliveryStaff(response.data.data); // Ensure the filter list is populated
+        setFilterListDeliveryStaff(response.data.data);
         setLoading(false);
       } else {
         toast.error(response.data.message);
@@ -77,17 +87,32 @@ const StaffDelivery = ({ url, setIsLoading }) => {
         {
           province: "",
           district: "",
-          ward: "",
           provinces: [],
           districts: [],
-          wards: [],
           provinceValue: "",
           districtValue: "",
-          wardValue: "",
         },
       ],
     });
     setIsUpdate(true);
+  };
+
+  const onViewDetailDeliveryStaffHandler = (item) => {
+    setDataDetail({
+      id: item._id,
+      name: item.name,
+      phone: item.phone,
+      email: item.email,
+      vehicleType: item.vehicleType,
+      workingAreas: item.workingAreas || [
+        {
+          province: "",
+          district: "",
+        },
+      ],
+      status: item.status,
+    });
+    setIsViewDetail(true);
   };
 
   return (
@@ -109,6 +134,13 @@ const StaffDelivery = ({ url, setIsLoading }) => {
           fetchList={fetchList}
           staffData={dataUpdate}
         />
+      ) : isViewDetail ? (
+        <ViewDetailDeliveryStaff
+          url={url}
+          setIsViewDetail={setIsViewDetail}
+          setIsLoading={setIsLoading}
+          staffData={dataDetail}
+        />
       ) : (
         <div className="list-delivery-staff">
           <div
@@ -124,6 +156,9 @@ const StaffDelivery = ({ url, setIsLoading }) => {
               Add
             </button>
           </div>
+          <span className="list-delivery-staff-note">
+            Click on the delivery staff to view details
+          </span>
           <div className="flex-col">
             <div className="list-table">
               <div className="list-table-format title">
@@ -134,9 +169,16 @@ const StaffDelivery = ({ url, setIsLoading }) => {
               </div>
               {filterListDeliveryStaff.map((item, index) => (
                 <div key={index} className="list-table-format">
-                  <p>{item.name}</p>
+                  <p>
+                    <span
+                      title="Click to view detail"
+                      onClick={() => onViewDetailDeliveryStaffHandler(item)}
+                    >
+                      {item.name}
+                    </span>
+                  </p>
                   <p>{item.phone}</p>
-                  <p>{item.vehicleType}</p> {/* Use vehicleType here */}
+                  <p>{item.vehicleType}</p>
                   <div className="list-delivery-staff-action">
                     <button
                       onClick={() => updateDeliveryStaff(item)}

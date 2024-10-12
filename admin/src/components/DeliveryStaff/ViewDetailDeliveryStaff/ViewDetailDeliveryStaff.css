@@ -1,0 +1,169 @@
+/* Container chính */
+.view-detail-container {
+  max-width: 700px;
+  margin: 10px auto 10px;
+  padding: 30px;
+  background-color: #f9f9f9;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Header */
+.view-detail-container .header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.view-detail-container .header h2 {
+  color: #ff7e5f;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 auto;
+  position: relative;
+}
+
+.view-detail-container .back-icon {
+  font-size: 1.8rem;
+  color: #ff7e5f;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.view-detail-container .back-icon:hover {
+  color: #feb47b;
+}
+
+/* Phần thông tin nhân viên */
+.view-detail-container .staff-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.view-detail-container .staff-field {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+  color: #4a4a4a;
+}
+
+.view-detail-container .staff-field strong {
+  color: #ff7e5f;
+}
+
+/* Khu vực làm việc */
+.view-detail-container .working-areas {
+  margin-top: 20px;
+}
+
+.view-detail-container .working-areas h4 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #feb47b;
+  font-weight: 600;
+}
+
+.view-detail-container .working-area-item {
+  background-color: #ffede8;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.view-detail-container .working-area-item p {
+  margin: 6px 0;
+  color: #333;
+}
+
+/* Các trạng thái */
+.view-detail-container .staff-field span {
+  font-weight: normal;
+  color: #4a4a4a;
+}
+
+@media (max-width: 600px) {
+  .view-detail-container {
+    margin: 30px 10px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .view-detail-container .header h2 {
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .view-detail-container .staff-info {
+    gap: 15px;
+  }
+
+  .view-detail-container .staff-field {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1rem;
+    padding-bottom: 8px;
+  }
+
+  .view-detail-container .staff-field strong {
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+
+  .view-detail-container .staff-field span {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  .view-detail-container .working-areas h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .view-detail-container .working-area-item {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .view-detail-container .back-icon {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .view-detail-container {
+    padding: 10px;
+    margin: 20px 5px;
+  }
+
+  .view-detail-container .header h2 {
+    font-size: 1.2rem;
+  }
+
+  .view-detail-container .staff-info {
+    gap: 10px;
+  }
+
+  .view-detail-container .staff-field {
+    font-size: 0.9rem;
+    padding-bottom: 6px;
+  }
+
+  .view-detail-container .working-areas h4 {
+    font-size: 1.1rem;
+  }
+
+  .view-detail-container .working-area-item {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .view-detail-container .back-icon {
+    font-size: 1.2rem;
+  }
+}

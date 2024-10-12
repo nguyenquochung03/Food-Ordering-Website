@@ -20,19 +20,16 @@ const UpdateDeliveryStaff = ({
       {
         province: "",
         district: "",
-        ward: "",
         provinces: [],
         districts: [],
-        wards: [],
         provinceValue: "",
         districtValue: "",
-        wardValue: "",
       },
     ],
   });
 
-  const [isNewWorkingAreaAdded, setIsNewWorkingAreaAdded] = useState(false);
   const [isFirstLoading, setIsFirstLoading] = useState(true);
+  const [isNewWorkingAreaAdded, setIsNewWorkingAreaAdded] = useState(false);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -44,18 +41,60 @@ const UpdateDeliveryStaff = ({
   }, [staffData]);
 
   useEffect(() => {
-    if (isFirstLoading) {
-      if (formData.workingAreas.length > 0) {
-        formData.workingAreas.map((_, index) => {
-          fetchProvinces(index);
-        });
-        if (formData.name.length > 0) {
-          setIsFirstLoading(false);
-        }
+    const fetchProvincesAndDistricts = async () => {
+      try {
+        const response = await axios.get("https://provinces.open-api.vn/api/p");
+        const provincesData = response.data;
+
+        const newWorkingAreas = await Promise.all(
+          formData.workingAreas.map(async (area) => {
+            area.provinces = provincesData;
+
+            const matchedProvince = provincesData.find(
+              (res) => res.name === area.province
+            );
+
+            if (matchedProvince) {
+              area.province = matchedProvince.code;
+              area.provinceValue = matchedProvince.name;
+
+              if (typeof matchedProvince.code === "number") {
+                const districtResponse = await axios.get(
+                  `https://provinces.open-api.vn/api/p/${matchedProvince.code}?depth=2`
+                );
+
+                area.districts = districtResponse.data.districts;
+
+                const matchedDistrict = area.districts.find(
+                  (data) => area.district === data.name
+                );
+
+                if (matchedDistrict) {
+                  area.district = matchedDistrict.code;
+                  area.districtValue = matchedDistrict.name;
+                }
+              }
+            }
+
+            return area;
+          })
+        );
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          workingAreas: newWorkingAreas,
+        }));
+      } catch (error) {
+        console.error("Error in fetching data:", error);
       }
+    };
+
+    if (isFirstLoading && formData.workingAreas.length > 0) {
+      fetchProvincesAndDistricts().then(() => {
+        setIsFirstLoading(false);
+      });
     }
-    console.log(formData);
-  }, [formData]);
+  }, [formData.workingAreas, isFirstLoading]);
 
   useEffect(() => {
     if (isNewWorkingAreaAdded) {
@@ -81,6 +120,7 @@ const UpdateDeliveryStaff = ({
 
   const updateWorkingAreasValueWithIndex = (index, e) => {
     const newWorkingAreas = [...formData.workingAreas];
+
     if (e.target.name === "province") {
       const provinces = newWorkingAreas[index].provinces;
       if (provinces) {
@@ -101,17 +141,8 @@ const UpdateDeliveryStaff = ({
           newWorkingAreas[index].districtValue = selectedDistrict.name;
         }
       }
-    } else if (e.target.name === "ward") {
-      const wards = newWorkingAreas[index].wards;
-      if (wards) {
-        const selectedWard = wards.find(
-          (ward) => ward.code.toString() === e.target.value
-        );
-        if (selectedWard) {
-          newWorkingAreas[index].wardValue = selectedWard.name;
-        }
-      }
     }
+
     setFormData({ ...formData, workingAreas: newWorkingAreas });
   };
 
@@ -120,13 +151,10 @@ const UpdateDeliveryStaff = ({
       const newWorkingArea = {
         province: "",
         district: "",
-        ward: "",
         provinces: [],
         districts: [],
-        wards: [],
         provinceValue: "",
         districtValue: "",
-        wardValue: "",
       };
       return {
         ...prev,
@@ -165,30 +193,14 @@ const UpdateDeliveryStaff = ({
       const response = await axios.get(
         `https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`
       );
-      const newWorkingAreas = [...formData.workingAreas];
-      newWorkingAreas[index].districts = response.data.districts;
-      newWorkingAreas[index].district = "";
-      newWorkingAreas[index].ward = "";
-      setFormData({ ...formData, workingAreas: newWorkingAreas });
+      setFormData((prevFormData) => {
+        const newWorkingAreas = [...prevFormData.workingAreas];
+        newWorkingAreas[index].districts = response.data.districts;
+        newWorkingAreas[index].district = "";
+        return { ...prevFormData, workingAreas: newWorkingAreas };
+      });
     } catch (error) {
       console.error("Error fetching districts:", error);
-    }
-  };
-
-  const fetchWards = async (index) => {
-    const selectedDistrict = formData.workingAreas[index].district;
-    if (!selectedDistrict) return;
-
-    try {
-      const response = await axios.get(
-        `https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`
-      );
-      const newWorkingAreas = [...formData.workingAreas];
-      newWorkingAreas[index].wards = response.data.wards;
-      newWorkingAreas[index].ward = "";
-      setFormData({ ...formData, workingAreas: newWorkingAreas });
-    } catch (error) {
-      console.error("Error fetching wards:", error);
     }
   };
 
@@ -203,7 +215,6 @@ const UpdateDeliveryStaff = ({
     handleWorkingAreaChange(index, {
       target: { name: "district", value: districtCode },
     });
-    fetchWards(index);
   };
 
   const handleSubmit = async (e) => {
@@ -212,15 +223,41 @@ const UpdateDeliveryStaff = ({
       setIsLoading(true);
 
       const { workingAreas, ...data } = formData;
+
+      const checkDuplicateProvinceDistrict = () => {
+        const seen = new Map();
+
+        for (const area of workingAreas) {
+          const { provinceValue: province, districtValue: district } = area;
+
+          if (!seen.has(province)) {
+            seen.set(province, new Set([district]));
+          } else {
+            if (seen.get(province).has(district)) {
+              return { isDuplicate: true, province, district };
+            } else {
+              seen.get(province).add(district);
+            }
+          }
+        }
+        return { isDuplicate: false };
+      };
+
+      const { isDuplicate, province, district } =
+        checkDuplicateProvinceDistrict();
+
+      if (isDuplicate) {
+        toast.error(
+          `The working area has duplicate districts: ${district} in province: ${province}`
+        );
+        setIsLoading(false);
+        return;
+      }
+
       const workingAreasWithValues = workingAreas.map(
-        ({
-          provinceValue: province,
-          districtValue: district,
-          wardValue: ward,
-        }) => ({
+        ({ provinceValue: province, districtValue: district }) => ({
           province,
           district,
-          ward,
         })
       );
 
@@ -229,11 +266,27 @@ const UpdateDeliveryStaff = ({
         workingAreas: workingAreasWithValues,
       };
 
-      const response = await axios.pôst(
+      const response = await axios.post(
         `${url}/api/deliverystaff/update`,
         finalDataToSend
       );
       if (response.data.success) {
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          vehicleType: "",
+          workingAreas: [
+            {
+              province: "",
+              district: "",
+              provinces: [],
+              districts: [],
+              provinceValue: "",
+              districtValue: "",
+            },
+          ],
+        });
         fetchList();
         toast.success("Delivery staff updated successfully");
         setIsUpdate(false);
@@ -332,26 +385,6 @@ const UpdateDeliveryStaff = ({
                       area.districts.map((district) => (
                         <option key={district.code} value={district.code}>
                           {district.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                <div className="update-delivery-staff-group">
-                  <select
-                    value={area.ward}
-                    onChange={(e) =>
-                      handleWorkingAreaChange(index, {
-                        target: { name: "ward", value: e.target.value },
-                      })
-                    }
-                    required
-                    disabled={!area.district}
-                  >
-                    <option value="">Select Ward</option>
-                    {Array.isArray(area.wards) &&
-                      area.wards.map((ward) => (
-                        <option key={ward.code} value={ward.code}>
-                          {ward.name}
                         </option>
                       ))}
                   </select>

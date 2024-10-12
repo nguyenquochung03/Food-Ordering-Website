@@ -14,13 +14,10 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
       {
         province: "",
         district: "",
-        ward: "",
         provinces: [],
         districts: [],
-        wards: [],
         provinceValue: "",
         districtValue: "",
-        wardValue: "",
       },
     ],
   });
@@ -82,17 +79,6 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
           newWorkingAreas[index].districtValue = selectedDistrict.name;
         }
       }
-    } else if (e.target.name === "ward") {
-      const wards = newWorkingAreas[index].wards;
-      if (wards) {
-        const selectedWard = wards.find(
-          (ward) => ward.code.toString() === e.target.value
-        );
-
-        if (selectedWard) {
-          newWorkingAreas[index].wardValue = selectedWard.name;
-        }
-      }
     }
 
     setFormData({ ...formData, workingAreas: newWorkingAreas });
@@ -103,13 +89,10 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
       const newWorkingArea = {
         province: "",
         district: "",
-        ward: "",
         provinces: [],
         districts: [],
-        wards: [],
         provinceValue: "",
         districtValue: "",
-        wardValue: "",
       };
       return {
         ...prev,
@@ -153,23 +136,6 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
     }
   };
 
-  const fetchWards = async (index) => {
-    const selectedDistrict = formData.workingAreas[index].district;
-    if (!selectedDistrict) return;
-
-    try {
-      const response = await axios.get(
-        `https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`
-      );
-      const newWorkingAreas = [...formData.workingAreas];
-      newWorkingAreas[index].wards = response.data.wards;
-      newWorkingAreas[index].ward = ""; // Reset ward
-      setFormData({ ...formData, workingAreas: newWorkingAreas });
-    } catch (error) {
-      console.error("Error fetching wards:", error);
-    }
-  };
-
   const handleProvinceChange = (index, provinceCode) => {
     handleWorkingAreaChange(index, {
       target: { name: "province", value: provinceCode },
@@ -181,7 +147,6 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
     handleWorkingAreaChange(index, {
       target: { name: "district", value: districtCode },
     });
-    fetchWards(index);
   };
 
   const handleSubmit = async (e) => {
@@ -190,15 +155,41 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
       setIsLoading(true);
 
       const { workingAreas, ...data } = formData;
+
+      const checkDuplicateProvinceDistrict = () => {
+        const seen = new Map(); // Lưu trữ các cặp { provinceValue: [districtValues] }
+
+        for (const area of workingAreas) {
+          const { provinceValue: province, districtValue: district } = area;
+
+          if (!seen.has(province)) {
+            seen.set(province, new Set([district]));
+          } else {
+            if (seen.get(province).has(district)) {
+              return { isDuplicate: true, province, district };
+            } else {
+              seen.get(province).add(district);
+            }
+          }
+        }
+        return { isDuplicate: false };
+      };
+
+      const { isDuplicate, province, district } =
+        checkDuplicateProvinceDistrict();
+
+      if (isDuplicate) {
+        toast.error(
+          `The working area has duplicate districts: ${district} in province: ${province}`
+        );
+        setIsLoading(false);
+        return;
+      }
+
       const workingAreasWithValues = workingAreas.map(
-        ({
-          provinceValue: province,
-          districtValue: district,
-          wardValue: ward,
-        }) => ({
+        ({ provinceValue: province, districtValue: district }) => ({
           province,
           district,
-          ward,
         })
       );
 
@@ -221,22 +212,19 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
             {
               province: "",
               district: "",
-              ward: "",
               provinces: [],
               districts: [],
-              wards: [],
               provinceValue: "",
               districtValue: "",
-              wardValue: "",
             },
           ],
         });
         fetchList();
-        toast.success("Add new delivery staff successfully");
+        toast.success("Successfully added new delivery staff");
       }
     } catch (error) {
-      console.error("Error adding delivery staff", error);
-      toast.error("An error occurred while adding delivery staff");
+      console.error("Error when adding delivery staff", error);
+      toast.error("An error occurred while adding a delivery person");
     } finally {
       setIsLoading(false);
     }
@@ -313,6 +301,7 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
                     ))}
                   </select>
                 </div>
+
                 <div className="add-delivery-staff-group">
                   <select
                     value={area.district}
@@ -330,25 +319,7 @@ const AddDeliveryStaff = ({ url, setIsAdd, setIsLoading, fetchList }) => {
                     ))}
                   </select>
                 </div>
-                <div className="add-delivery-staff-group">
-                  <select
-                    value={area.ward}
-                    onChange={(e) =>
-                      handleWorkingAreaChange(index, {
-                        target: { name: "ward", value: e.target.value },
-                      })
-                    }
-                    required
-                    disabled={!area.district}
-                  >
-                    <option value="">Select Ward</option>
-                    {area.wards.map((ward) => (
-                      <option key={ward.code} value={ward.code}>
-                        {ward.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+
                 {formData.workingAreas.length > 1 && (
                   <button
                     type="button"
