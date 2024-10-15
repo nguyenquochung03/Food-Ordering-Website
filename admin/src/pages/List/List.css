@@ -1,4 +1,4 @@
-.list-food {
+.list-food-container {
   box-sizing: border-box;
   background-color: white;
   padding: 20px;
@@ -189,22 +189,6 @@
 }
 
 .list-table-status {
-  height: 30px;
-  font-size: 14px;
-  border-radius: 8px;
-  padding: 0 10px;
-  border: 1px solid #cacaca;
-  background-color: #ffffff;
-  transition: all 0.3s ease;
-}
-
-.list-table-status:hover,
-.list-table-status:focus {
-  border-color: #ff7e5f;
-  box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
-}
-
-.list-table-status {
   appearance: none;
   background-color: #f4f6f8;
   padding: 5px 10px;
@@ -216,12 +200,8 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 10px;
-}
-
-.list-table-status:hover,
-.list-table-status:focus {
-  border-color: #ff7e5f;
-  box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
+  outline: none;
+  margin: 0 !important;
 }
 
 @media (max-width: 900px) {
@@ -247,5 +227,23 @@
 
   .list-food .list-table-format .title {
     display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .list-food-add {
+    width: 100%;
+  }
+
+  .list-food-add button {
+    width: 100%;
+  }
+
+  .list-food .list-table-format-action {
+    width: 100%;
+  }
+
+  .list-food .list-table-format-action button {
+    width: 100%;
   }
 }

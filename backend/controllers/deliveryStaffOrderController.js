@@ -191,6 +191,8 @@ const confirmOrderDelivered = async (req, res) => {
       await handleOrderMail("Cancelled", order);
     }
 
+    await checkAndUpdateDeliveryStaffStatus(order._id);
+
     res.render("confirmOrderDelivered", {
       success: true,
       message: "Confirm order delivered",
@@ -264,6 +266,63 @@ const getOrdersByStaff = async (req, res) => {
   } catch (error) {
     console.error("Error fetching orders:", error);
     res.json({ success: false, message: "Error fetching orders" });
+  }
+};
+
+const updateDeliveryStaffStatusWithoutResponse = async (staffId, newStatus) => {
+  try {
+    const validStatuses = ["active", "inactive", "busy"];
+    if (!validStatuses.includes(newStatus)) {
+      throw new Error("Invalid status value");
+    }
+
+    const updatedStaff = await deliveryStaffModel.findByIdAndUpdate(
+      staffId,
+      { status: newStatus },
+      { new: true }
+    );
+
+    if (!updatedStaff) {
+      throw new Error("Staff not found");
+    }
+
+    return {
+      success: true,
+      data: updatedStaff,
+      message: "Updated staff status successfully",
+    };
+  } catch (error) {
+    console.log(`Error updating staff status: ${error.message}`);
+    return { success: false, message: "Error updating staff status" };
+  }
+};
+
+const checkAndUpdateDeliveryStaffStatus = async (orderId) => {
+  const deliveryStaffOrders = await deliveryStaffOrderModel.find({ orderId });
+
+  const hasOutForDelivery = await Promise.all(
+    deliveryStaffOrders.map(async (staffOrder) => {
+      const staffId = staffOrder.deliveryStaffId;
+      const staffOrders = await deliveryStaffOrderModel.find({
+        deliveryStaffId: staffId,
+      });
+
+      const results = await Promise.all(
+        staffOrders.map(async (staffOrder) => {
+          const order = await orderModel.findById(staffOrder.orderId);
+          return order && order.status === "Out for delivery";
+        })
+      );
+
+      return results.some((status) => status === true);
+    })
+  );
+
+  if (!hasOutForDelivery.includes(true)) {
+    const staffId = deliveryStaffOrders[0]?.deliveryStaffId;
+    if (staffId) {
+      await updateDeliveryStaffStatusWithoutResponse(staffId, "active");
+    }
   }
 };
 

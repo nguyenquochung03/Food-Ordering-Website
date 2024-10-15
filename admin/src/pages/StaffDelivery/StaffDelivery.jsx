@@ -29,6 +29,7 @@ const StaffDelivery = ({ url, setIsLoading }) => {
     email: "",
     vehicleType: "",
     workingAreas: [],
+    status: "",
   });
   const [loading, setLoading] = useState(true);
 
@@ -54,16 +55,42 @@ const StaffDelivery = ({ url, setIsLoading }) => {
     }
   };
 
+  const handleStatusChange = async (id, status) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.put(
+        `${url}/api/deliveryStaff/updateDeliveryStaffStatus`,
+        {
+          staffId: id,
+          newStatus: status,
+        }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while updating staff status.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const removeDeliveryStaff = async (id) => {
     if (window.confirm("Are you sure you want to delete this staff?")) {
       try {
         setIsLoading(true);
-        const response = await axios.post(`${url}/api/deliveryStaff/delete/`, {
-          id,
-        });
-        await fetchList();
+        const response = await axios.delete(
+          `${url}/api/deliveryStaff/delete/`,
+          {
+            data: { id },
+          }
+        );
         if (response.data.success) {
           toast.success(response.data.message);
+          fetchList();
         } else {
           toast.error(response.data.message);
         }
@@ -77,13 +104,15 @@ const StaffDelivery = ({ url, setIsLoading }) => {
   };
 
   const updateDeliveryStaff = (item) => {
+    const clonedItem = { ...item };
+
     setDataUpdate({
-      id: item._id,
-      name: item.name,
-      phone: item.phone,
-      email: item.email,
-      vehicleType: item.vehicleType,
-      workingAreas: item.workingAreas || [
+      id: clonedItem._id,
+      name: clonedItem.name,
+      phone: clonedItem.phone,
+      email: clonedItem.email,
+      vehicleType: clonedItem.vehicleType,
+      workingAreas: clonedItem.workingAreas || [
         {
           province: "",
           district: "",
@@ -94,24 +123,28 @@ const StaffDelivery = ({ url, setIsLoading }) => {
         },
       ],
     });
+
     setIsUpdate(true);
   };
 
   const onViewDetailDeliveryStaffHandler = (item) => {
+    const clonedItem = { ...item };
+
     setDataDetail({
-      id: item._id,
-      name: item.name,
-      phone: item.phone,
-      email: item.email,
-      vehicleType: item.vehicleType,
-      workingAreas: item.workingAreas || [
+      id: clonedItem._id,
+      name: clonedItem.name,
+      phone: clonedItem.phone,
+      email: clonedItem.email,
+      vehicleType: clonedItem.vehicleType,
+      workingAreas: clonedItem.workingAreas || [
         {
           province: "",
           district: "",
         },
       ],
-      status: item.status,
+      status: clonedItem.status,
     });
+
     setIsViewDetail(true);
   };
 
@@ -139,12 +172,12 @@ const StaffDelivery = ({ url, setIsLoading }) => {
           url={url}
           setIsViewDetail={setIsViewDetail}
           setIsLoading={setIsLoading}
-          staffData={dataDetail}
+          dataDetail={dataDetail}
         />
       ) : (
-        <div className="list-delivery-staff">
+        <div className="delivery-staff-list">
           <div
-            className="list-delivery-staff_add"
+            className="delivery-staff-list_add"
             title="Add new Delivery Staff"
           >
             <button
@@ -156,19 +189,20 @@ const StaffDelivery = ({ url, setIsLoading }) => {
               Add
             </button>
           </div>
-          <span className="list-delivery-staff-note">
+          <span className="delivery-staff-list-note">
             Click on the delivery staff to view details
           </span>
-          <div className="flex-col">
-            <div className="list-table">
-              <div className="list-table-format title">
+          <div className="delivery-staff-flex-col">
+            <div className="delivery-staff-table">
+              <div className="delivery-staff-table-format title">
                 <b>Name</b>
                 <b>Phone</b>
                 <b>Vehicle</b>
+                <b>Status</b>
                 <b>Action</b>
               </div>
               {filterListDeliveryStaff.map((item, index) => (
-                <div key={index} className="list-table-format">
+                <div key={index} className="delivery-staff-table-format">
                   <p>
                     <span
                       title="Click to view detail"
@@ -179,7 +213,18 @@ const StaffDelivery = ({ url, setIsLoading }) => {
                   </p>
                   <p>{item.phone}</p>
                   <p>{item.vehicleType}</p>
-                  <div className="list-delivery-staff-action">
+                  <div className="delivery-staff-status">
+                    <select
+                      value={item.status}
+                      onChange={(e) =>
+                        handleStatusChange(item._id, e.target.value)
+                      }
+                    >
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <div className="delivery-staff-action">
                     <button
                       onClick={() => updateDeliveryStaff(item)}
                       className="edit"

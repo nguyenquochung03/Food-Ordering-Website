@@ -13,25 +13,28 @@
 .order-fetch-data {
   margin-bottom: 20px;
   text-align: center;
+  width: fit-content;
 }
 
 .order-fetch-data button {
-  padding: 12px 20px;
-  background-color: #ff7e5f;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #ff7e5f;
+  border: 2px solid #ff7e5f;
+  border-radius: 50px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .order-fetch-data button:hover {
-  background-color: #feb47b;
+  color: #feb47b;
+  border-color: #feb47b;
   transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(255, 126, 95, 0.5);
 }
 
 .order-fetch-data button i {
@@ -47,6 +50,7 @@
 }
 
 .order-status button {
+  width: 100%;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -70,7 +74,7 @@
   margin-top: 20px;
 }
 
-.order-item {
+.order-items {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr 0.8fr;
   align-items: flex-start;
@@ -83,11 +87,11 @@
   gap: 10px;
 }
 
-.order-item:hover {
+.order-items:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.order-item .flex-col {
+.order-items .flex-col {
   display: flex;
   flex-direction: column;
 }
@@ -105,7 +109,7 @@
 }
 
 .order-item-address p,
-.order-item p {
+.order-items p {
   margin: 5px 0;
   color: #666;
 }
@@ -121,7 +125,8 @@
   gap: 10px;
 }
 
-.order-item-receive-deny-order button {
+.order-item-receive-deny-order button,
+.order-item_name-delivery-staff button {
   padding: 10px 15px;
   color: #fff;
   border: none;
@@ -130,20 +135,24 @@
   transition: background-color 0.3s;
 }
 
-.order-item-receive-deny-order button.receive {
+.order-item-receive-deny-order button.receive,
+.order-item_name-delivery-staff button.delivered {
   background-color: #ff7e5f;
 }
 
-.order-item-receive-deny-order button.deny {
+.order-item-receive-deny-order button.deny,
+.order-item_name-delivery-staff button.deny {
   background-color: #e53935;
 }
 
-.order-item-receive-deny-order button:hover.receive {
+.order-item-receive-deny-order button:hover.receive,
+.order-item_name-delivery-staff button:hover.delivered {
   background-color: #ff8a65;
   transform: translateY(-2px);
 }
 
-.order-item-receive-deny-order button:hover.deny {
+.order-item-receive-deny-order button:hover.deny,
+.order-item_name-delivery-staff button:hover.deny {
   background-color: #ef5350;
   transform: translateY(-2px);
 }
@@ -154,7 +163,7 @@
   gap: 10px;
 }
 
-.order-item_name-delivery-staff button {
+.order-item_name-delivery-staff .print-button {
   padding: 10px 15px;
   background-color: #17a2b8;
   color: #fff;
@@ -164,7 +173,7 @@
   transition: background-color 0.3s;
 }
 
-.order-item_name-delivery-staff button:hover {
+.order-item_name-delivery-staff .print-button:hover {
   background-color: #138496;
 }
 
@@ -222,11 +231,19 @@
 }
 
 .complete-processing-button:active {
-  background-color: #1e7e34;
+  background-color: #ff7e5f;
 }
 
-@media (max-width: 768px) {
-  .order-item {
+@media (max-width: 760px) {
+  .order-fetch-data {
+    width: 100%;
+  }
+
+  .order-fetch-data button {
+    width: 100%;
+  }
+  .order-items {
+    display: grid;
     grid-template-columns: 1fr;
     text-align: left;
     gap: 15px;
@@ -236,6 +253,11 @@
   .order-item_name-delivery-staff {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .order-item-receive-deny-order button,
+  .order-item_name-delivery-staff button {
+    width: 100%;
   }
 
   .order-status {

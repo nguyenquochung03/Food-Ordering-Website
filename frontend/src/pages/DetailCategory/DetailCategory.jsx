@@ -130,13 +130,6 @@ const DetailCategory = ({ setIsLoading, setShowLogin }) => {
     };
 
     setRatingPercentages(ratingPercentages);
-    {
-      /* END get percentage rating for each rating from 1 to 5 */
-    }
-
-    {
-      /* End get rating */
-    }
     setIsLoading(false);
   }, [commentsData]);
 
@@ -518,7 +511,7 @@ const DetailCategory = ({ setIsLoading, setShowLogin }) => {
                 }}
               />
             </div>
-            {!cartItems[id] ? (
+            {cartItems && !cartItems[id] ? (
               <div className="detail-category_add-to-cart-add">
                 <button onClick={() => onAddToCartHandler(numberInCart)}>
                   <img src={images.shopping_cart} alt="" />

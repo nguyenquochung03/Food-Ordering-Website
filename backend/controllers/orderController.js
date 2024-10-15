@@ -156,6 +156,63 @@ const listStatusOrders = async (req, res) => {
   }
 };
 
+const updateDeliveryStaffStatusWithoutResponse = async (staffId, newStatus) => {
+  try {
+    const validStatuses = ["active", "inactive", "busy"];
+    if (!validStatuses.includes(newStatus)) {
+      throw new Error("Invalid status value");
+    }
+
+    const updatedStaff = await deliveryStaffModel.findByIdAndUpdate(
+      staffId,
+      { status: newStatus },
+      { new: true }
+    );
+
+    if (!updatedStaff) {
+      throw new Error("Staff not found");
+    }
+
+    return {
+      success: true,
+      data: updatedStaff,
+      message: "Updated staff status successfully",
+    };
+  } catch (error) {
+    console.log(`Error updating staff status: ${error.message}`);
+    return { success: false, message: "Error updating staff status" };
+  }
+};
+
+const checkAndUpdateDeliveryStaffStatus = async (orderId, res) => {
+  const deliveryStaffOrders = await deliveryStaffOrderModel.find({ orderId });
+
+  const hasOutForDelivery = await Promise.all(
+    deliveryStaffOrders.map(async (staffOrder) => {
+      const staffId = staffOrder.deliveryStaffId;
+      const staffOrders = await deliveryStaffOrderModel.find({
+        deliveryStaffId: staffId,
+      });
+
+      const results = await Promise.all(
+        staffOrders.map(async (staffOrder) => {
+          const order = await orderModel.findById(staffOrder.orderId);
+          return order && order.status === "Out for delivery";
+        })
+      );
+
+      return results.some((status) => status === true);
+    })
+  );
+
+  if (!hasOutForDelivery.includes(true)) {
+    const staffId = deliveryStaffOrders[0]?.deliveryStaffId;
+    if (staffId) {
+      await updateDeliveryStaffStatusWithoutResponse(staffId, "active");
+    }
+  }
+};
+
 // api for updating order status
 const updateStatus = async (req, res) => {
   const { orderId, status } = req.body;
@@ -177,12 +234,14 @@ const updateStatus = async (req, res) => {
 
     await orderModel.findByIdAndUpdate(orderId, updateData);
 
+    await checkAndUpdateDeliveryStaffStatus(orderId, res);
+
     await handleOrderMail(status, order);
 
-    res.status(200).json({ success: true, message: "Status Updated" });
+    res.json({ success: true, message: "Status Updated" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res.json({ success: false, message: "Internal Server Error" });
   }
 };
 

@@ -88,7 +88,7 @@ const Update = ({
 
   return (
     <div className="update">
-      <div className="update-title" onClick={() => setIsUpdate(false)}>
+      <div className="update-title" onClick={() => onBackToListHandler()}>
         <i className="fas fa-arrow-left back-icon"></i>
       </div>
       <form className="flex-col" onSubmit={onSubmitHandler}>

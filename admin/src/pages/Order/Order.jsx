@@ -296,7 +296,6 @@ const Order = ({ url, setIsLoading }) => {
   };
 
   const onCompleteProcessingOrder = async (selectedDeliveryStaffOrder) => {
-    console.log(selectedDeliveryStaffOrder);
     const deliveryStaffId =
       selectedDeliveryStaffOrder.selectedDeliveryStaff._id;
     const orderId = selectedDeliveryStaffOrder.selectedOrder;
@@ -308,7 +307,15 @@ const Order = ({ url, setIsLoading }) => {
         { deliveryStaffId: deliveryStaffId, orderId: orderId }
       );
 
-      if (response.data.success) {
+      const res = await axios.put(
+        `${url}/api/deliveryStaff/updateDeliveryStaffStatus`,
+        {
+          staffId: deliveryStaffId,
+          newStatus: "busy",
+        }
+      );
+
+      if (res.data.success && response.data.success) {
         toast.success("Complete order");
         await fetchOrderStatus();
       } else {
@@ -382,13 +389,13 @@ const Order = ({ url, setIsLoading }) => {
               }
               style={{ marginRight: "8px" }}
             ></i>
-            {status}
+            {status === "Wait for Confirmation" ? "Confirmation" : status}
           </button>
         ))}
       </div>
       <div className="order-list">
         {filterList.map((order, index) => (
-          <div className="order-item" key={index}>
+          <div className="order-items" key={index}>
             <div className="flex-col order-item_first-col">
               {deliveryStaffNames[order._id] &&
                 currentStatus !== "Cancelled" && (
@@ -462,11 +469,53 @@ const Order = ({ url, setIsLoading }) => {
                   }}
                 >
                   <option value="">Choose delivery staff</option>
-                  {listDeliveryStaff.map((staff, idx) => (
-                    <option key={idx} value={staff._id}>
-                      {staff.name}
-                    </option>
-                  ))}
+                  {listDeliveryStaff
+                    .filter((staff) => staff.status !== "inactive")
+                    .sort((a, b) => {
+                      const matchA = a.workingAreas.some(
+                        (area) =>
+                          area.district === order.address.district ||
+                          area.province === order.address.province
+                      );
+                      const matchB = b.workingAreas.some(
+                        (area) =>
+                          area.district === order.address.district ||
+                          area.province === order.address.province
+                      );
+
+                      if (matchA && !matchB) return -1;
+                      if (!matchA && matchB) return 1;
+                      return 0;
+                    })
+                    .map((staff, idx) => (
+                      <option
+                        key={idx}
+                        value={staff._id}
+                        title={
+                          staff.workingAreas.find(
+                            (area) =>
+                              area.district === order.address.district ||
+                              area.province === order.address.province
+                          )
+                            ? `${
+                                staff.workingAreas.find(
+                                  (area) =>
+                                    area.district === order.address.district ||
+                                    area.province === order.address.province
+                                ).district
+                              }, ${
+                                staff.workingAreas.find(
+                                  (area) =>
+                                    area.district === order.address.district ||
+                                    area.province === order.address.province
+                                ).province
+                              }`
+                            : "No matching area"
+                        }
+                      >
+                        {staff.name} {staff.status === "busy" && "(busy)"}
+                      </option>
+                    ))}
                 </select>
                 {selectedInfo[order._id] && (
                   <button
@@ -487,15 +536,24 @@ const Order = ({ url, setIsLoading }) => {
               <>
                 <div className="order-item_name-delivery-staff">
                   {currentStatus === "Out for delivery" && (
-                    <button
-                      onClick={async () => onHandleOrder(order, "Delivered")}
-                    >
-                      Delivered
-                    </button>
+                    <>
+                      <button
+                        className="delivered"
+                        onClick={async () => onHandleOrder(order, "Delivered")}
+                      >
+                        Delivered
+                      </button>
+                      <button
+                        onClick={async () => onHandleOrder(order, "Cancelled")}
+                        className="deny"
+                      >
+                        Deny Order
+                      </button>
+                    </>
                   )}
                   <ReactToPrint
                     trigger={() => (
-                      <button>
+                      <button className="print-button">
                         <i className="fas fa-print"></i> Print Invoice
                       </button>
                     )}

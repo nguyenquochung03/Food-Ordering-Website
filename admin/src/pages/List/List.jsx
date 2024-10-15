@@ -240,7 +240,7 @@ const List = ({ url, setIsLoading }) => {
       setIsLoading={setIsLoading}
     />
   ) : (
-    <div className="list-food">
+    <div className="list-food-container">
       {loading ? (
         <SkeletonLoadingList />
       ) : isSearch ? (

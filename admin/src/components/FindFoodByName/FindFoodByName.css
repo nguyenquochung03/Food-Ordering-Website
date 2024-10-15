@@ -6,7 +6,7 @@
 
 @media (max-width: 600px) {
   .search-food-by-name-container {
-    padding: 15px;
+    padding: 10px;
   }
 
   .search-food-by-name-input i {
@@ -27,18 +27,30 @@
     flex-direction: column;
     gap: 5px;
   }
+
+  .search-food-by-name {
+    width: 100%;
+  }
+
+  .search-food-by-name-input input {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 
 .search {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .search-food-by-name-img {
   cursor: pointer;
-  font-size: 30px; /* Adjust icon size */
-  color: #ff7e5f; /* Adjust color as needed */
+  font-size: 30px;
+  color: #ff7e5f;
   margin-right: 15px;
 }
 
@@ -63,10 +75,10 @@
 }
 
 .search-food-by-name-input i {
-  font-size: 25px; /* Adjust icon size */
+  font-size: 25px;
   padding: 10px;
   cursor: pointer;
-  color: #ff7e5f; /* Adjust color as needed */
+  color: #ff7e5f;
 }
 
 .search-food-by-name-list-table-container {

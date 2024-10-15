@@ -81,13 +81,9 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
       );
       if (response.data.success) {
         const { data: foodData } = response.data;
-        if (foodData.length === 1) {
-          setData(foodData[0]);
-          setFilterList([]);
-          setIsSuccess(true);
-        } else if (foodData.length > 1) {
+        if (foodData.length > 0) {
           setFilterList(foodData);
-          setData({});
+          setData(foodData[0]);
           setIsSuccess(true);
         } else {
           setIsSuccess(false);
@@ -184,12 +180,14 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
                           className="edit"
                           type="button"
                         >
+                          <i className="fas fa-edit"></i>
                           Edit
                         </button>
                         <button
                           onClick={() => removeFood(item._id)}
                           className="remove"
                         >
+                          <i className="fas fa-trash-alt"></i>
                           Remove
                         </button>
                       </div>
@@ -206,39 +204,9 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
                     </div>
                   ))
                 ) : (
-                  <div className="list-table-format">
-                    <img src={`${url}/images/${data.image}`} alt={data.name} />
-                    <p>{data.name}</p>
-                    <p>{data.category}</p>
-                    <p>{data.price}</p>
-                    <div className="list-table-format-action">
-                      <button
-                        onClick={() => updateFood(item)}
-                        className="edit"
-                        type="button"
-                      >
-                        <i className="fas fa-edit"></i>
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => removeFood(item._id)}
-                        className="remove"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                        Remove
-                      </button>
-                    </div>
-                    <select
-                      value={data.status}
-                      onChange={(e) =>
-                        handleStatusChange(data._id, e.target.value)
-                      }
-                      className="list-table-status"
-                    >
-                      <option value="serving">Serving</option>
-                      <option value="paused">Paused</option>
-                    </select>
-                  </div>
+                  <p className="search-food-by-name-list-table-not-found">
+                    Food not found
+                  </p>
                 )}
               </div>
             ) : (

@@ -125,15 +125,15 @@ const Account = ({ url, setIsLoading }) => {
             </button>
           </div>
           <div className="flex-col">
-            <div className="list-table">
-              <div className="list-table-format title">
+            <div className="list-account-table">
+              <div className="list-account-table-format title">
                 <b>Name</b>
                 <b>Email</b>
                 <b>Action</b>
                 <b>Status</b>
               </div>
               {filterListUser.map((item, index) => (
-                <div key={index} className="list-table-format">
+                <div key={index} className="list-account-table-format">
                   <p>{item.name}</p>
                   <p>{item.email}</p>
                   <div className="list-account-action">
@@ -153,7 +153,7 @@ const Account = ({ url, setIsLoading }) => {
                       Remove
                     </button>
                   </div>
-                  <div className="list-table-format-status">
+                  <div className="list-account-table-format-status">
                     {item.locked ? (
                       <FaLock
                         onClick={() => toggleLock(item._id, item.locked)}

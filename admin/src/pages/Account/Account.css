@@ -45,14 +45,14 @@
   flex-direction: column;
 }
 
-.list-table {
+.list-account-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.list-table-format {
+.list-account-table-format {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr 1fr 0.8fr;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr;
   align-items: center;
   padding: 15px;
   margin: 10px 0;
@@ -64,11 +64,11 @@
   transition: background-color 0.3s ease;
 }
 
-.list-table-format:hover {
+.list-account-table-format:hover {
   background-color: #f1f1f1;
 }
 
-.list-table-format .title {
+.list-account-table-format .title {
   font-weight: bold;
   color: #333;
   background-color: #f0f0f0;
@@ -136,7 +136,7 @@
 }
 
 @media (max-width: 768px) {
-  .list-table-format {
+  .list-account-table-format {
     grid-template-columns: 1fr;
     padding: 10px;
     gap: 10px;
@@ -151,7 +151,7 @@
     font-size: 12px;
   }
 
-  .list-table-format .title {
+  .list-account-table-format .title {
     font-size: 16px;
   }
 }
@@ -165,7 +165,7 @@
     padding: 5px;
   }
 
-  .list-table-format {
+  .list-account-table-format {
     padding: 8px;
     font-size: 12px;
   }

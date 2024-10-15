@@ -1,17 +1,74 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./ViewDetailDeliveryStaff.css";
+import NormalPagination from "../../Pagination/NormalPagination/NormalPagination";
+
+function OrderListOfDeliveryStaff({
+  title,
+  orders,
+  filteredOrders,
+  setFilteredOrders,
+  setIsLoading,
+}) {
+  return (
+    <div className="order-section">
+      <h5 className="order-section-title">{title}</h5>
+      {orders.length === 0 ? (
+        <p className="order-empty">No order found</p>
+      ) : (
+        filteredOrders.map((order, index) => (
+          <div key={index} className="order-item">
+            <div className="order-item-details">
+              <div className="order-item-foods">
+                {order.items.map(
+                  (item, idx) =>
+                    `${item.name} x ${item.quantity}${
+                      idx === order.items.length - 1 ? "" : ", "
+                    }`
+                )}
+              </div>
+              <div className="order-item-name">
+                {order.address.firstName} {order.address.lastName}
+              </div>
+              <div className="order-item-address">
+                <p>{order.address.street},</p>
+                <p>
+                  {order.address.ward}, {order.address.district},{" "}
+                  {order.address.province}, {order.address.country}
+                </p>
+              </div>
+              <div className="order-item-phone">
+                <span>{order.address.phone}</span>
+              </div>
+            </div>
+            <div className="order-item-price">
+              <p>${order.amount}</p>
+            </div>
+          </div>
+        ))
+      )}
+      <NormalPagination
+        food_list={orders}
+        setList={setFilteredOrders}
+        setIsLoading={setIsLoading}
+      />
+    </div>
+  );
+}
 
 function ViewDetailDeliveryStaff({
   url,
   setIsLoading,
   setIsViewDetail,
-  staffData,
+  dataDetail,
 }) {
   const { id, name, phone, email, vehicleType, workingAreas, status } =
-    staffData;
+    dataDetail;
 
   const [orders, setOrders] = useState(null);
+  const [listFilterInProcessing, setListFilterInProcessing] = useState([]);
+  const [listFilterDelivered, setListFilterDelivered] = useState([]);
+  const [listFilterCancelled, setListFilterCancelled] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -74,38 +131,39 @@ function ViewDetailDeliveryStaff({
         </div>
       </div>
 
-      {/* Hiển thị đơn hàng nếu có */}
-      <div className="order-details">
+      <div className="view-detail-container-order-details">
         <h4>Order Details</h4>
-        <div>
+        <div className="order-lists-container">
           {orders ? (
             <>
-              <h5>In Processing</h5>
-              {orders["In processing"].map((order, index) => (
-                <div key={index}>
-                  <p>Order ID: {order._id}</p>
-                  <p>Status: {order.status}</p>
-                </div>
-              ))}
+              <OrderListOfDeliveryStaff
+                title="In Processing"
+                orders={orders["In processing"]}
+                filteredOrders={listFilterInProcessing}
+                setFilteredOrders={setListFilterInProcessing}
+                setIsLoading={setIsLoading}
+              />
 
-              <h5>Delivered</h5>
-              {orders["Delivered"].map((order, index) => (
-                <div key={index}>
-                  <p>Order ID: {order._id}</p>
-                  <p>Status: {order.status}</p>
-                </div>
-              ))}
+              <OrderListOfDeliveryStaff
+                title="Delivered"
+                orders={orders["Delivered"]}
+                filteredOrders={listFilterDelivered}
+                setFilteredOrders={setListFilterDelivered}
+                setIsLoading={setIsLoading}
+              />
 
-              <h5>Cancelled</h5>
-              {orders["Cancelled"].map((order, index) => (
-                <div key={index}>
-                  <p>Order ID: {order._id}</p>
-                  <p>Status: {order.status}</p>
-                </div>
-              ))}
+              <OrderListOfDeliveryStaff
+                title="Cancelled"
+                orders={orders["Cancelled"]}
+                filteredOrders={listFilterCancelled}
+                setFilteredOrders={setListFilterCancelled}
+                setIsLoading={setIsLoading}
+              />
             </>
           ) : (
-            <p>No orders found for this delivery staff.</p>
+            <p className="no-order-text">
+              No orders found for this delivery staff.
+            </p>
           )}
         </div>
       </div>

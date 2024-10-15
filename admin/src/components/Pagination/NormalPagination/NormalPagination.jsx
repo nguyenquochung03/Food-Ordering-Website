@@ -4,7 +4,7 @@ import { images } from "../../../constants/data";
 
 const NormalPagination = ({ food_list, setList, setIsLoading }) => {
   const [data, setData] = useState([]);
-  const [postsPerPage] = useState(8);
+  const [postsPerPage] = useState(5);
   const [pages, setPages] = useState([]);
   const [totalItem, setTotalItem] = useState(0);
   const [startItemIndex, setStartItemIndex] = useState(0);
@@ -29,7 +29,11 @@ const NormalPagination = ({ food_list, setList, setIsLoading }) => {
       const startIndex = (currentPage - 1) * postsPerPage;
       const endIndex = Math.min(startIndex + postsPerPage, totalItem);
 
-      setStartItemIndex(startIndex + 1);
+      if (data.length != 0) {
+        setStartItemIndex(startIndex + 1);
+      } else {
+        setStartItemIndex(startIndex);
+      }
       setEndItemIndex(endIndex);
 
       setList(data.slice(startIndex, endIndex));

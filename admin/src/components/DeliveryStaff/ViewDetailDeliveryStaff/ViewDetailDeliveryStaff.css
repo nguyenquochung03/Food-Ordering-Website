@@ -1,52 +1,59 @@
-/* Container chính */
+/* Main container styling */
 .view-detail-container {
-  max-width: 700px;
-  margin: 10px auto 10px;
+  max-width: 750px;
+  margin: 20px auto;
   padding: 30px;
-  background-color: #f9f9f9;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
   animation: fadeIn 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Header */
+/* Header styling */
 .view-detail-container .header {
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ff7e5f;
+  padding-bottom: 15px;
 }
 
 .view-detail-container .header h2 {
   color: #ff7e5f;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
   margin: 0 auto;
-  position: relative;
+  text-align: center;
 }
 
 .view-detail-container .back-icon {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #ff7e5f;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .view-detail-container .back-icon:hover {
   color: #feb47b;
 }
 
-/* Phần thông tin nhân viên */
+/* Staff information section */
 .view-detail-container .staff-info {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .view-detail-container .staff-field {
   display: flex;
   justify-content: space-between;
-  font-size: 1rem;
-  padding-bottom: 12px;
+  font-size: 1.1rem;
+  padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
   color: #4a4a4a;
 }
@@ -55,48 +62,188 @@
   color: #ff7e5f;
 }
 
-/* Khu vực làm việc */
-.view-detail-container .working-areas {
-  margin-top: 20px;
-}
-
-.view-detail-container .working-areas h4 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #feb47b;
-  font-weight: 600;
-}
-
-.view-detail-container .working-area-item {
-  background-color: #ffede8;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  font-size: 1rem;
-}
-
-.view-detail-container .working-area-item p {
-  margin: 6px 0;
+.view-detail-container .staff-field span {
+  font-weight: 500;
   color: #333;
 }
 
-/* Các trạng thái */
-.view-detail-container .staff-field span {
-  font-weight: normal;
-  color: #4a4a4a;
+/* Working areas */
+.view-detail-container .working-areas {
+  margin-top: 30px;
 }
 
+.view-detail-container .working-areas h4 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #feb47b;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.view-detail-container .working-area-item {
+  background-color: #ffe5d9;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.view-detail-container .working-area-item:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.view-detail-container .working-area-item p {
+  margin: 8px 0;
+  color: #333;
+}
+
+/* Order details */
+.view-detail-container-order-details {
+  margin-top: 30px;
+}
+
+.view-detail-container-order-details h4 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #ff7e5f;
+  font-weight: 600;
+  border-bottom: 2px solid #ff7e5f;
+  padding-bottom: 10px;
+}
+
+/* Order list styling */
+.order-section {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-section-title {
+  font-size: 1.5rem;
+  color: #ff7e5f;
+  margin-bottom: 15px;
+}
+
+.order-empty {
+  color: #666;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.order-item:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.02);
+}
+
+.order-item-details {
+  flex-grow: 1;
+}
+
+.order-item-foods {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.order-item-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+.order-item-address p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.order-item-phone {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.order-item-price {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #ff7e5f;
+}
+
+/* Pagination styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Responsive media queries for better mobile experience */
 @media (max-width: 600px) {
   .view-detail-container {
-    margin: 30px 10px;
-    padding: 15px;
-    border-radius: 10px;
+    margin: 30px 15px;
+    padding: 20px;
   }
 
   .view-detail-container .header h2 {
-    font-size: 1.4rem;
-    text-align: center;
-    padding: 10px;
+    font-size: 1.5rem;
+  }
+
+  .view-detail-container .staff-field {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .view-detail-container .working-areas h4 {
+    font-size: 1.3rem;
+  }
+
+  .view-detail-container .working-area-item {
+    padding: 12px;
+  }
+
+  .view-detail-container .back-icon {
+    font-size: 1.5rem;
+  }
+
+  .view-detail-container-order-details h4 {
+    font-size: 1.3rem;
+  }
+
+  .view-detail-container-order-item-food,
+  .view-detail-container-order-item-name,
+  .view-detail-container-order-item-address,
+  .view-detail-container-order-item-phone {
+    font-size: 0.9rem;
+  }
+
+  .order-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .view-detail-container {
+    padding: 15px;
+  }
+
+  .view-detail-container .header h2 {
+    font-size: 1.3rem;
   }
 
   .view-detail-container .staff-info {
@@ -104,62 +251,16 @@
   }
 
   .view-detail-container .staff-field {
-    flex-direction: column;
-    align-items: flex-start;
     font-size: 1rem;
-    padding-bottom: 8px;
-  }
-
-  .view-detail-container .staff-field strong {
-    margin-bottom: 4px;
-    font-size: 1rem;
-  }
-
-  .view-detail-container .staff-field span {
-    font-size: 1rem;
-    color: #666;
+    padding-bottom: 10px;
   }
 
   .view-detail-container .working-areas h4 {
     font-size: 1.2rem;
-    margin-bottom: 10px;
   }
 
   .view-detail-container .working-area-item {
     padding: 10px;
-    font-size: 1rem;
-  }
-
-  .view-detail-container .back-icon {
-    font-size: 1.4rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .view-detail-container {
-    padding: 10px;
-    margin: 20px 5px;
-  }
-
-  .view-detail-container .header h2 {
-    font-size: 1.2rem;
-  }
-
-  .view-detail-container .staff-info {
-    gap: 10px;
-  }
-
-  .view-detail-container .staff-field {
-    font-size: 0.9rem;
-    padding-bottom: 6px;
-  }
-
-  .view-detail-container .working-areas h4 {
-    font-size: 1.1rem;
-  }
-
-  .view-detail-container .working-area-item {
-    padding: 8px;
     font-size: 0.9rem;
   }
 

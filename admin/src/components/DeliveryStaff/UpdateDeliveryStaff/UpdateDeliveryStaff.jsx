@@ -36,7 +36,8 @@ const UpdateDeliveryStaff = ({
       inputRef.current.focus();
     }
     if (staffData) {
-      setFormData(staffData);
+      const data = staffData;
+      setFormData(data);
     }
   }, [staffData]);
 

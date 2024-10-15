@@ -14,7 +14,7 @@ const deliveryStaffSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["active", "inactive", "on-leave"],
+    enum: ["active", "inactive", "busy"],
     default: "active",
   },
 });

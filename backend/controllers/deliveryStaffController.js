@@ -159,10 +159,43 @@ const getDeliveryStaffById = async (req, res) => {
   }
 };
 
+const updateDeliveryStaffStatus = async (req, res) => {
+  const { staffId, newStatus } = req.body;
+
+  try {
+    const validStatuses = ["active", "inactive", "busy"];
+    if (!validStatuses.includes(newStatus)) {
+      res.json({ success: false, message: "Invalid status value" });
+      return;
+    }
+
+    const updatedStaff = await deliveryStaffModel.findByIdAndUpdate(
+      staffId,
+      { status: newStatus },
+      { new: true }
+    );
+
+    if (!updatedStaff) {
+      res.json({ success: false, message: "Staff not found" });
+      return;
+    }
+
+    res.json({
+      success: true,
+      data: updatedStaff,
+      message: "Updated staff status successfully",
+    });
+  } catch (error) {
+    console.log(`Error updating staff status: ${error.message}`);
+    res.json({ success: false, message: "Error updating staff status" });
+  }
+};
+
 export {
   addDeliveryStaff,
   updateDeliveryStaff,
   deleteDeliveryStaff,
   getDeliveryStaff,
   getDeliveryStaffById,
+  updateDeliveryStaffStatus,
 };
