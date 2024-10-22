@@ -3,8 +3,8 @@ import { debounce } from "lodash";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./FindFoodByName.css";
-import Update from "../FoodItems/Update/Update";
-import NormalPagination from "../Pagination/NormalPagination/NormalPagination";
+import NormalPagination from "../../Pagination/NormalPagination/NormalPagination";
+import Update from "../Update/Update";
 
 const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
   const [value, setValue] = useState("");

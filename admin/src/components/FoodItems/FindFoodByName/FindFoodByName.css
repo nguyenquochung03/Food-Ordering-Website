@@ -172,7 +172,7 @@
   text-align: center;
   color: #777;
   font-size: 18px;
-  margin-top: 20px;
+  margin: 10px 0;
 }
 
 @media (max-width: 1124px) {
@@ -184,7 +184,7 @@
 
 @media (max-width: 720px) {
   .food-search-container {
-    padding: 10px;
+    padding: 0px;
   }
 
   .food-search-input-container i {

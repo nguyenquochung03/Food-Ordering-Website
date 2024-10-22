@@ -114,15 +114,25 @@ const Account = ({ url, setIsLoading }) => {
         />
       ) : (
         <div className="list-account">
-          <div className="list-account_add" title="Add new Account">
-            <button
-              onClick={() => setIsAdd(true)}
-              type="button"
-              title="Add your account"
-            >
-              <i className="fas fa-plus"></i>
-              Add
-            </button>
+          <div className="list-account_add-search">
+            <div className="list-account_add" title="Add new Account">
+              <button
+                onClick={() => setIsAdd(true)}
+                type="button"
+                title="Add your account"
+              >
+                <i className="fas fa-plus"></i>
+                Add
+              </button>
+            </div>
+            <div className="list-account_search">
+              <input
+                type="text"
+                placeholder="Search by name or email"
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+              <i className="fas fa-search"></i>
+            </div>
           </div>
           <div className="flex-col">
             <div className="list-account-table">

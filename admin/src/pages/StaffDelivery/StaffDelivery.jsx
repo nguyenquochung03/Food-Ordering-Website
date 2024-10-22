@@ -189,18 +189,28 @@ const StaffDelivery = ({ url, setIsLoading }) => {
         />
       ) : (
         <div className="delivery-staff-list">
-          <div
-            className="delivery-staff-list_add"
-            title="Add new Delivery Staff"
-          >
-            <button
-              onClick={() => setIsAdd(true)}
-              type="button"
-              title="Add your delivery staff"
+          <div className="delivery-staff-list_add-search">
+            <div
+              className="delivery-staff-list_add"
+              title="Add new Delivery Staff"
             >
-              <i className="fas fa-plus"></i>
-              Add
-            </button>
+              <button
+                onClick={() => setIsAdd(true)}
+                type="button"
+                title="Add your delivery staff"
+              >
+                <i className="fas fa-plus"></i>
+                Add
+              </button>
+            </div>
+            <div className="delivery-staff-list_search">
+              <input
+                type="text"
+                placeholder="Search by name or phone"
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+              <i className="fas fa-search"></i>
+            </div>
           </div>
           <span className="delivery-staff-list-note">
             Click on the delivery staff to view details

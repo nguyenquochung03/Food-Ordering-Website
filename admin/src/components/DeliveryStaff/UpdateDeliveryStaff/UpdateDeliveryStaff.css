@@ -164,4 +164,8 @@
     padding: 10px 15px;
     font-size: 0.9rem;
   }
+
+  .centered-container {
+    padding: 0;
+  }
 }

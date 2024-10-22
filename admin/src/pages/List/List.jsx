@@ -4,11 +4,10 @@ import { toast } from "react-toastify";
 import { PaginationContext } from "../../context/PaginationContext.jsx";
 import Pagination from "../../components/Pagination/Pagination.jsx";
 import Update from "../../components/FoodItems/Update/Update.jsx";
-import "./List.css";
-import FindFoodByName from "../../components/FindFoodByName/FindFoodByName.jsx";
 import SkeletonLoadingList from "../../components/SkeletonLoading/SkeletonLoadingList/SkeletonLoadingList.jsx";
 import Add from "../../components/FoodItems/AddFood/Add.jsx";
-import { size } from "lodash";
+import FindFoodByName from "../../components/FoodItems/FindFoodByName/FindFoodByName.jsx";
+import "./List.css";
 
 const List = ({ url, setIsLoading }) => {
   const {

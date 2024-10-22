@@ -189,17 +189,12 @@
 }
 
 .list-table-status {
-  appearance: none;
   background-color: #f4f6f8;
   padding: 5px 10px;
   border: 1px solid #e0e0e0;
   color: #333;
   font-size: 14px;
   border-radius: 8px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path fill="%23333" d="M0 3h10L5 8z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px;
   outline: none;
 }
 
@@ -220,7 +215,7 @@
   }
 
   .list-food .list-table-format {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
   }
 
@@ -236,6 +231,10 @@
 
   .list-food-add button {
     width: 100%;
+  }
+
+  .list-food .list-table-format {
+    grid-template-columns: 1fr;
   }
 
   .list-food .list-table-format-action {

@@ -6,8 +6,20 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.list-account_add-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .list-account_add {
   margin: 20px 0;
+}
+
+.list-account_search {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .list-account_add button img {
@@ -40,6 +52,27 @@
   transform: translateY(-2px);
 }
 
+.list-account_search input {
+  padding: 10px 30px 10px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  width: 250px;
+}
+
+.list-account_search input::placeholder {
+  color: #d3d2d2;
+}
+
+.list-account_search i {
+  position: absolute;
+  right: 10px;
+  color: #888;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -52,7 +85,7 @@
 
 .list-account-table-format {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 0.2fr;
   align-items: center;
   padding: 15px;
   margin: 10px 0;
@@ -135,11 +168,22 @@
   transform: scale(0.95);
 }
 
+@media (max-width: 950px) {
+  .list-account-table-format {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+
 @media (max-width: 768px) {
   .list-account-table-format {
     grid-template-columns: 1fr;
     padding: 10px;
     gap: 10px;
+  }
+
+  .list-account_add-search {
+    flex-direction: column;
   }
 
   .list-account_add button {
@@ -159,6 +203,12 @@
 @media (max-width: 480px) {
   .list-account {
     padding: 15px;
+  }
+
+  .list-account_search input {
+    width: 100%;
+    padding: 8px 30px 8px 8px;
+    font-size: 14px;
   }
 
   .list-account_add button {

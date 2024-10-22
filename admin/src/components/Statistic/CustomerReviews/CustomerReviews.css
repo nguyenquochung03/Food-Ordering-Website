@@ -189,3 +189,9 @@
     width: 100%;
   }
 }
+
+@media (max-width: 450px) {
+  .customer-reviews-title {
+    margin: 24px 0 25px 24px;
+  }
+}

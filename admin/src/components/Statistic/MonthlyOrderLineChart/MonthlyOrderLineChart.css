@@ -1,40 +1,40 @@
 .monthly-order-line-chart-container {
-    width: 37%;
-    display: flex;
-    flex-direction: column;
+  width: 37%;
+  display: flex;
+  flex-direction: column;
 }
 
 .monthly-order-completed-line-chart-container,
 .monthly-order-delivered-line-chart-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .monthly-order-completed-line-chart-container p,
 .monthly-order-delivered-line-chart-container p {
-    margin: 0 0 0 20px;
-    font-size: 13px;
-    font-weight: 400;
-    color: rgb(156, 155, 155);
+  margin: 0 0 0 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgb(156, 155, 155);
 }
 
 .monthly-order-completed-line-chart-container p span,
 .monthly-order-delivered-line-chart-container p span {
-    font-size: 18px;
-    font-weight: 800;
-    color: black;
-    margin: 0 0 -10px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: black;
+  margin: 0 0 -10px 0;
 }
 
 .monthly-order-completed-line-chart,
 .monthly-order-delivered-line-chart {
-    margin: -25px 0 0 0;
+  margin: -25px 0 0 0;
 }
 
 @media (max-width: 950px) {
-    .monthly-order-line-chart-container {
-        width: 100%;
-        margin: 15px 0 0 0;
-    }
+  .monthly-order-line-chart-container {
+    width: 100%;
+    margin: 0 0 0 0;
+  }
 }
