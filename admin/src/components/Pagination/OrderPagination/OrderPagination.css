@@ -67,7 +67,7 @@
   color: #feb47b;
 }
 
-@media (max-width: 450px) {
+@media (max-width: 650px) {
   .order-pagination-container {
     flex-direction: column;
     gap: 20px;

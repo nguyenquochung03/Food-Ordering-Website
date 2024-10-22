@@ -201,7 +201,6 @@
   background-position: right 10px center;
   background-size: 10px;
   outline: none;
-  margin: 0 !important;
 }
 
 @media (max-width: 900px) {

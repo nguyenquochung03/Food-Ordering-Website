@@ -59,7 +59,8 @@ const NormalPagination = ({ food_list, setList, setIsLoading }) => {
   const onLeftArrowClick = () => {
     if (currentChunkIndex > 0) {
       setCurrentChunkIndex((prevIndex) => prevIndex - 1);
-      setCurrentPage((prevPage) => prevPage - 3);
+      const newPage = 1 + (currentChunkIndex - 1) * 3;
+      setCurrentPage(newPage);
     }
   };
 
@@ -67,7 +68,8 @@ const NormalPagination = ({ food_list, setList, setIsLoading }) => {
     const totalChunks = Math.ceil(totalItem / chunkSize);
     if (currentChunkIndex < totalChunks - 1) {
       setCurrentChunkIndex((prevIndex) => prevIndex + 1);
-      setCurrentPage((prevPage) => prevPage + 3);
+      const newPage = 1 + (currentChunkIndex + 1) * 3;
+      setCurrentPage(newPage);
     }
   };
 

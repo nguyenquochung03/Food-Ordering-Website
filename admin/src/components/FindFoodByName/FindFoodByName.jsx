@@ -3,14 +3,14 @@ import { debounce } from "lodash";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./FindFoodByName.css";
-import { images } from "../../constants/data";
 import Update from "../FoodItems/Update/Update";
+import NormalPagination from "../Pagination/NormalPagination/NormalPagination";
 
 const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
   const [value, setValue] = useState("");
   const [isUpdateInSearch, setIsUpdateInSearch] = useState(false);
   const [filterList, setFilterList] = useState([]);
-  const [data, setData] = useState({});
+  const [filterListPagination, setFilterListPagination] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [dataUpdate, setDataUpdate] = useState({
     id: "",
@@ -32,7 +32,6 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
       debouncedSearch();
     } else {
       setFilterList([]);
-      setData({});
       setIsSuccess(false);
     }
 
@@ -83,7 +82,6 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
         const { data: foodData } = response.data;
         if (foodData.length > 0) {
           setFilterList(foodData);
-          setData(foodData[0]);
           setIsSuccess(true);
         } else {
           setIsSuccess(false);
@@ -133,15 +131,15 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
           setIsLoading={setIsLoading}
         />
       ) : (
-        <div className="search-food-by-name-container">
-          <div className="search">
+        <div className="food-search-container">
+          <div className="food-search-header">
             <i
-              className="fas fa-arrow-left search-food-by-name-img"
+              className="fas fa-arrow-left food-search-back-icon"
               onClick={() => setIsSearch(false)}
               aria-label="Back"
             ></i>
-            <div className="search-food-by-name">
-              <div className="search-food-by-name-input">
+            <div className="food-search">
+              <div className="food-search-input-container">
                 <input
                   onChange={(e) => setValue(e.target.value)}
                   type="text"
@@ -153,68 +151,73 @@ const FindFoodByName = ({ url, setIsSearch, setIsLoading }) => {
               </div>
             </div>
           </div>
-          <div className="search-food-by-name-list-table-container">
+          <div className="food-search-list-container">
             {isSuccess ? (
-              <div className="list-table">
-                <div className="list-table-format title">
-                  <b>Image</b>
-                  <b>Name</b>
-                  <b>Category</b>
-                  <b>Price</b>
-                  <b>Action</b>
-                  <b>Status</b>
-                </div>
-                {filterList.length > 0 ? (
-                  filterList.map((item) => (
-                    <div key={item._id} className="list-table-format">
-                      <img
-                        src={`${url}/images/${item.image}`}
-                        alt={item.name}
-                      />
-                      <p>{item.name}</p>
-                      <p>{item.category}</p>
-                      <p>{item.price}</p>
-                      <div className="list-table-format-action">
-                        <button
-                          onClick={() => updateFood(item)}
-                          className="edit"
-                          type="button"
+              <>
+                <div className="food-list">
+                  <div className="food-list-header">
+                    <b>Image</b>
+                    <b>Name</b>
+                    <b>Category</b>
+                    <b>Price</b>
+                    <b>Action</b>
+                    <b>Status</b>
+                  </div>
+                  {filterListPagination.length > 0 ? (
+                    filterListPagination.map((item) => (
+                      <div key={item._id} className="food-list-item">
+                        <img
+                          src={`${url}/images/${item.image}`}
+                          alt={item.name}
+                        />
+                        <p>{item.name}</p>
+                        <p>{item.category}</p>
+                        <p>{item.price}</p>
+                        <div className="food-list-actions">
+                          <button
+                            onClick={() => updateFood(item)}
+                            className="food-edit-btn"
+                            type="button"
+                          >
+                            <i className="fas fa-edit"></i>
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => removeFood(item._id)}
+                            className="food-remove-btn"
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                            Remove
+                          </button>
+                        </div>
+                        <select
+                          value={item.status}
+                          onChange={(e) =>
+                            handleStatusChange(item._id, e.target.value)
+                          }
+                          className="food-status-select"
                         >
-                          <i className="fas fa-edit"></i>
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => removeFood(item._id)}
-                          className="remove"
-                        >
-                          <i className="fas fa-trash-alt"></i>
-                          Remove
-                        </button>
+                          <option value="serving">Serving</option>
+                          <option value="paused">Paused</option>
+                        </select>
                       </div>
-                      <select
-                        value={item.status}
-                        onChange={(e) =>
-                          handleStatusChange(item._id, e.target.value)
-                        }
-                        className="list-table-status"
-                      >
-                        <option value="serving">Serving</option>
-                        <option value="paused">Paused</option>
-                      </select>
-                    </div>
-                  ))
-                ) : (
-                  <p className="search-food-by-name-list-table-not-found">
-                    Food not found
-                  </p>
-                )}
-              </div>
+                    ))
+                  ) : (
+                    <p className="food-not-found-message">Food not found</p>
+                  )}
+                </div>
+              </>
             ) : (
-              <p className="search-food-by-name-list-table-not-found">
-                Food not found
-              </p>
+              <p className="food-not-found-message">Food not found</p>
             )}
           </div>
+          {filterList.length > 0 && (
+            <NormalPagination
+              food_list={filterList}
+              setList={setFilterListPagination}
+              setIsLoading={setIsLoading}
+            />
+          )}
         </div>
       )}
     </div>

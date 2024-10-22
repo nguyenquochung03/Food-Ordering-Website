@@ -112,16 +112,25 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       phone: clonedItem.phone,
       email: clonedItem.email,
       vehicleType: clonedItem.vehicleType,
-      workingAreas: clonedItem.workingAreas || [
-        {
-          province: "",
-          district: "",
-          provinces: [],
-          districts: [],
-          provinceValue: "",
-          districtValue: "",
-        },
-      ],
+      workingAreas: clonedItem.workingAreas
+        ? clonedItem.workingAreas.map((area) => ({
+            province: area.province,
+            district: area.district,
+            provinces: [],
+            districts: [],
+            provinceValue: "",
+            districtValue: "",
+          }))
+        : [
+            {
+              province: "",
+              district: "",
+              provinces: [],
+              districts: [],
+              provinceValue: "",
+              districtValue: "",
+            },
+          ],
     });
 
     setIsUpdate(true);
@@ -136,13 +145,17 @@ const StaffDelivery = ({ url, setIsLoading }) => {
       phone: clonedItem.phone,
       email: clonedItem.email,
       vehicleType: clonedItem.vehicleType,
-      workingAreas: clonedItem.workingAreas || [
-        {
-          province: "",
-          district: "",
-        },
-      ],
-      status: clonedItem.status,
+      workingAreas: clonedItem.workingAreas
+        ? clonedItem.workingAreas.map((area) => ({
+            province: area.province,
+            district: area.district,
+          }))
+        : [
+            {
+              province: "",
+              district: "",
+            },
+          ],
     });
 
     setIsViewDetail(true);
