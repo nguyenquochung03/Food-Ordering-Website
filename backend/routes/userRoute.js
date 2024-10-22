@@ -17,6 +17,7 @@ import {
   updateProfileImage,
   resetProfileImage,
   lockOrUnlockAdmin,
+  findAdminByNameAndEmail,
 } from "../controllers/userController.js";
 import authMiddleware from "../middleware/auth.js";
 
@@ -52,5 +53,6 @@ userRouter.post("/updateAdmin", updateAdmin);
 userRouter.post("/deleteAdmin", deleteAdmin);
 userRouter.post("/lockOrUnlockAdmin", lockOrUnlockAdmin);
 userRouter.post("/getStoredHashedPassword", getStoredHashedPassword);
+userRouter.get("/findAdminByNameAndEmail", findAdminByNameAndEmail);
 
 export default userRouter;

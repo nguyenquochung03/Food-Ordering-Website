@@ -2,6 +2,7 @@ import express from "express";
 import {
   addDeliveryStaff,
   deleteDeliveryStaff,
+  findDeliveryStaffByNameAndPhone,
   getDeliveryStaff,
   getDeliveryStaffById,
   updateDeliveryStaff,
@@ -16,5 +17,9 @@ deliveryStaffRoute.post("/delete", deleteDeliveryStaff);
 deliveryStaffRoute.get("/getAll", getDeliveryStaff);
 deliveryStaffRoute.get("/getById/:id", getDeliveryStaffById);
 deliveryStaffRoute.put("/updateDeliveryStaffStatus", updateDeliveryStaffStatus);
+deliveryStaffRoute.get(
+  "/findDeliveryStaffByNameAndPhone",
+  findDeliveryStaffByNameAndPhone
+);
 
 export default deliveryStaffRoute;

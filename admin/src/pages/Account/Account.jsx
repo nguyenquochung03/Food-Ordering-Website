@@ -16,10 +16,20 @@ const Account = ({ url, setIsLoading }) => {
   const [isAdd, setIsAdd] = useState(false);
   const [dataUpdate, setDataUpdate] = useState({ id: "", name: "", email: "" });
   const [loading, setLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     fetchList();
   }, []);
+
+  useEffect(() => {
+    if (searchValue.trim().length === 0) {
+      setSearchData([]);
+      setIsSearching(false);
+    }
+  }, [searchValue]);
 
   const fetchList = async () => {
     try {
@@ -93,6 +103,40 @@ const Account = ({ url, setIsLoading }) => {
     }
   };
 
+  const handleSearch = (value) => {
+    setSearchValue(value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onHandleSearch();
+    }
+  };
+
+  const onHandleSearch = async () => {
+    if (!searchValue) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${url}/api/user/findAdminByNameAndEmail?value=${searchValue.trim()}`
+      );
+      if (response.data.success) {
+        setIsSearching(true);
+        setSearchData(response.data.data);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while trying to find account.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -130,8 +174,10 @@ const Account = ({ url, setIsLoading }) => {
                 type="text"
                 placeholder="Search by name or email"
                 onChange={(e) => handleSearch(e.target.value)}
+                value={searchValue}
+                onKeyDown={handleKeyDown}
               />
-              <i className="fas fa-search"></i>
+              <i className="fas fa-search" onClick={onHandleSearch}></i>
             </div>
           </div>
           <div className="flex-col">
@@ -142,59 +188,108 @@ const Account = ({ url, setIsLoading }) => {
                 <b>Action</b>
                 <b>Status</b>
               </div>
-              {filterListUser.map((item, index) => (
-                <div key={index} className="list-account-table-format">
-                  <p>{item.name}</p>
-                  <p>{item.email}</p>
-                  <div className="list-account-action">
-                    <button
-                      onClick={() => updateAccount(item)}
-                      className="edit"
-                      type="button"
-                    >
-                      <i className="fas fa-edit"></i>
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => removeAccount(item._id)}
-                      className="remove"
-                    >
-                      <i className="fas fa-trash-alt"></i>
-                      Remove
-                    </button>
-                  </div>
-                  <div className="list-account-table-format-status">
-                    {item.locked ? (
-                      <FaLock
-                        onClick={() => toggleLock(item._id, item.locked)}
-                        style={{
-                          cursor: "pointer",
-                          color: "black",
-                          fontSize: "15px",
-                        }}
-                        title="Unlock this account"
-                      />
-                    ) : (
-                      <FaUnlock
-                        onClick={() => toggleLock(item._id, item.locked)}
-                        style={{
-                          cursor: "pointer",
-                          color: "var(--color-main)",
-                          fontSize: "15px",
-                        }}
-                        title="Lock this account"
-                      />
-                    )}
-                  </div>
-                </div>
-              ))}
+              {isSearching
+                ? searchData.map((item, index) => (
+                    <div key={index} className="list-account-table-format">
+                      <p>{item.name}</p>
+                      <p>{item.email}</p>
+                      <div className="list-account-action">
+                        <button
+                          onClick={() => updateAccount(item)}
+                          className="edit"
+                          type="button"
+                        >
+                          <i className="fas fa-edit"></i>
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => removeAccount(item._id)}
+                          className="remove"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                          Remove
+                        </button>
+                      </div>
+                      <div className="list-account-table-format-status">
+                        {item.locked ? (
+                          <FaLock
+                            onClick={() => toggleLock(item._id, item.locked)}
+                            style={{
+                              cursor: "pointer",
+                              color: "black",
+                              fontSize: "15px",
+                            }}
+                            title="Unlock this account"
+                          />
+                        ) : (
+                          <FaUnlock
+                            onClick={() => toggleLock(item._id, item.locked)}
+                            style={{
+                              cursor: "pointer",
+                              color: "var(--color-main)",
+                              fontSize: "15px",
+                            }}
+                            title="Lock this account"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  ))
+                : filterListUser.map((item, index) => (
+                    <div key={index} className="list-account-table-format">
+                      <p>{item.name}</p>
+                      <p>{item.email}</p>
+                      <div className="list-account-action">
+                        <button
+                          onClick={() => updateAccount(item)}
+                          className="edit"
+                          type="button"
+                        >
+                          <i className="fas fa-edit"></i>
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => removeAccount(item._id)}
+                          className="remove"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                          Remove
+                        </button>
+                      </div>
+                      <div className="list-account-table-format-status">
+                        {item.locked ? (
+                          <FaLock
+                            onClick={() => toggleLock(item._id, item.locked)}
+                            style={{
+                              cursor: "pointer",
+                              color: "black",
+                              fontSize: "15px",
+                            }}
+                            title="Unlock this account"
+                          />
+                        ) : (
+                          <FaUnlock
+                            onClick={() => toggleLock(item._id, item.locked)}
+                            style={{
+                              cursor: "pointer",
+                              color: "var(--color-main)",
+                              fontSize: "15px",
+                            }}
+                            title="Lock this account"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  ))}
             </div>
           </div>
-          <NormalPagination
-            food_list={listUser}
-            setList={setFilterListUser}
-            setIsLoading={setIsLoading}
-          />
+          {!isSearching && (
+            <NormalPagination
+              food_list={listUser}
+              setList={setFilterListUser}
+              setIsLoading={setIsLoading}
+            />
+          )}
         </div>
       )}
     </>

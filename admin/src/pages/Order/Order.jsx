@@ -469,6 +469,7 @@ const Order = ({ url, setIsLoading }) => {
                   }}
                 >
                   <option value="">Choose delivery staff</option>
+                  <option value="">Deliver</option>
                   {listDeliveryStaff
                     .filter((staff) => staff.status !== "inactive")
                     .sort((a, b) => {

@@ -535,6 +535,34 @@ const lockOrUnlockAdmin = async (req, res) => {
   }
 };
 
+const findAdminByNameAndEmail = async (req, res) => {
+  const { value } = req.query;
+
+  try {
+    let query = {
+      role: "Admin",
+    };
+
+    const regex = new RegExp(value, "i");
+
+    if (/^\S+@\S+\.\S+$/.test(value)) {
+      query.email = regex;
+    } else {
+      query.name = regex;
+    }
+
+    const admins = await userModel.find(query);
+
+    res.json({ success: true, data: admins });
+  } catch (error) {
+    console.error("Error finding admin users:", error);
+    res.json({
+      success: false,
+      message: "An error occurred while trying to find admin users",
+    });
+  }
+};
+
 export {
   loginUser,
   registerUser,
@@ -552,4 +580,5 @@ export {
   updateAdmin,
   deleteAdmin,
   lockOrUnlockAdmin,
+  findAdminByNameAndEmail,
 };

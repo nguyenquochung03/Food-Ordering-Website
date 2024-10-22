@@ -191,6 +191,30 @@ const updateDeliveryStaffStatus = async (req, res) => {
   }
 };
 
+const findDeliveryStaffByNameAndPhone = async (req, res) => {
+  const { value } = req.query;
+
+  try {
+    let query = {};
+
+    if (/^\d+$/.test(value)) {
+      query.phone = value;
+    } else {
+      query.name = new RegExp(value, "i");
+    }
+
+    const deliveryStaff = await deliveryStaffModel.find(query);
+
+    res.json({ success: true, data: deliveryStaff });
+  } catch (error) {
+    console.error("Error finding delivery staff:", error);
+    req.json({
+      success: false,
+      message: "An error occurred while trying to find delivery staff",
+    });
+  }
+};
+
 export {
   addDeliveryStaff,
   updateDeliveryStaff,
@@ -198,4 +222,5 @@ export {
   getDeliveryStaff,
   getDeliveryStaffById,
   updateDeliveryStaffStatus,
+  findDeliveryStaffByNameAndPhone,
 };

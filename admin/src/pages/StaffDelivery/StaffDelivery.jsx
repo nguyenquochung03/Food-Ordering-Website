@@ -32,10 +32,20 @@ const StaffDelivery = ({ url, setIsLoading }) => {
     status: "",
   });
   const [loading, setLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     fetchList();
   }, []);
+
+  useEffect(() => {
+    if (searchValue.trim().length === 0) {
+      setSearchData([]);
+      setIsSearching(false);
+    }
+  }, [searchValue]);
 
   const fetchList = async () => {
     try {
@@ -161,6 +171,40 @@ const StaffDelivery = ({ url, setIsLoading }) => {
     setIsViewDetail(true);
   };
 
+  const handleSearch = (value) => {
+    setSearchValue(value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onHandleSearch();
+    }
+  };
+
+  const onHandleSearch = async () => {
+    if (!searchValue) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${url}/api/deliveryStaff/findDeliveryStaffByNameAndPhone?value=${searchValue.trim()}`
+      );
+      if (response.data.success) {
+        setIsSearching(true);
+        setSearchData(response.data.data);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while trying to find delivery staff.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <React.Fragment>
       {loading ? (
@@ -207,9 +251,11 @@ const StaffDelivery = ({ url, setIsLoading }) => {
               <input
                 type="text"
                 placeholder="Search by name or phone"
+                value={searchValue}
                 onChange={(e) => handleSearch(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
-              <i className="fas fa-search"></i>
+              <i className="fas fa-search" onClick={onHandleSearch}></i>
             </div>
           </div>
           <span className="delivery-staff-list-note">
@@ -224,55 +270,100 @@ const StaffDelivery = ({ url, setIsLoading }) => {
                 <b>Status</b>
                 <b>Action</b>
               </div>
-              {filterListDeliveryStaff.map((item, index) => (
-                <div key={index} className="delivery-staff-table-format">
-                  <p>
-                    <span
-                      title="Click to view detail"
-                      onClick={() => onViewDetailDeliveryStaffHandler(item)}
-                    >
-                      {item.name}
-                    </span>
-                  </p>
-                  <p>{item.phone}</p>
-                  <p>{item.vehicleType}</p>
-                  <div className="delivery-staff-status">
-                    <select
-                      value={item.status}
-                      onChange={(e) =>
-                        handleStatusChange(item._id, e.target.value)
-                      }
-                    >
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                    </select>
-                  </div>
-                  <div className="delivery-staff-action">
-                    <button
-                      onClick={() => updateDeliveryStaff(item)}
-                      className="edit"
-                      type="button"
-                    >
-                      <i className="fas fa-edit"></i>
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => removeDeliveryStaff(item._id)}
-                      className="remove"
-                    >
-                      <i className="fas fa-trash-alt"></i>
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {isSearching
+                ? searchData.map((item, index) => (
+                    <div key={index} className="delivery-staff-table-format">
+                      <p>
+                        <span
+                          title="Click to view detail"
+                          onClick={() => onViewDetailDeliveryStaffHandler(item)}
+                        >
+                          {item.name}
+                        </span>
+                      </p>
+                      <p>{item.phone}</p>
+                      <p>{item.vehicleType}</p>
+                      <div className="delivery-staff-status">
+                        <select
+                          value={item.status}
+                          onChange={(e) =>
+                            handleStatusChange(item._id, e.target.value)
+                          }
+                        >
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                      </div>
+                      <div className="delivery-staff-action">
+                        <button
+                          onClick={() => updateDeliveryStaff(item)}
+                          className="edit"
+                          type="button"
+                        >
+                          <i className="fas fa-edit"></i>
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => removeDeliveryStaff(item._id)}
+                          className="remove"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                : filterListDeliveryStaff.map((item, index) => (
+                    <div key={index} className="delivery-staff-table-format">
+                      <p>
+                        <span
+                          title="Click to view detail"
+                          onClick={() => onViewDetailDeliveryStaffHandler(item)}
+                        >
+                          {item.name}
+                        </span>
+                      </p>
+                      <p>{item.phone}</p>
+                      <p>{item.vehicleType}</p>
+                      <div className="delivery-staff-status">
+                        <select
+                          value={item.status}
+                          onChange={(e) =>
+                            handleStatusChange(item._id, e.target.value)
+                          }
+                        >
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                      </div>
+                      <div className="delivery-staff-action">
+                        <button
+                          onClick={() => updateDeliveryStaff(item)}
+                          className="edit"
+                          type="button"
+                        >
+                          <i className="fas fa-edit"></i>
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => removeDeliveryStaff(item._id)}
+                          className="remove"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))}
             </div>
           </div>
-          <NormalPagination
-            food_list={listDeliveryStaff}
-            setList={setFilterListDeliveryStaff}
-            setIsLoading={setIsLoading}
-          />
+          {!isSearching && (
+            <NormalPagination
+              food_list={listDeliveryStaff}
+              setList={setFilterListDeliveryStaff}
+              setIsLoading={setIsLoading}
+            />
+          )}
         </div>
       )}
     </React.Fragment>

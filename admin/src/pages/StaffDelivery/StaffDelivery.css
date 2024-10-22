@@ -21,6 +21,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .delivery-staff-list_add button {
