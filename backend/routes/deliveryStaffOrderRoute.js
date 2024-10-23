@@ -2,6 +2,7 @@ import express from "express";
 import {
   confirmOrderDelivered,
   confirmOrderDeliveredSuccessfully,
+  getDeliveryStaffOrdersByDeliver,
   getNameDeliveryStaffFromOrderId,
   getOrdersByStaff,
   setDeliveryStaffOrder,
@@ -23,5 +24,9 @@ deliveryStaffOrderRoute.post(
   getNameDeliveryStaffFromOrderId
 );
 deliveryStaffOrderRoute.get("/getOrdersByStaff", getOrdersByStaff);
+deliveryStaffOrderRoute.get(
+  "/getDeliveryStaffOrdersByDeliver",
+  getDeliveryStaffOrdersByDeliver
+);
 
 export default deliveryStaffOrderRoute;

@@ -9,23 +9,29 @@ const setDeliveryStaffOrder = async (req, res) => {
   const { deliveryStaffId, orderId } = req.body;
 
   try {
-    const deliveryStaff = await deliveryStaffModel.findById(deliveryStaffId);
-    const order = await orderModel.findById(orderId);
+    let deliveryStaff = {};
+    if (deliveryStaffId !== "deliverId") {
+      deliveryStaff = await deliveryStaffModel.findById(deliveryStaffId);
 
-    if (!deliveryStaff || !order) {
+      if (!deliveryStaff) {
+        return res.json({
+          success: false,
+          message: "Delivery staff not found",
+        });
+      }
+    }
+    const order = await orderModel.findById(orderId);
+    if (!order) {
       return res.json({
         success: false,
-        message: "Delivery staff/Order not found",
+        message: "Delivery order not found",
       });
     }
-
     const deliveryStaffOrder = new deliveryStaffOrderModel({
       deliveryStaffId: deliveryStaffId,
       orderId: orderId,
     });
-
     await deliveryStaffOrder.save();
-
     await orderModel.updateOne(
       {
         _id: order._id,
@@ -36,51 +42,52 @@ const setDeliveryStaffOrder = async (req, res) => {
         },
       }
     );
-
     await handleOrderMail("Out for delivery", order);
 
-    const token = jwt.sign(
-      { deliveryStaffId: deliveryStaff._id, orderId: order._id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "7d",
-      }
-    );
-    const link = `${process.env.BASE_URL}/api/deliveryStaffOrder/ConfirmOrderDeliveredSuccessfully/${token}`;
-
-    var transporter = nodemailer.createTransport({
-      host: process.env.HOST,
-      service: process.env.SERVICE,
-      port: 587,
-      secure: true,
-      auth: {
-        user: process.env.USER,
-        pass: process.env.PASS,
-      },
-    });
-
-    var addressInfo = `
+    if (deliveryStaffId !== "deliverId") {
+      const token = jwt.sign(
+        { deliveryStaffId: deliveryStaff._id, orderId: order._id },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7d",
+        }
+      );
+      const link = `${process.env.BASE_URL}/api/deliveryStaffOrder/ConfirmOrderDeliveredSuccessfully/${token}`;
+      var transporter = nodemailer.createTransport({
+        host: process.env.HOST,
+        service: process.env.SERVICE,
+        port: 587,
+        secure: true,
+        auth: {
+          user: process.env.USER,
+          pass: process.env.PASS,
+        },
+      });
+      var addressInfo = `
         Name: ${order.address.firstName} ${order.address.lastName}
         Email: ${order.address.email}
-        Address: ${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zipcode}, ${order.address.country}
+        Address: ${order.address.street}, ${order.address.ward}, ${order.address.district}, ${order.address.province}, ${order.address.country}
         Phone: ${order.address.phone}`;
-
-    var mailOptions = {
-      from: process.env.USER,
-      to: deliveryStaff.email,
-      subject: "Confirm Order Delivered Successfully",
-      text: `Order delivered to the following address:\n${addressInfo}\n\nConfirm here: ${link}`,
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
+      var mailOptions = {
+        from: process.env.USER,
+        to: deliveryStaff.email,
+        subject: "Confirm Order Delivered Successfully",
+        text: `Order delivered to the following address:\n${addressInfo}\n\nConfirm here: ${link}`,
+      };
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      res.json({ success: true, data: link });
+      return;
+    }
+    res.json({
+      success: true,
+      message: "Set delivery staff for order successful",
     });
-
-    res.json({ success: true, data: link });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
@@ -218,9 +225,12 @@ const getNameDeliveryStaffFromOrderId = async (req, res) => {
       });
     }
 
-    const deliveryStaff = await deliveryStaffModel.findById(
-      deliveryStaffOrder.deliveryStaffId
-    );
+    if (deliveryStaffOrder.deliveryStaffId === "deliverId") {
+    }
+    const deliveryStaff =
+      deliveryStaffOrder.deliveryStaffId === "deliverId"
+        ? "Deliver"
+        : await deliveryStaffModel.findById(deliveryStaffOrder.deliveryStaffId);
 
     if (!deliveryStaff) {
       return res.json({ success: false, message: "Delivery staff not FOUND" });
@@ -230,6 +240,25 @@ const getNameDeliveryStaffFromOrderId = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
+  }
+};
+
+const getDeliveryStaffOrdersByDeliver = async (req, res) => {
+  try {
+    const orders = await deliveryStaffOrderModel.find({
+      deliveryStaffId: "deliverId",
+    });
+
+    return res.json({
+      success: true,
+      data: orders,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -331,5 +360,6 @@ export {
   confirmOrderDeliveredSuccessfully,
   confirmOrderDelivered,
   getNameDeliveryStaffFromOrderId,
+  getDeliveryStaffOrdersByDeliver,
   getOrdersByStaff,
 };

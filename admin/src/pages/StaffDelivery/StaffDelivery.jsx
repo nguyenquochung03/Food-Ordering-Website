@@ -76,6 +76,7 @@ const StaffDelivery = ({ url, setIsLoading }) => {
         }
       );
       if (response.data.success) {
+        fetchList();
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
@@ -166,6 +167,7 @@ const StaffDelivery = ({ url, setIsLoading }) => {
               district: "",
             },
           ],
+      status: clonedItem.status,
     });
 
     setIsViewDetail(true);

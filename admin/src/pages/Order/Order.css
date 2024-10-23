@@ -74,6 +74,10 @@
   margin-top: 20px;
 }
 
+.order-item_first-col p {
+  font-weight: bold;
+}
+
 .order-items {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr 0.8fr;

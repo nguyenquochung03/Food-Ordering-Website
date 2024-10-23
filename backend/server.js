@@ -12,6 +12,7 @@ import deliveryStaffRoute from "./routes/deliveryStaffRoute.js";
 import deliveryStaffOrderRoute from "./routes/deliveryStaffOrderRoute.js";
 import commentRouter from "./routes/commentRoute.js";
 import visitRoute from "./routes/visitRoute.js";
+import operatingRouter from "./routes/operatingRoute.js";
 
 // app config
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/deliveryStaff", deliveryStaffRoute);
 app.use("/api/deliveryStaffOrder", deliveryStaffOrderRoute);
 app.use("/api/comment", commentRouter);
 app.use("/api/visit", visitRoute);
+app.use("/api/operating", operatingRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");

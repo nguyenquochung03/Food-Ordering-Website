@@ -184,7 +184,7 @@ const updateDeliveryStaffStatusWithoutResponse = async (staffId, newStatus) => {
   }
 };
 
-const checkAndUpdateDeliveryStaffStatus = async (orderId, res) => {
+const checkAndUpdateDeliveryStaffStatus = async (orderId) => {
   const deliveryStaffOrders = await deliveryStaffOrderModel.find({ orderId });
 
   const hasOutForDelivery = await Promise.all(
@@ -234,7 +234,16 @@ const updateStatus = async (req, res) => {
 
     await orderModel.findByIdAndUpdate(orderId, updateData);
 
-    await checkAndUpdateDeliveryStaffStatus(orderId, res);
+    const deliveryStaffOrder = await deliveryStaffOrderModel.findOne({
+      orderId: orderId,
+    });
+
+    if (
+      deliveryStaffOrder &&
+      deliveryStaffOrder.deliveryStaffId !== "deliverId"
+    ) {
+      await checkAndUpdateDeliveryStaffStatus(orderId);
+    }
 
     await handleOrderMail(status, order);
 
@@ -682,16 +691,22 @@ export async function handleOrderMail(typeOrder, order) {
       });
 
       if (deliveryStaffOrder) {
-        const deliveryStaff = await deliveryStaffModel.findById(
-          deliveryStaffOrder.deliveryStaffId
-        );
-
-        if (deliveryStaff) {
-          deliveryStaffInfo = `
+        if (deliveryStaffOrder.deliveryStaffId !== "deliverId") {
+          const deliveryStaff = await deliveryStaffModel.findById(
+            deliveryStaffOrder.deliveryStaffId
+          );
+          if (deliveryStaff) {
+            deliveryStaffInfo = `
             Thông tin nhân viên giao hàng:
             Tên: ${deliveryStaff.name}
             Số điện thoại: ${deliveryStaff.phone}
             Email: ${deliveryStaff.email}
+          `;
+          }
+        } else {
+          deliveryStaffInfo = `
+            Thông tin nhân viên giao hàng:
+            Deliver
           `;
         }
       }
@@ -742,7 +757,7 @@ async function sendMailByOrder(typeOrder, mail, order, deliveryStaffInfo = "") {
   const addressDetails = `
     <strong>Địa chỉ giao hàng:</strong><br>
     Họ tên: ${order.address.firstName} ${order.address.lastName}<br>
-    Địa chỉ: ${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zipcode}, ${order.address.country}<br>
+    Địa chỉ: ${order.address.street}, ${order.address.ward},${order.address.district}, ${order.address.province}, ${order.address.country}<br>
     Số điện thoại: ${order.address.phone}<br>
     Email: ${order.address.email}
   `;

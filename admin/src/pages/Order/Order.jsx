@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import "./Order.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { images } from "../../constants/data";
 import {
   OrderPaginationContext,
   OrderPaginationProvider,
@@ -22,6 +21,7 @@ const Order = ({ url, setIsLoading }) => {
   const [filterList, setFilterList] = useState([]);
   const [listDeliveryStaff, setListDeliveryStaff] = useState([]);
   const [deliveryStaffNames, setDeliveryStaffNames] = useState({});
+  const [orderByDeliver, setOrderByDeliver] = useState([]);
   const [selectedInfo, setSelectedInfo] = useState({});
   const [orders, setOrders] = useState([]);
   const orderStatuses = [
@@ -49,6 +49,7 @@ const Order = ({ url, setIsLoading }) => {
       }
     };
     loadData();
+    fetchOrderByDeliver();
   }, []);
 
   useEffect(() => {
@@ -202,6 +203,19 @@ const Order = ({ url, setIsLoading }) => {
     }
   };
 
+  const fetchOrderByDeliver = async () => {
+    setIsLoading(true);
+    const response = await axios.get(
+      url + "/api/deliveryStaffOrder/getDeliveryStaffOrdersByDeliver"
+    );
+    if (response.data.success) {
+      setOrderByDeliver(response.data.data);
+    } else {
+      toast.error("Error");
+    }
+    setIsLoading(false);
+  };
+
   const onChangeStatus = (status) => {
     setCurrentStatus(status);
     setIndexOrderPagination(status);
@@ -282,47 +296,62 @@ const Order = ({ url, setIsLoading }) => {
     });
   };
 
-  const setOrderAndDeliveryStaffForDelivery = (event, id) => {
-    const selectedDeliveryStaff = listDeliveryStaff.find(
-      (staff) => staff._id === event
-    );
+  const setOrderAndDeliveryStaffForDelivery = (deliveryStaffId, orderId) => {
+    let selectedDeliveryStaff = "deliverId";
+
+    if (deliveryStaffId !== "deliverId") {
+      selectedDeliveryStaff = listDeliveryStaff.find(
+        (staff) => staff._id === deliveryStaffId
+      );
+    }
+
     setSelectedInfo((prevState) => ({
       ...prevState,
-      [id]: {
+      [orderId]: {
         selectedDeliveryStaff: selectedDeliveryStaff,
-        selectedOrder: id,
+        selectedOrder: orderId,
       },
     }));
   };
 
   const onCompleteProcessingOrder = async (selectedDeliveryStaffOrder) => {
     const deliveryStaffId =
-      selectedDeliveryStaffOrder.selectedDeliveryStaff._id;
+      typeof selectedDeliveryStaffOrder.selectedDeliveryStaff === "string"
+        ? "deliverId"
+        : selectedDeliveryStaffOrder.selectedDeliveryStaff._id;
+
     const orderId = selectedDeliveryStaffOrder.selectedOrder;
 
     try {
       setIsLoading(true);
+
       const response = await axios.post(
         `${url}/api/deliveryStaffOrder/setDeliveryStaffOrder`,
-        { deliveryStaffId: deliveryStaffId, orderId: orderId }
+        { deliveryStaffId, orderId }
       );
 
-      const res = await axios.put(
-        `${url}/api/deliveryStaff/updateDeliveryStaffStatus`,
-        {
-          staffId: deliveryStaffId,
-          newStatus: "busy",
-        }
-      );
+      let success = response.data.success;
 
-      if (res.data.success && response.data.success) {
+      if (
+        typeof selectedDeliveryStaffOrder.selectedDeliveryStaff !== "string"
+      ) {
+        const res = await axios.put(
+          `${url}/api/deliveryStaff/updateDeliveryStaffStatus`,
+          { staffId: deliveryStaffId, newStatus: "busy" }
+        );
+        success = success && res.data.success;
+      }
+
+      if (success) {
         toast.success("Complete order");
         await fetchOrderStatus();
       } else {
         toast.error("Error");
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
+      toast.error("Error occurred during order processing");
     } finally {
       setIsLoading(false);
     }
@@ -401,6 +430,9 @@ const Order = ({ url, setIsLoading }) => {
                 currentStatus !== "Cancelled" && (
                   <p>{deliveryStaffNames[order._id]}</p>
                 )}
+              {orderByDeliver.some(
+                (deliveryOrder) => deliveryOrder.orderId === order._id
+              ) && <p>Deliver</p>}
               <i className="fas fa-box"></i>
             </div>
             <div>
@@ -454,7 +486,11 @@ const Order = ({ url, setIsLoading }) => {
                   className="delivery-staff-select"
                   value={
                     selectedInfo[order._id]
-                      ? selectedInfo[order._id].selectedDeliveryStaff._id
+                      ? typeof selectedInfo[order._id].selectedDeliveryStaff ===
+                        "string"
+                        ? selectedInfo[order._id].selectedDeliveryStaff
+                        : selectedInfo[order._id].selectedDeliveryStaff &&
+                          selectedInfo[order._id].selectedDeliveryStaff._id
                       : ""
                   }
                   onChange={(e) => {
@@ -469,7 +505,7 @@ const Order = ({ url, setIsLoading }) => {
                   }}
                 >
                   <option value="">Choose delivery staff</option>
-                  <option value="">Deliver</option>
+                  <option value="deliverId">Deliver</option>
                   {listDeliveryStaff
                     .filter((staff) => staff.status !== "inactive")
                     .sort((a, b) => {

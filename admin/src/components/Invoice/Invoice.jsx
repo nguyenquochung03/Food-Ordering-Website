@@ -43,8 +43,9 @@ const Invoice = forwardRef(({ order }, ref) => {
           </div>
           <p className="order-invoice-information-title">Address</p>
           <p>
-            {order.address.street}, {order.address.state}, {order.address.city},{" "}
-            {order.address.country}, {order.address.zipcode}
+            {order.address.street}, {order.address.ward},{" "}
+            {order.address.district}, {order.address.province},{" "}
+            {order.address.country}
           </p>
         </div>
         <p className="order-invoice-title">Order Details</p>
