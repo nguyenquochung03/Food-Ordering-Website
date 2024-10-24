@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import ReactToPrint from "react-to-print";
 import Invoice from "../../components/Invoice/Invoice";
 import PageTracker from "../../components/PageTracker/PageTracker";
+import NormalPagination from "../../components/Pagination/NormalPagination/NormalPagination";
 
 const MyOrders = ({ setIsLoading }) => {
   const { url, token } = useContext(StoreContext);
@@ -22,6 +23,7 @@ const MyOrders = ({ setIsLoading }) => {
 
   const [currentStatus, setCurrentStatus] = useState("Wait for Confirmation");
   const [orderStatus, setOrderStatus] = useState([]);
+  const [orderStatusFilter, setOrderStatusFilter] = useState([]);
   const printRefs = useRef({});
 
   useEffect(() => {
@@ -180,7 +182,7 @@ const MyOrders = ({ setIsLoading }) => {
           ))}
         </div>
         <div className="container">
-          {orderStatus.map((order) => (
+          {orderStatusFilter.map((order) => (
             <div
               key={order._id}
               className="my-orders-order"
@@ -211,7 +213,11 @@ const MyOrders = ({ setIsLoading }) => {
               </p>
               {currentStatus === "Wait for Confirmation" &&
                 order.paymentType === "Cash" && (
-                  <button onClick={async () => await handleCancelOrder(order)}>
+                  <button
+                    className="my-order-cancle"
+                    onClick={async () => await handleCancelOrder(order)}
+                  >
+                    <i className="fas fa-times-circle"></i>
                     Cancel
                   </button>
                 )}
@@ -252,6 +258,11 @@ const MyOrders = ({ setIsLoading }) => {
             </div>
           ))}
         </div>
+        <NormalPagination
+          orderStatusList={orderStatus}
+          setList={setOrderStatusFilter}
+          setIsLoading={setIsLoading}
+        />
       </div>
       <PageTracker pageUrl={`${url}/myorders`} />
     </React.Fragment>

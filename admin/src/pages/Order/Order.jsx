@@ -467,14 +467,14 @@ const Order = ({ url, setIsLoading }) => {
                   onClick={async () => onHandleOrder(order, "Food Processing")}
                   className="receive"
                 >
-                  Receive Order
+                  <i className="fas fa-check"></i> Receive Order
                 </button>
                 {order.paymentType === "Cash" && (
                   <button
                     onClick={async () => onHandleOrder(order, "Cancelled")}
                     className="deny"
                   >
-                    Deny Order
+                    <i className="fas fa-times-circle"></i> Deny Order
                   </button>
                 )}
               </div>
@@ -561,7 +561,7 @@ const Order = ({ url, setIsLoading }) => {
                       onCompleteProcessingOrder(selectedInfo[order._id])
                     }
                   >
-                    Done
+                    <i className="fas fa-check"></i> Done
                   </button>
                 )}
               </>
@@ -578,12 +578,14 @@ const Order = ({ url, setIsLoading }) => {
                         className="delivered"
                         onClick={async () => onHandleOrder(order, "Delivered")}
                       >
+                        <i className="fas fa-check"></i>
                         Delivered
                       </button>
                       <button
                         onClick={async () => onHandleOrder(order, "Cancelled")}
                         className="deny"
                       >
+                        <i className="fas fa-times-circle"></i>
                         Deny Order
                       </button>
                     </>

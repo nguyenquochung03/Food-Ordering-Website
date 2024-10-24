@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Pagination.css";
 import { StoreContext } from "../../context/StoreContext";
-import { images } from "../../constants/data";
 
 const Pagination = ({ setIsLoading }) => {
   const { postPerPage, pagination, updatePagination, indexPagination } =
@@ -168,11 +167,10 @@ const Pagination = ({ setIsLoading }) => {
       <div className="pagination">
         <div className="pagination-arrow-container" onClick={onLeftArrowClick}>
           <a href="#food-display">
-            <img
-              className="pagination-arrow-left"
-              src={images.left_arrow}
-              alt="Left arrow"
-            />
+            <i
+              className="fas fa-chevron-left normal-pagination-arrow-icon"
+              aria-hidden="true"
+            ></i>
           </a>
         </div>
         {pages.map((page, index) => (
@@ -187,11 +185,10 @@ const Pagination = ({ setIsLoading }) => {
         ))}
         <div className="pagination-arrow-container" onClick={onRightArrowClick}>
           <a href="#food-display">
-            <img
-              className="pagination-arrow-right"
-              src={images.left_arrow}
-              alt="Right arrow"
-            />
+            <i
+              className="fas fa-chevron-right normal-pagination-arrow-icon"
+              aria-hidden="true"
+            ></i>
           </a>
         </div>
       </div>

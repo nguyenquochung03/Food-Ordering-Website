@@ -93,6 +93,7 @@
   background-color: unset;
   border: none;
   margin-top: -5px;
+  display: flex;
 }
 
 .food-item-rating-half-star {

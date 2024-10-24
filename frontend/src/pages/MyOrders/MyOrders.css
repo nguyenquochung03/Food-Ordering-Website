@@ -86,6 +86,10 @@
   color: #0d0b3e;
 }
 
+.my-orders-order span {
+  color: #ff4757;
+}
+
 .my-orders-order p {
   font-size: 1rem;
   color: #333;
@@ -115,6 +119,23 @@
 .my-order-received-button i {
   color: white;
   font-size: 1rem;
+}
+
+.my-order-cancle {
+  background-color: #ff4757;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.my-order-cancle i {
+  color: white;
+  font-size: 13px;
+}
+
+.my-order-cancle:hover {
+  background-color: #fa6f7b;
 }
 
 .my-order-received-button {
