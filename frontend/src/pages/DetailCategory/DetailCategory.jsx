@@ -10,8 +10,13 @@ import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import PageTracker from "../../components/PageTracker/PageTracker";
 
 const DetailCategory = ({ setIsLoading, setShowLogin }) => {
-  const { url, token, cartItems, addToCartWithAmount, userImage } =
-    useContext(StoreContext);
+  const {
+    url,
+    token,
+    cartItems = {},
+    addToCartWithAmount,
+    userImage,
+  } = useContext(StoreContext);
   const detailCategoryRef = useRef(null);
   const inputWriteCommentRef = useRef(null);
 
@@ -59,8 +64,10 @@ const DetailCategory = ({ setIsLoading, setShowLogin }) => {
   }, [id]);
 
   useEffect(() => {
-    if (cartItems[id]) {
+    if (cartItems && cartItems[id] !== undefined) {
       setNumberInCart(cartItems[id]);
+    } else {
+      setNumberInCart(1);
     }
     fetchComments();
     hasOrderedFood();

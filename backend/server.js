@@ -1,6 +1,10 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
+import rateLimit from "express-rate-limit";
+import compression from "compression";
+import morgan from "morgan";
+import helmet from "helmet";
 
 import { connectDB } from "./config/db.js";
 
@@ -18,11 +22,28 @@ import operatingRouter from "./routes/operatingRoute.js";
 const app = express();
 const port = 4000;
 
+// Rate limiter config
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 500,
+  message: "You have sent too many requests, please try again later.",
+});
+
 // middleware
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
-app.use(cors());
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
+app.use(limiter);
+app.use(compression());
+app.use(morgan("combined"));
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 // DB connection
 connectDB();
@@ -41,6 +62,17 @@ app.use("/api/operating", operatingRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
+});
+
+app.use((req, res, next) => {
+  res.status(404).render("404", {
+    errorMessage: "The page you are looking for does not exist!",
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render("error", { errorMessage: "Something went wrong!" });
 });
 
 app.listen(port, () => {
