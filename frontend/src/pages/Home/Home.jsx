@@ -13,7 +13,7 @@ const Home = ({ url, setIsLoading }) => {
 
   return (
     <div>
-      <Header />
+      <Header url={url} setIsLoading={setIsLoading} />
       <ExploreMenu
         category={category}
         setCategory={setCategory}

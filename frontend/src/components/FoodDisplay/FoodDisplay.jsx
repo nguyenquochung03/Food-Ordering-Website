@@ -365,7 +365,7 @@ const FoodDisplay = ({ setIsShowPagination, category, setIsLoading }) => {
               onClick={() => setIsUseTool((prev) => !prev)}
               title="Filter to find your food"
             >
-              <span>. . .</span>
+              <i className="fas fa-utensils"></i>
               <div className="tooltip">Click here to filter</div>
             </div>
           ) : (
@@ -459,7 +459,7 @@ const FoodDisplay = ({ setIsShowPagination, category, setIsLoading }) => {
               placeholder={placeholderText}
             />
             <div className="search_img" onClick={handleSearchClick}>
-              <SearchIcon color={"rgb(145, 145, 145)"} size={15} />
+              <SearchIcon color={"inherit"} size={15} />
             </div>
           </div>
           {searchValue.length > 0 && suggest.length > 0 && (
