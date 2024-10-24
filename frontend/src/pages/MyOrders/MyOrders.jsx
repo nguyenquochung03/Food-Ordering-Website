@@ -12,13 +12,14 @@ const MyOrders = ({ setIsLoading }) => {
   const { url, token } = useContext(StoreContext);
   const [data, setData] = useState([]);
   const orderStatuses = [
-    "Wait for Confirmation",
-    "Food Processing",
-    "Out for delivery",
-    "Delivered",
-    "Successful",
-    "Cancelled",
+    { status: "Wait for Confirmation", icon: "fas fa-hourglass-start" },
+    { status: "Food Processing", icon: "fas fa-utensils" },
+    { status: "Out for delivery", icon: "fas fa-truck" },
+    { status: "Delivered", icon: "fas fa-box-open" },
+    { status: "Successful", icon: "fas fa-check-circle" },
+    { status: "Cancelled", icon: "fas fa-times-circle" },
   ];
+
   const [currentStatus, setCurrentStatus] = useState("Wait for Confirmation");
   const [orderStatus, setOrderStatus] = useState([]);
   const printRefs = useRef({});
@@ -160,92 +161,96 @@ const MyOrders = ({ setIsLoading }) => {
       <div className="my-orders">
         <div onClick={fetchOrders} className="order-fetch-data">
           <button>
-            <img src={images.rotate_arrow} alt="" />
+            <i className="fas fa-sync-alt"></i>
             Fetch Data
           </button>
         </div>
         <div className="order-status">
-          {orderStatuses.map((status, index) => (
+          {orderStatuses.map((statusObj, index) => (
             <button
-              onClick={() => onChangeStatus(status)}
+              onClick={() => onChangeStatus(statusObj.status)}
               key={index}
-              className={currentStatus === status ? "active" : ""}
+              className={currentStatus === statusObj.status ? "active" : ""}
             >
-              {status}
+              <i className={statusObj.icon}></i>
+              {statusObj.status === "Wait for Confirmation"
+                ? "Comfirmation"
+                : statusObj.status}
             </button>
           ))}
         </div>
         <div className="container">
-          {orderStatus.map((order, index) => {
-            return (
-              <div
-                key={order._id}
-                className="my-orders-order"
-                style={{
-                  gridTemplateColumns:
-                    currentStatus === "Wait for Confirmation" ||
-                    currentStatus === "Delivered" ||
-                    currentStatus === "Successful"
-                      ? "0.5fr 2fr 1fr 1fr 1.5fr 1fr"
-                      : "0.5fr 2fr 1fr 1fr 1fr",
-                }}
-              >
-                <img src={images.parcel_icon} alt="" />
-                <p>
-                  {order.items.map((item, index) => {
-                    if (index === order.items.length - 1) {
-                      return item.name + " x " + item.quantity;
-                    } else {
-                      return item.name + " x " + item.quantity + ", ";
-                    }
-                  })}
-                </p>
-                <p>${order.amount}.00</p>
-                <p>Items: {order.items.length}</p>
-                <p>
-                  <span>&#x25cf;</span>
-                  <b>{order.status}</b>
-                </p>
-                {currentStatus === "Wait for Confirmation" &&
-                  order.paymentType === "Cash" && (
-                    <button
-                      onClick={async () => await handleCancelOrder(order)}
-                    >
-                      Cancel
-                    </button>
-                  )}
-                {currentStatus === "Delivered" && (
-                  <button
-                    onClick={async () => {
-                      const updateSuccess = await statusHandler(
-                        { target: { value: "Successful" } },
-                        order._id
-                      );
-                      if (updateSuccess) {
-                        toast.success("Order Delivery Successful");
-                      } else {
-                        toast.error("Failed to receive order");
-                      }
-                    }}
-                  >
-                    Received
+          {orderStatus.map((order) => (
+            <div
+              key={order._id}
+              className="my-orders-order"
+              style={{
+                gridTemplateColumns:
+                  currentStatus === "Wait for Confirmation" ||
+                  currentStatus === "Delivered" ||
+                  currentStatus === "Successful"
+                    ? "0.5fr 2fr 1fr 1fr 1.5fr 1fr"
+                    : "0.5fr 2fr 1fr 1fr 1fr",
+              }}
+            >
+              <i className="fas fa-box"></i>
+              <p>
+                {order.items.map((item, index) => {
+                  if (index === order.items.length - 1) {
+                    return item.name + " x " + item.quantity;
+                  } else {
+                    return item.name + " x " + item.quantity + ", ";
+                  }
+                })}
+              </p>
+              <p>${order.amount}.00</p>
+              <p>Items: {order.items.length}</p>
+              <p>
+                <span>&#x25cf;</span>
+                <b>{order.status}</b>
+              </p>
+              {currentStatus === "Wait for Confirmation" &&
+                order.paymentType === "Cash" && (
+                  <button onClick={async () => await handleCancelOrder(order)}>
+                    Cancel
                   </button>
                 )}
-                {currentStatus === "Successful" && (
-                  <ReactToPrint
-                    trigger={() => <button>Print Invoice</button>}
-                    content={() => printRefs.current[order._id]}
-                  />
-                )}
-                <div style={{ display: "none" }}>
-                  <Invoice
-                    ref={(el) => (printRefs.current[order._id] = el)}
-                    order={order}
-                  />
-                </div>
+              {currentStatus === "Delivered" && (
+                <button
+                  onClick={async () => {
+                    const updateSuccess = await statusHandler(
+                      { target: { value: "Successful" } },
+                      order._id
+                    );
+                    if (updateSuccess) {
+                      toast.success("Order Delivery Successful");
+                    } else {
+                      toast.error("Failed to receive order");
+                    }
+                  }}
+                  className="my-order-received-button"
+                >
+                  <i className="fas fa-check-circle"></i> Received
+                </button>
+              )}
+              {currentStatus === "Successful" && (
+                <ReactToPrint
+                  trigger={() => (
+                    <button className="my-order-print-button">
+                      <i className="fas fa-print"></i> Print Invoice
+                    </button>
+                  )}
+                  content={() => printRefs.current[order._id]}
+                />
+              )}
+              <div style={{ display: "none" }}>
+                <Invoice
+                  ref={(el) => (printRefs.current[order._id] = el)}
+                  order={order}
+                />
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
       <PageTracker pageUrl={`${url}/myorders`} />

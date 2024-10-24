@@ -226,11 +226,11 @@
   width: fit-content;
   height: 40px;
   font-size: 1rem;
-  color: inherit;
+  color: var(--color-font);
   padding: 0 35px 3px 15px;
   align-items: center;
   justify-content: center;
-  border: 1px solid inherit;
+  border: 1px solid var(--color-font);
   border-radius: 10px;
   outline: none;
   z-index: 1;
@@ -293,7 +293,7 @@
     transform: translateX(-100%) translateY(-105%);
     border-width: 15px;
     border-style: solid;
-    border-color: transparent inherit transparent transparent;
+    border-color: transparent var(--color-font) transparent transparent;
   }
 
   .food-display_tools-container {

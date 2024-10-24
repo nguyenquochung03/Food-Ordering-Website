@@ -5,8 +5,12 @@
   --color-white: #ffffff;
   --color-light-pink: #fff4f2;
   --color-dark-grey: #747474;
+  --color-light-bg: #ffffff;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-shadow: rgba(0, 0, 0, 0.2);
   --color-main: #ff6347;
   --color-invoice: #ffa07a;
+  --color-font: #331919;
 }
 
 * {

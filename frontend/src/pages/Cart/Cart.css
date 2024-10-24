@@ -12,7 +12,7 @@
 
 .cart-items-item {
   margin: 10px 0px;
-  color: black;
+  color: var(--color-font);
 }
 
 .cart-items-item img {
@@ -104,7 +104,7 @@
 .cart-promocodes-input button {
   width: max(10vw, 150px);
   padding: 12px 5px;
-  background-color: black;
+  background-color: var(--color-font);
   border: none;
   color: white;
   border-radius: 4px;

@@ -238,7 +238,7 @@
   background-color: #ff7e5f;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 950px) {
   .order-fetch-data {
     width: 100%;
   }
@@ -246,6 +246,7 @@
   .order-fetch-data button {
     width: 100%;
   }
+
   .order-items {
     display: grid;
     grid-template-columns: 1fr;
