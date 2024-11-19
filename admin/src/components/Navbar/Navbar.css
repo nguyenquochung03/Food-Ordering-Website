@@ -19,11 +19,13 @@
 }
 
 .navbar-logo {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 10px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: default;
 }
 
 .navbar-logo .logo {

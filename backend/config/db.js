@@ -1,11 +1,12 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 export const connectDB = async () => {
-    await mongoose.connect('mongodb+srv://nguyenhungnqh27:27032003@cluster0.mmachao.mongodb.net/food-delivery')
-        .then(() => {
-            console.log("DB connected");
-        })
-}
-
-// mongodb://localhost:27017/FoodDeliveryWebsite
-// mongodb+srv://nguyenhungnqh27:27032003@cluster0.mmachao.mongodb.net/?
+  await mongoose
+    .connect(process.env.DB)
+    .then(() => {
+      console.log("DB connected");
+    })
+    .catch((error) => {
+      console.log("Error connecting database: ", error);
+    });
+};

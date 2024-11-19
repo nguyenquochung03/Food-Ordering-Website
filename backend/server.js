@@ -25,7 +25,7 @@ const port = 4000;
 // Rate limiter config
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 500,
+  max: 2000,
   message: "You have sent too many requests, please try again later.",
 });
 
