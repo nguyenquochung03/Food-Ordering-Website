@@ -251,9 +251,21 @@ Tạo 2 project riêng biệt trên Vercel cho frontend và admin:
 ---
 
 ### ✅ Sau khi deploy xong:
-1.  Mở `frontend/src/context/StoreContext.jsx` → đổi `const url = "http://localhost:4000"` thành URL backend trên Render
-2.  Mở `admin/src/constants/data.js` → đổi `export const url = "http://localhost:4000"` thành URL backend trên Render
-3.  Commit và push code lên Github → Vercel sẽ auto deploy lại
+1.  **Quan trọng nhất:** Mở `backend/server.js` và **thêm domain Vercel của bạn vào danh sách `origin` ở phần CORS**
+    ```javascript
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://your-frontend.vercel.app", // Thêm domain frontend ở đây
+      "https://your-admin.vercel.app",    // Thêm domain admin ở đây
+    ],
+    ```
+
+2.  Mở `frontend/src/context/StoreContext.jsx` → đổi `const url = "http://localhost:4000"` thành URL backend trên Render (ví dụ: `https://food-ordering-website-tsv0.onrender.com`)
+3.  Mở `admin/src/constants/data.js` → đổi `export const url = "http://localhost:4000"` thành URL backend trên Render
+4.  Commit và push code lên Github → Render và Vercel sẽ auto deploy lại
+
+⚠️ **Lưu ý:** Backend trên Render cần được deploy lại sau khi sửa CORS mới có hiệu lực.
 
 ---
 

@@ -33,7 +33,13 @@ const limiter = rateLimit({
 // middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://food-ordering-website-nu-inky.vercel.app",
+      "https://foodordering-murex.vercel.app",
+      // Thêm domain của bạn khi deploy ở đây
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
