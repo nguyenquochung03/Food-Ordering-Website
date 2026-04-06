@@ -23,7 +23,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Operating from "./pages/Operating/Operating";
 
 const App = () => {
-  const url = "http://localhost:4000";
+  const url = "https://food-ordering-website-tsv0.onrender.com";
   const [isLogin, setIsLogin] = useState(true);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [userName, setUserName] = useState("");
