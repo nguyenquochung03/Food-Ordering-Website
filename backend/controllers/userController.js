@@ -1,6 +1,7 @@
 import userModel from "../models/userModel.js";
 
 import fs from "fs";
+import path from "path";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
@@ -103,16 +104,21 @@ const updateProfileImage = async (req, res) => {
     return res.json({ success: false, message: "User not found" });
   }
 
-  if (user.image !== "profile_icon.png") {
-    fs.unlinkSync(`./uploads/${user.image}`, (err) => {
-      if (err) {
-        console.log(err);
+  if (user.image && user.image !== "profile_icon.png") {
+    const filePath = path.resolve("./uploads", user.image);
+    if (fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (err) {
+        console.error("Failed to delete file:", filePath, err);
         return res.json({
           success: false,
           message: "Failed to update user profile picture",
         });
       }
-    });
+    } else {
+      console.warn("File to delete not found:", filePath);
+    }
   }
 
   try {
@@ -149,16 +155,21 @@ const resetProfileImage = async (req, res) => {
     return res.json({ success: false, message: "User not found" });
   }
 
-  if (user.image !== "profile_icon.png") {
-    fs.unlinkSync(`./uploads/${user.image}`, (err) => {
-      if (err) {
-        console.log(err);
+  if (user.image && user.image !== "profile_icon.png") {
+    const filePath = path.resolve("./uploads", user.image);
+    if (fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (err) {
+        console.error("Failed to delete file:", filePath, err);
         return res.json({
           success: false,
           message: "Failed to update user profile picture",
         });
       }
-    });
+    } else {
+      console.warn("File to delete not found:", filePath);
+    }
   }
 
   try {
@@ -470,16 +481,21 @@ const deleteAdmin = async (req, res) => {
       return res.json({ success: false, message: "User not found" });
     }
 
-    if (user.image !== "profile_icon.png") {
-      fs.unlinkSync(`./uploads/${user.image}`, (err) => {
-        if (err) {
-          console.log(err);
+    if (user.image && user.image !== "profile_icon.png") {
+      const filePath = path.resolve("./uploads", user.image);
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+        } catch (err) {
+          console.error("Failed to delete file:", filePath, err);
           return res.json({
             success: false,
             message: "Failed to update user profile picture",
           });
         }
-      });
+      } else {
+        console.warn("File to delete not found:", filePath);
+      }
     }
 
     const deletedAdmin = await userModel.findByIdAndDelete(id);

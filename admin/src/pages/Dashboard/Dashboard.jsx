@@ -12,6 +12,7 @@ import MonthlyOrderChart from "../../components/Statistic/MonthlyOrderChart/Mont
 import MonthlyOrderLineChart from "../../components/Statistic/MonthlyOrderLineChart/MonthlyOrderLineChart";
 import CustomerReviews from "../../components/Statistic/CustomerReviews/CustomerReviews";
 import RecentReviews from "../../components/Statistic/RecentReviews/RecentReviews";
+import AIChatWidget from "../../components/AIChatWidget/AIChatWidget";
 
 const Dashboard = ({
   url,
@@ -200,6 +201,7 @@ const Dashboard = ({
         url={url}
         selectedMonth={selectedMonth}
       />
+      <AIChatWidget url={url} />
     </div>
   );
 };
