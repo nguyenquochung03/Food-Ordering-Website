@@ -91,6 +91,41 @@ npm run build
 
 ---
 
+## 🐳 Chạy bằng Docker (không cần cài đặt gì)
+
+✅ **Cách nhanh nhất để chạy toàn bộ dự án chỉ bằng 1 lệnh:**
+
+### Điều kiện trước:
+- Đã cài Docker và Docker Compose
+
+### Chạy toàn bộ dự án:
+```bash
+# Mở terminal ở thư mục gốc
+docker-compose up -d
+```
+
+✅ Tất cả 3 service sẽ tự động chạy:
+| Service | URL |
+|---|---|
+| Backend API | http://localhost:4000 |
+| Frontend (User) | http://localhost:5173 |
+| Admin Dashboard | http://localhost:5174 |
+
+### Các lệnh thường dùng:
+```bash
+# Dừng tất cả containers
+docker-compose down
+
+# Xem logs
+docker-compose logs -f
+
+# Build lại khi thay đổi code
+docker-compose build
+docker-compose up -d
+```
+
+---
+
 ## Biến môi trường (gợi ý)
 
 - `PORT` — cổng server backend
@@ -158,10 +193,67 @@ Kiểm tra các route cụ thể trong `backend/routes/` để biết method, pa
 
 ---
 
-## Triển khai (gợi ý)
+## 🚀 Triển khai lên Production
 
-- Backend: deploy lên Heroku / DigitalOcean / Render / AWS. Đảm bảo đặt biến môi trường phù hợp.
-- Frontend/Admin: deploy build tĩnh lên Netlify / Vercel / Surge hoặc serve bằng CDN.
+### 🔹 Backend → Render.com (miễn phí)
+
+Render cho phép host backend Node.js miễn phí với MongoDB Atlas:
+
+1.  **Đăng ký tài khoản Render:** https://render.com/
+2.  Chọn `New` → `Web Service`
+3.  Connect với repo Github của bạn
+4.  **Cấu hình:**
+    - **Root Directory:** `backend`
+    - **Build Command:** `npm install && npm run build` (hoặc `npm install`)
+    - **Start Command:** `node server.js`
+    - **Plan:** `Free`
+5.  **Thêm biến môi trường (Environment Variables):**
+    Sao chép tất cả biến từ file `backend/.env` vào đây:
+    ```
+    JWT_SECRET=random#secret
+    STRIPE_SECRET_KEY=your_stripe_key
+    DB=mongodb+srv://your-mongodb-atlas-uri
+    HOST=smtp.gmail.com
+    USER=your-email@gmail.com
+    PASS=your-app-password
+    SERVICE=gmail
+    BASE_URL=https://your-backend-url.onrender.com
+    OPENROUTER_API_KEY=sk-or-v1-...
+    OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+    OPENROUTER_SITE_URL=https://your-frontend-url.vercel.app
+    OPENROUTER_SITE_NAME=Food Delivery App
+    ```
+6.  Click `Deploy` → backend sẽ được deploy trong ~2 phút
+
+---
+
+### 🔹 Frontend + Admin → Vercel (miễn phí)
+
+Tạo 2 project riêng biệt trên Vercel cho frontend và admin:
+
+#### ✅ Deploy Frontend (User):
+1.  Mở Vercel → Add New → Project
+2.  Connect Github repo
+3.  **Cấu hình:**
+    - **Root Directory:** `frontend`
+    - **Framework Preset:** `Vite`
+    - **Environment Variables:** (nếu cần)
+4.  Click `Deploy`
+
+#### ✅ Deploy Admin Dashboard:
+1.  Tạo project mới trên Vercel
+2.  Connect cùng Github repo
+3.  **Cấu hình:**
+    - **Root Directory:** `admin`
+    - **Framework Preset:** `Vite`
+4.  Click `Deploy`
+
+---
+
+### ✅ Sau khi deploy xong:
+1.  Mở `frontend/src/context/StoreContext.jsx` → đổi `const url = "http://localhost:4000"` thành URL backend trên Render
+2.  Mở `admin/src/constants/data.js` → đổi `export const url = "http://localhost:4000"` thành URL backend trên Render
+3.  Commit và push code lên Github → Vercel sẽ auto deploy lại
 
 ---
 

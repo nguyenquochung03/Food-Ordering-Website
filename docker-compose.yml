@@ -1,0 +1,64 @@
+services:
+  # ─── Backend (Node.js / Express) ───────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: food-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - DB=${DB}
+      - HOST=${HOST}
+      - USER=${USER}
+      - PASS=${PASS}
+      - SERVICE=${SERVICE}
+      - BASE_URL=${BASE_URL}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENROUTER_BASE_URL=${OPENROUTER_BASE_URL}
+      - OPENROUTER_SITE_URL=${OPENROUTER_SITE_URL}
+      - OPENROUTER_SITE_NAME=${OPENROUTER_SITE_NAME}
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - food-network
+
+  # ─── Frontend (React / Vite → Nginx) ───────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: food-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - food-network
+
+  # ─── Admin (React / Vite → Nginx) ──────────────────────────────────────────
+  admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: food-admin
+    restart: unless-stopped
+    ports:
+      - "5174:80"
+    depends_on:
+      - backend
+    networks:
+      - food-network
+
+# ─── Volumes ────────────────────────────────────────────────────────────────
+volumes:
+  uploads_data:
+
+# ─── Networks ───────────────────────────────────────────────────────────────
+networks:
+  food-network:
+    driver: bridge

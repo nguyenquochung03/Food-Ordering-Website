@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import AIChartRenderer from "../AIChartRenderer/AIChartRenderer";
+import ReactMarkdown from "react-markdown";
 import "./AIChatWidget.css";
 
 const SUGGESTED_QUESTIONS = [
@@ -61,48 +62,94 @@ export default function AIChatWidget({ url = "http://localhost:4000" }) {
 
   return (
     <>
-      <button className="ai-chat-toggle-btn" onClick={() => setIsOpen((s) => !s)}>
-        🤖
-      </button>
-
+      {!isOpen && (
+        <button className="ai-chat-toggle-btn" onClick={() => setIsOpen((s) => !s)}>
+          🤖
+        </button>
+      )}
+      
       {isOpen && (
-        <div className="ai-chat-window">
+        <div className="ai-chat-fullscreen">
           <div className="ai-chat-header">
             <div>AI Assistant</div>
             <button onClick={() => setIsOpen(false)}>X</button>
           </div>
+          
+          {/* Chat Messages Area */}
           <div className="ai-chat-messages">
             {messages.map((m, i) => (
-              <div key={i} className={m.role === "user" ? "user-message" : "ai-message"}>
-                <div>{m.text}</div>
-                {m.chartData && m.chartType && (
-                  <div style={{ marginTop: 8 }}>
-                    <AIChartRenderer chartType={m.chartType} chartData={m.chartData} chartTitle={m.chartTitle} />
+              <div key={i} className={`message-row ${m.role === "user" ? "message-row-user" : "message-row-ai"}`}>
+                <div className={`message-bubble ${m.role === "user" ? "message-bubble-user" : "message-bubble-ai"}`}>
+                  {m.role === "assistant" && (
+                    <div className="message-avatar">
+                      <span>🤖</span>
+                    </div>
+                  )}
+                  <div className="message-content">
+                    <div className="message-text">
+                      <ReactMarkdown>{m.text}</ReactMarkdown>
+                    </div>
+                    {m.chartData && m.chartType && (
+                      <div className="message-chart">
+                        <AIChartRenderer chartType={m.chartType} chartData={m.chartData} chartTitle={m.chartTitle} />
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             ))}
+            
             {isLoading && (
-              <div className="ai-loading">
-                <span></span>
-                <span></span>
-                <span></span>
+              <div className="message-row message-row-ai">
+                <div className="message-bubble message-bubble-ai">
+                  <div className="message-avatar">
+                    <span>🤖</span>
+                  </div>
+                  <div className="ai-loading">
+                    <span className="loading-dot"></span>
+                    <span className="loading-dot"></span>
+                    <span className="loading-dot"></span>
+                  </div>
+                </div>
               </div>
             )}
+            
             <div ref={bottomRef} />
           </div>
 
-          <div className="ai-chat-suggestions">
-            {SUGGESTED_QUESTIONS.map((q) => (
-              <button key={q} onClick={() => send(q)} className="ai-suggestion-chip">
-                {q}
-              </button>
-            ))}
-          </div>
+          {/* Suggested Questions - Only show when no messages or few messages */}
+          {messages.length <= 2 && (
+            <div className="ai-chat-suggestions">
+              <div className="suggestions-scroll-container">
+                {SUGGESTED_QUESTIONS.map((q) => (
+                  <button key={q} onClick={() => send(q)} className="ai-suggestion-chip">
+                    <span className="suggestion-icon">💡</span>
+                    {q}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
+          {/* Input Area */}
           <div className="ai-chat-input">
-            <input value={input} onChange={(e) => setInput(e.target.value)} disabled={isLoading} placeholder="Nhập câu hỏi..." onKeyDown={(e) => e.key === "Enter" && send(input)} />
-            <button onClick={() => send(input)} disabled={isLoading}>Gửi ▶</button>
+            <div className="input-wrapper">
+              <input 
+                value={input} 
+                onChange={(e) => setInput(e.target.value)} 
+                disabled={isLoading} 
+                placeholder="Nhập câu hỏi..." 
+                onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send(input)} 
+              />
+            </div>
+            <button 
+              onClick={() => send(input)} 
+              disabled={isLoading || !input.trim()}
+              className="send-button"
+            >
+              <span>Gửi</span>
+              <span className="send-icon">▶</span>
+            </button>
           </div>
         </div>
       )}

@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ShowLoadingSpinner from "./components/ShowLoadingSpinner/ShowLoadingSpinner";
 import DetailCategory from "./pages/DetailCategory/DetailCategory";
 import UpdateProfilePicture from "./components/UpdateProfilePicture/UpdateProfilePicture";
+import UserAIChat from "./components/UserAIChat/UserAIChat";
 
 const App = () => {
   const { url, setTokenExpires } = useContext(StoreContext);
@@ -121,6 +122,7 @@ const App = () => {
         </div>
         <Footer />
       </div>
+      <UserAIChat url={url} />
     </React.Fragment>
   );
 };

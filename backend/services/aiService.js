@@ -36,13 +36,27 @@ async function callWithFallback(messages, opts = {}) {
 
   const available = await fetchAvailableModels();
 
-  // Build final queue: prioritized models present first, then remaining free models
-  const preferred = FREE_MODEL_PRIORITY.filter((m) => available.includes(m));
-  const others = available.filter((m) => m.includes(":free") && !preferred.includes(m));
+  // Build final queue: try to match preferred list flexibly (strip any ":free" suffix)
+  const availSet = Array.from(new Set(available || []));
+
+  const preferred = [];
+  for (const pref of FREE_MODEL_PRIORITY) {
+    const base = String(pref).split(":")[0];
+    // exact match or startsWith base name
+    const match = availSet.find((m) => m === pref || m.startsWith(base));
+    if (match) preferred.push(match);
+  }
+
+  // Collect other candidate free models (include explicit ':free' tags or 'free' in id)
+  const others = availSet.filter((m) => !preferred.includes(m) && (m.includes(":free") || /\bfree\b/.test(m) || m === "openrouter/auto"));
+
   const candidates = [...preferred, ...others];
 
-  // If no live free models found, fall back to the static priority list
-  if (candidates.length === 0) candidates.push(...FREE_MODEL_PRIORITY);
+  // If no live candidates found, fallback to base names of our priority list
+  if (candidates.length === 0) {
+    const fallback = FREE_MODEL_PRIORITY.map((p) => String(p).split(":")[0]);
+    candidates.push(...fallback);
+  }
 
   let lastErr = null;
   const referer = process.env.OPENROUTER_SITE_URL || "http://localhost:3000";
@@ -102,7 +116,11 @@ async function callWithFallback(messages, opts = {}) {
   throw wrapped;
 }
 
-const SYSTEM_PROMPT = `Bạn là AI Analyst của hệ thống quản lý. Trả lời bằng tiếng Việt. Nếu dữ liệu không đủ, nói rõ. Luôn trả về JSON theo format {"text":...,"chartData":null,"chartType":null,"chartTitle":null}`;
+import toolRegistry from "./toolRegistry.js";
+
+const SYSTEM_PROMPT_TOOL_SELECTION = `Bạn là AI phân tích dữ liệu nhà hàng.\nNhiệm vụ: Chọn tool cần thiết để trả lời câu hỏi của admin.\n\nQUY TẮC:\n- Chọn TỐI THIỂU tool cần thiết, không gọi thừa\n- Câu hỏi so sánh → thêm parameter "compareWith"\n- Câu hỏi xu hướng/biểu đồ → bắt buộc chọn "get_time_series_data"\n- Câu hỏi tổng quan → "get_revenue_summary" + "get_order_status_breakdown"\n- Câu hỏi nguyên nhân → chọn nhiều tool để đủ góc nhìn\n\nTrả về JSON hợp lệ:\n{\n  "toolCalls": [{ "name": "tên_tool", "parameters": { "period": "month" } }],\n  "reasoning": "1 câu giải thích ngắn"\n}\n`;
+
+const SYSTEM_PROMPT_ANSWER_WRITER = `Bạn là AI phân tích kinh doanh nhà hàng. Viết câu trả lời từ dữ liệu đã có.\n\nPHẢI LÀM:\n- Trả lời bằng tiếng Việt, dựa 100% vào dữ liệu cung cấp\n- Câu đầu tiên trả lời thẳng vào câu hỏi\n- Nêu số cụ thể: "tăng 18%", "123 đơn", "4.500.000đ"\n- Ngắn gọn: 3–5 câu, dùng \n- nếu có nhiều điểm\n- Trình bày có cấu trúc rõ ràng\n\nTRONG MỌI TRƯỜNG HỢP KHÔNG ĐƯỢC:\n- Bịa số liệu không có trong dữ liệu\n- Dùng "có thể", "có lẽ" khi đã có số thực\n- Lặp lại câu hỏi\n- Thêm disclaimer dài dòng\n\nLUÔN trả về JSON (không thêm text ngoài JSON):\n{\n  "text": "Câu trả lời. Dùng **text** để in đậm số quan trọng. Dùng \n- cho danh sách.",\n  "chartData": null | { "labels": [...], "datasets": [{ "label": "...", "data": [...] }] },\n  "chartType": null | "bar" | "line" | "pie" | "area",\n  "chartTitle": null | "Tiêu đề ngắn",\n  "insight": null | "1 nhận xét quan trọng nhất"\n}\n\nVẼ BIỂU ĐỒ KHI: so sánh nhiều kỳ → bar/line | xu hướng → area | cơ cấu % → pie\n`;
 
 function buildUserMessage(question, dashboardContext) {
   return `=== DỮ LIỆU DASHBOARD HIỆN TẠI ===\n${JSON.stringify(dashboardContext, null, 2)}\n\n=== CÂU HỎI CỦA QUẢN LÝ ===\n${question}`;
@@ -124,35 +142,70 @@ export async function askAI(userQuestion, conversationHistory = [], dashboardCon
     };
   }
 
-  const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
+  // Step 1: Tool selection
+  const toolDefs = toolRegistry.getAllToolDefinitions();
+  const selectionPrompt = `DANH SÁCH TOOLS:\n${JSON.stringify(toolDefs, null, 2)}\n\nCÂU HỎI:\n${userQuestion}`;
+
+  const step1Messages = [
+    { role: "system", content: SYSTEM_PROMPT_TOOL_SELECTION },
     ...conversationHistory.slice(-10),
-    { role: "user", content: buildUserMessage(userQuestion, dashboardContext) },
+    { role: "user", content: selectionPrompt },
   ];
 
-  const { data, modelUsed } = await callWithFallback(messages);
-
+  const step1 = await callWithFallback(step1Messages);
+  const step1Raw = step1?.data?.choices?.[0]?.message?.content || step1?.data?.choices?.[0]?.text || JSON.stringify(step1?.data);
+  let step1Parsed = null;
   try {
-    const raw = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || JSON.stringify(data);
-    // Try parse JSON response from assistant
-    let parsed = null;
-    try {
-      parsed = JSON.parse(raw);
-    } catch (e) {
-      // Not JSON — return as text
-      return { text: String(raw), chartData: null, chartType: null, chartTitle: null, modelUsed };
-    }
+    step1Parsed = JSON.parse(step1Raw);
+  } catch (e) {
+    // If AI didn't return JSON, fall back to single tool: revenue summary
+    step1Parsed = { toolCalls: [{ name: "get_revenue_summary", parameters: { period: "month" } }], reasoning: "fallback" };
+  }
 
+  const toolCalls = Array.isArray(step1Parsed.toolCalls) ? step1Parsed.toolCalls : [];
+
+  // Execute tools
+  const toolResults = {};
+  for (const call of toolCalls) {
+    try {
+      const name = call.name;
+      const params = call.parameters || {};
+      const out = await toolRegistry.executeTool(name, params);
+      toolResults[name] = out;
+    } catch (err) {
+      toolResults[call.name] = { error: String(err) };
+    }
+  }
+
+  // Step 2: Answer writer — provide tool results
+  const resultPayload = {
+    question: userQuestion,
+    toolResults,
+    dashboardContext,
+  };
+
+  const step2Messages = [
+    { role: "system", content: SYSTEM_PROMPT_ANSWER_WRITER },
+    { role: "user", content: JSON.stringify(resultPayload, null, 2) },
+  ];
+
+  const step2 = await callWithFallback(step2Messages);
+  const step2Raw = step2?.data?.choices?.[0]?.message?.content || step2?.data?.choices?.[0]?.text || JSON.stringify(step2?.data);
+  try {
+    const parsed = JSON.parse(step2Raw);
     return {
       text: parsed.text || "",
       chartData: parsed.chartData || null,
       chartType: parsed.chartType || null,
       chartTitle: parsed.chartTitle || null,
-      modelUsed,
+      insight: parsed.insight || null,
+      modelUsed: step2.modelUsed || step1.modelUsed || null,
+      toolCalls: toolCalls,
+      toolResults,
     };
   } catch (error) {
-    console.error("aiService.askAI parse error", error);
-    return { text: "Lỗi khi xử lý phản hồi từ AI", chartData: null, chartType: null, chartTitle: null, modelUsed: null };
+    // fallback: return raw text
+    return { text: String(step2Raw), chartData: null, chartType: null, chartTitle: null, modelUsed: step2.modelUsed || step1.modelUsed || null, toolCalls, toolResults };
   }
 }
 
