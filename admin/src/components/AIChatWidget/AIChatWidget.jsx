@@ -39,7 +39,21 @@ export default function AIChatWidget({ url = "http://localhost:4000" }) {
     setIsLoading(true);
 
     try {
-      const history = messages.map((m) => ({ role: m.role, content: m.text }));
+      const history = messages.map((m) => {
+        // Format đúng định dạng OpenAI, chỉ gửi text content, không gửi các thuộc tính khác như chartData
+        let content = m.text;
+        
+        // Nếu đây là tin nhắn từ assistant và có chartData, chỉ gửi text thôi, không gửi cả JSON
+        if (m.role === 'assistant' && m.chartData) {
+          // Chỉ lấy text content để gửi vào history, không gửi metadata chart
+          content = m.text;
+          if (m.insight) {
+            content += '\n' + m.insight;
+          }
+        }
+        
+        return { role: m.role, content };
+      });
       const res = await axios.post(
         `${url}/api/ai/chat`,
         { message: text, history },
