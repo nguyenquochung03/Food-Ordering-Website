@@ -63,19 +63,23 @@ const history = messages.map((m) => {
     - history: Lịch sử hội thoại đã clean
 ```
 
-### 5. Backend xử lý
+### 5. Backend xử lý (Luồng Function Calling AI thực tế)
 ```
 ✅ Kiểm tra quyền admin
-  ↳ Gọi LLM (OpenAI / Groq) với prompt hệ thống + dữ liệu thực từ database
+  ↳ Gọi LLM qua Open Router với prompt hệ thống
+  ↳ AI quyết định xem cần gọi API nào để lấy dữ liệu (function calling)
+  ↳ Backend gọi chính xác API nội bộ lấy dữ liệu thực từ Database
+  ↳ Backend gửi kết quả dữ liệu vừa lấy được ngược lại cho AI
+  ↳ AI phân tích dữ liệu, tạo nội dung trả lời, tạo cấu trúc biểu đồ
   ↳ AI trả về dữ liệu cấu trúc chuẩn:
     {
-      text: "Nội dung trả lời người đọc",
-      chartData: { ... cấu trúc biểu đồ ... },
+      text: "Nội dung trả lời dễ đọc cho người dùng",
+      chartData: { ... cấu trúc biểu đồ chuẩn chart.js ... },
       chartType: "bar/line/pie",
       chartTitle: "Tên biểu đồ",
-      insight: "Phân tích chuyên sâu"
+      insight: "Phân tích chuyên sâu, nhận định kinh doanh"
     }
-  ↳ Trả về response client
+  ↳ Backend trả về response client
 ```
 
 ### 6. Client nhận và render
